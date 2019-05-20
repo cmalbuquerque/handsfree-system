@@ -35,46 +35,33 @@
                                 <b:navLink value="Show Details" />
                             </p:tab>
                         </p:accordionPanel>
-
-                        <b:button look="info" value="Add App" icon="plus" style="position:absolute; bottom: 0; margin-bottom: 2%"/>
-
                     </h:form>
                 </b:column>
                 <b:form>
                     <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
                         <h1>Profiles</h1>
                         <hr/>
+                        <h:form id="form">
+                            <p:repeat value="#{dataListView.profiles}" var="profile">
+                                <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                                    
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Id:" />
+                                            <h:outputText value="#{profile.id}" style="font-weight: bold"/>
+
+                                            <h:outputText value="Profile:" />
+                                            <h:outputText value="#{profile.nome}" style="font-weight: bold"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                </h:panelGrid>
+                                <hr />
+                            </p:repeat>
+                        </h:form>
                     </b:column>
                     <b:button look="info" value="Add Profile" icon="plus" style="position:absolute; bottom: 0; right: 0; margin-bottom: 2%; margin-right: 2%"/>
                 </b:form>
             </b:row>
-
-            <p:dialog header="Change Gestures" widgetVar="dlg2" modal="true" height="400" width="700">
-                <h:outputText value="Choose your gesture to scroll down: " />
-                <br></br>
-                <b:column col-sm="9" col-md="10" styleClass="main">
-                    <b:row styleClass="placeholders">
-                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
-                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
-                            <br></br>
-                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
-                        </b:column>
-                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
-                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
-                            <br></br>
-                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
-                        </b:column>
-                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
-                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
-                            <br></br>
-                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
-                        </b:column>
-                    </b:row>
-
-
-
-                </b:column>
-            </p:dialog>  
 
         </b:container> 
 
