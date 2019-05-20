@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Welcome Hansfree System</title>
+
+        <style>               
+            .Bimage{background: #085078;  /* fallback for old browsers */
+                    background: -webkit-linear-gradient(to right, #85D8CE, #085078);  /* Chrome 10-25, Safari 5.1-6 */
+                    background: linear-gradient(to right, #85D8CE, #085078); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            }        
+        </style> 
+    </h:head>
+
+    <h:body class="Bimage">
+        <p:panel style="width: 40%; margin-left: 30%; background: white; margin-top: 7%">
+            <br>&nbsp;</br>
+            <b:tabView id="tabViewLogin"> 
+                <b:tab title="Login">
+                    <br>&nbsp;</br>
+                    <b:form horizontal="true" id="loginForm">
+                        <b:inputText required="true" placeholder="Email" value="#{authenticationbean.email}" colMd="12" labelColMd="2">
+                            <f:facet name="prepend">
+                                <b:icon name="user" />
+                            </f:facet>
+                        </b:inputText>
+                        <b:inputSecret required="true" placeholder="Password" value="#{authenticationbean.password}" colMd="12" labelColMd="2">
+                            <f:facet name="prepend">
+                                <b:iconAwesome name="key" />
+                            </f:facet>
+                        </b:inputSecret>
+                        <br>&nbsp;</br>
+                        <b:row>
+                            <b:column span="2"></b:column>
+                            <b:button span="4" value="Register" outcome="/signup.xhtml"  />
+                            <b:commandButton span ="4" value="Login" look="info" action="#{authenticationbean.validate}"></b:commandButton>
+                            <b:column span="2"></b:column>
+                        </b:row>
+                        <br>&nbsp;</br>
+                    </b:form>
+                </b:tab>
+
+
+            </b:tabView>
+        </p:panel>
+    </h:body>
+</html>
+

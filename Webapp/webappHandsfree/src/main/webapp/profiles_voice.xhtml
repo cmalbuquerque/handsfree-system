@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Dashboard</title>
+    </h:head>
+    <h:body style="padding-top: 60px">
+        <h:outputScript library="holder" name="holder.js" />
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.5.2/holder.min.js"></script-->
+        <b:navBar brand="handsfree" brandHref="#" fixed="top" fluid="true" style="background-color: lightblue;">
+
+            <b:navbarLinks pull="right">
+                <b:navLink value="Logout" icon="log-out" outcome="/index.xhtml"></b:navLink>
+            </b:navbarLinks>
+            <h:form styleClass="navbar-form navbar-right">
+                <div class="form-group">
+                    <b:inputText placeholder="Search..." fieldSize="sm"/>
+                </div>
+            </h:form>
+        </b:navBar>
+        <b:container fluid="true">
+            <b:row>
+                <b:column col-sm="3" col-md="2" styleClass="sidebar" >
+                    <h:form>
+                        <p:accordionPanel>
+                            <p:tab title="Profile 1">
+                                <b:navLink value="Gesture Commands" /><br/>
+                                <b:navLink value="Voice Commands" />
+                            </p:tab>
+                            <p:tab title="Profile 2">
+                                <b:navLink value="Gesture Commands" /><br/>
+                                <b:navLink value="Voice Commands" />
+                            </p:tab>
+                            <p:tab title="Profile 3">
+                                <b:navLink value="Gesture Commands" /><br/>
+                                <b:navLink value="Voice Commands" />
+                            </p:tab>
+                        </p:accordionPanel>
+
+                    </h:form>
+                </b:column>
+                <b:form>
+                    
+                </b:form>
+            </b:row>
+
+            <p:dialog header="Change Gestures" widgetVar="dlg2" modal="true" height="400" width="700">
+                <h:outputText value="Choose your gesture to scroll down: " />
+                <br></br>
+                <b:column col-sm="9" col-md="10" styleClass="main">
+                    <b:row styleClass="placeholders">
+                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
+                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
+                            <br></br>
+                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
+                        </b:column>
+                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
+                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
+                            <br></br>
+                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
+                        </b:column>
+                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
+                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
+                            <br></br>
+                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
+                        </b:column>
+                    </b:row>
+
+
+
+                </b:column>
+            </p:dialog>  
+
+        </b:container> 
+
+
+        <style type="text/css">
+            .sub-header {
+                border-bottom: 1px solid #eee;
+                padding-bottom: 10px;
+            }
+
+            .navbar-fixed-top {
+                border: 0 none;
+            }
+            .sidebar {
+                display: none;
+            }
+            @media (min-width: 768px) {
+                .sidebar {
+                    background-color: lightblue;
+                    border-right: 1px solid #eee;
+                    bottom: 0;
+                    display: block;
+                    left: 0;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    padding: 20px;
+                    position: fixed;
+                    top: 51px;
+                    z-index: 1000;
+                }
+            }
+            .nav-list {
+                margin-bottom: 20px;
+                margin-left: -20px;
+                margin-right: -21px;
+            }
+            .nav-list > li > a {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .nav-list > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+                background-color: #428bca;
+                color: #fff;
+            }
+            .main {
+                padding: 20px;
+            }
+            @media (min-width: 768px) {
+                .main {
+                    padding-left: 40px;
+                    padding-right: 40px;
+                }
+            }
+            .main .page-header {
+                margin-top: 0;
+            }
+            .placeholders {
+                margin-bottom: 30px;
+                text-align: center;
+            }
+            .placeholders h4 {
+                margin-bottom: 0;
+            }
+            .placeholder {
+                margin-bottom: 20px;
+            }
+            .placeholder img {
+                border-radius: 50%;
+                display: inline-block;
+            }
+        </style>
+    </h:body>
+</html>
+
+
+
+

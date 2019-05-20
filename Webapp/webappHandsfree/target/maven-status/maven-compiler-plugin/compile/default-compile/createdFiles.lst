@@ -1,0 +1,9 @@
+backendBeans\AuthenticationBean.class
+entities\Pessoa.class
+connectionDB\resultSet.class
+connectionDB\DataConnect.class
+connectionDB\SessionUtils.class
+connectionDB\LoginDAO.class
+generalstuff\Hash.class
+backendBeans\SignUpBean.class
+connectionDB\SignDAO.class

@@ -1,0 +1,11 @@
+
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+/mySpeetch2Text/target/
+/MySpeechToText/target/
