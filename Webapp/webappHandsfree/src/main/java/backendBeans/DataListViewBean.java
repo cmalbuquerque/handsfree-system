@@ -4,34 +4,37 @@
  * and open the template in the editor.
  */
 package backendBeans;
-
 import connectionDB.DataDAO;
+import connectionDB.SessionUtils;
 import entities.Profile;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Carolina
  */
-@ManagedBean
+@ManagedBean(name="dataListView")
 @ViewScoped
 public class DataListViewBean implements Serializable {
 
-    private List<Profile> profiles;
+    private List<String> profiles;
 
     private Profile selectedProfile;
+    
+    private HttpSession session;
 
     @PostConstruct
     public void init() {
-        profiles=addProfileData();
+        session = SessionUtils.getSession();
+        profiles = addProfileData();
     }
 
-    public List<Profile> getProfiles() {
+    public List<String> getProfiles() {
         return profiles;
     }
 
@@ -43,8 +46,10 @@ public class DataListViewBean implements Serializable {
         this.selectedProfile = selectedProfile;
     }
 
-    public List<Profile> addProfileData() {
-        return DataDAO.listProfilesNames();
+    public List<String> addProfileData() {
+        String email = (String) session.getAttribute("email");
+        System.out.println("********\n" + email);
+        return DataDAO.listProfileNames(email);
     }
 
 }

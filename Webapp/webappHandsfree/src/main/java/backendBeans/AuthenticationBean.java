@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 @ManagedBean(name = "authenticationbean")
 @SessionScoped
 public class AuthenticationBean implements Serializable {
-
+    
     private Pessoa user;
     @ManagedProperty(value = "#{email}")
     private String email;
@@ -81,8 +81,10 @@ public class AuthenticationBean implements Serializable {
 
     //logout event, invalidate session
     public String logout() {
-        HttpSession session = SessionUtils.getSession();
-        session.invalidate();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+        if (null != session) 
+            session.invalidate();
         return INDEX;
     }
 

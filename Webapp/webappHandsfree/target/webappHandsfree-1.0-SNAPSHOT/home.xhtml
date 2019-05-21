@@ -42,16 +42,16 @@
                         <h1>Profiles</h1>
                         <hr/>
                         <h:form id="form">
-                            <p:repeat value="#{dataListView.profiles}" var="profile">
+                            <p:repeat value="#{dataListView.profiles}" var="nome">
                                 <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                                    
+
                                     <p:outputPanel>
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <h:outputText value="Id:" />
-                                            <h:outputText value="#{profile.id}" style="font-weight: bold"/>
+                                            <h:outputText value="" style="font-weight: bold"/>
 
                                             <h:outputText value="Profile:" />
-                                            <h:outputText value="#{profile.nome}" style="font-weight: bold"/>
+                                            <h:outputText value="#{nome}" style="font-weight: bold"/>
                                         </h:panelGrid>
                                     </p:outputPanel>
                                 </h:panelGrid>
@@ -67,6 +67,19 @@
 
 
         <style type="text/css">
+            .logo {
+                width: 5%
+            }
+
+            .detail {
+                width: 95%;
+                padding-left: 25px;
+            }
+
+            .detail td {
+                font-size: 24px;
+            }
+
             .sub-header {
                 border-bottom: 1px solid #eee;
                 padding-bottom: 10px;
