@@ -57,7 +57,7 @@ class SampleListener extends Listener {
                 System.out.println("Hand moving right");
                 System.out.println("Hand speed is: " + firstHand.palmVelocity().getX() + " m/s");
                 mouseMover.dragRight();
-            } 
+            }
             //slide left 
             else if (avgSpeed[0] < -50 && avgSpeed[1] < 30 && avgSpeed[1] > -30) {
                 System.out.println(firstHand);

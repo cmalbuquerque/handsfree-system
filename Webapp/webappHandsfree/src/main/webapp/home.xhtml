@@ -2,7 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
@@ -25,27 +24,19 @@
             <b:row>
                 <b:column col-sm="3" col-md="2" styleClass="sidebar" >
                     <h:form>
-                        <!--<p:accordionPanel value="#{menuappbean.apps}" var="app">
-                            <p:tab title="app">
+                        <p:accordionPanel>
+                            <p:tab title="App 1">
                                 <b:navLink value="Show Details" outcome="/profiles_gesture.xhtml" />
                             </p:tab>
-                        </p:accordionPanel>-->
+                            <p:tab title="App 2">
+                                <b:navLink value="Show Details" />
+                            </p:tab>
+                            <p:tab title="App 3">
+                                <b:navLink value="Show Details" />
+                            </p:tab>
+                        </p:accordionPanel>
 
-                        <h4>List of Applications</h4>
-                        <hr/>
-                        <p:repeat value="#{menuappbean.apps}" var="nome">
-                            <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                                <p:outputPanel>
-                                    <h:panelGrid columns="2" cellpadding="5">
-                                        <b:commandButton look="info" value="App: #{nome}" icon="phone" action="#{menuappbean.showDetails}" />
-                                        <!--<h:outputText value="App: " />
-                                        <h:outputText value="#{nome}" style="font-weight: bold"/>-->
-                                    </h:panelGrid>
-                                </p:outputPanel>
-                            </h:panelGrid>
-                            <hr />
-                        </p:repeat>
-
+                        <b:button look="info" value="Add App" icon="plus" style="position:absolute; bottom: 0; margin-bottom: 2%"/>
 
                     </h:form>
                 </b:column>
@@ -53,60 +44,42 @@
                     <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
                         <h1>Profiles</h1>
                         <hr/>
-                        <h:form id="form">
-                                
-                            <p:carousel value="#{dataListView.profiles}" headerText="" var="nome" itemStyle="text-align:center" responsive="true">
-                                <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
-                                    <f:facet name="header">
-                                        <img src="resources/images/sets.png" alt=""/>
-                                        <br/><br/>
-                                        <h:outputText style="text-style: bold" value="#{nome}" />
-                                    </f:facet>
-
-                                    <!--<h:outputText value="Id:" />
-                                    <h:outputText value="None" />
-                                    
-                                    <h:outputText value="Id:" />
-                                    <h:outputText value="None" />
-                                    
-                                    
-                                    <h:outputText value="Used on: " />
-                                    <h:outputText value="#{nome}" />-->
-
-
-                                </p:panelGrid>
-
-                                <f:facet name="footer">
-                                    In total there are #{fn:length(dataListView.profiles)} profiles.
-                                </f:facet>
-                            </p:carousel>
-                        </h:form>
                     </b:column>
                     <b:button look="info" value="Add Profile" icon="plus" style="position:absolute; bottom: 0; right: 0; margin-bottom: 2%; margin-right: 2%"/>
                 </b:form>
             </b:row>
 
+            <p:dialog header="Change Gestures" widgetVar="dlg2" modal="true" height="400" width="700">
+                <h:outputText value="Choose your gesture to scroll down: " />
+                <br></br>
+                <b:column col-sm="9" col-md="10" styleClass="main">
+                    <b:row styleClass="placeholders">
+                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
+                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
+                            <br></br>
+                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
+                        </b:column>
+                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
+                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
+                            <br></br>
+                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
+                        </b:column>
+                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
+                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
+                            <br></br>
+                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
+                        </b:column>
+                    </b:row>
+
+
+
+                </b:column>
+            </p:dialog>  
+
         </b:container> 
 
 
         <style type="text/css">
-
-            .ui-carousel {
-                margin-bottom: 20px;
-            }
-            .logo {
-                width: 5%
-            }
-
-            .detail {
-                width: 95%;
-                padding-left: 25px;
-            }
-
-            .detail td {
-                font-size: 24px;
-            }
-
             .sub-header {
                 border-bottom: 1px solid #eee;
                 padding-bottom: 10px;

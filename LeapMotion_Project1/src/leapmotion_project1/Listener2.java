@@ -15,9 +15,15 @@ import com.leapmotion.leap.Pointable;
 import com.leapmotion.leap.PointableList;
 import com.leapmotion.leap.Vector;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,7 +48,6 @@ public class Listener2 extends Listener {
     //right, left, up, down
     int[] sumMovDir = {0, 0, 0, 0};
     boolean saved = false;
-
 
     public String getState() {
         return state;
@@ -143,7 +148,7 @@ public class Listener2 extends Listener {
     public Double[] fingerDirectionVelocity(Controller controller, Frame frame, Hand hand) {
         Vector a = new Vector();
         Vector[] avgDirectionsVelocities = {a, a, a, a, a};
-        Double[] avgDirectionsVelocitiesSpeed = {0.0 , 0.0, 0.0 , 0.0, 0.0 };
+        Double[] avgDirectionsVelocitiesSpeed = {0.0, 0.0, 0.0, 0.0, 0.0};
         double norma;
 
         if (state.equals("recording")) {
@@ -152,26 +157,26 @@ public class Listener2 extends Listener {
                 Finger finger = new Finger(p);
                 switch (finger.type()) {
                     case TYPE_THUMB:
-                        sumFingersDirVelo[0] = sumFingersDirVelo[0].plus(p.direction());
+                        sumFingersDirVelo[0] = sumFingersDirVelo[0].plus(p.tipVelocity());
                         break;
                     case TYPE_INDEX:
-                        sumFingersDirVelo[1] = sumFingersDirVelo[1].plus(p.direction());
+                        sumFingersDirVelo[1] = sumFingersDirVelo[1].plus(p.tipVelocity());
                         break;
                     case TYPE_MIDDLE:
-                        sumFingersDirVelo[2] = sumFingersDirVelo[2].plus(p.direction());
+                        sumFingersDirVelo[2] = sumFingersDirVelo[2].plus(p.tipVelocity());
                         break;
                     case TYPE_RING:
-                        sumFingersDirVelo[3] = sumFingersDirVelo[3].plus(p.direction());
+                        sumFingersDirVelo[3] = sumFingersDirVelo[3].plus(p.tipVelocity());
                         break;
                     case TYPE_PINKY:
-                        sumFingersDirVelo[4] = sumFingersDirVelo[4].plus(p.direction());
+                        sumFingersDirVelo[4] = sumFingersDirVelo[4].plus(p.tipVelocity());
                         break;
                 }
             }
         } else if (state.equals("saving")) {
             for (int i = 0; i < 5; i++) {
                 avgDirectionsVelocities[i] = sumFingersDirVelo[i].divide(totalFrames.intValue());
-                avgDirectionsVelocitiesSpeed[i] = Math.sqrt(Math.pow(avgDirectionsVelocities[i].getX(),2) + (Math.pow(avgDirectionsVelocities[i].getY(),2)) +(Math.pow(avgDirectionsVelocities[i].getZ(),2)) ); 
+                avgDirectionsVelocitiesSpeed[i] = Math.sqrt(Math.pow(avgDirectionsVelocities[i].getX(), 2) + (Math.pow(avgDirectionsVelocities[i].getY(), 2)) + (Math.pow(avgDirectionsVelocities[i].getZ(), 2)));
             }
         }
         return avgDirectionsVelocitiesSpeed;
@@ -191,25 +196,25 @@ public class Listener2 extends Listener {
                     if (handPrevious.isValid()) {
                         float positionXcurrent = handCurrent.palmPosition().getX();
                         float positionXprevious = handPrevious.palmPosition().getX();
-                        float positionYcurrent = handCurrent.palmPosition().getZ();
-                        float positionYprevious = handPrevious.palmPosition().getZ();
+                        float positionZcurrent = handCurrent.palmPosition().getZ();
+                        float positionZprevious = handPrevious.palmPosition().getZ();
 
-                        if (positionXcurrent < positionXprevious) {
+                        if (positionXcurrent < positionXprevious) {    //left
                             sumMovDir[0] += 1;
                         }
-                        if (positionXcurrent > positionXprevious) {
+                        if (positionXcurrent > positionXprevious) {    //right
                             sumMovDir[1] += 1;
                         }
-                        if (positionYcurrent > positionYprevious) {
+                        if (positionZcurrent > positionZprevious) {    //up
                             sumMovDir[2] += 1;
                         }
-                        if (positionYcurrent < positionYprevious) {
+                        if (positionZcurrent < positionZprevious) {    //down
                             sumMovDir[3] += 1;
                         }
                     }
                 }
             }
-        }else if (state.equals("saving")) {
+        } else if (state.equals("saving")) {
             for (int i = 0; i < 4; i++) {
                 racios[i] = sumMovDir[i] / totalFrames;
             }
@@ -218,25 +223,122 @@ public class Listener2 extends Listener {
     }
 
     public void gravarFicheiro(Controller controller, Frame frame) throws IOException {
-        System.out.println("before hands");
         Hand hand = new Hand();
         System.out.println("on frame " + frame.id());
         System.out.println("Insira o nome do gesto: ");
-        String nomeFicheiro ="teste.txt"; //sc.next();
-        BufferedWriter writer = new BufferedWriter(new FileWriter(nomeFicheiro));
-        writer.write(totalFrames.toString());
-        writer.newLine();
-        writer.write(Arrays.toString(fingerFramesRatios(controller, frame, hand)));
-        writer.newLine();
-        writer.write(Arrays.toString(anglesAverage(controller, frame, hand)));
-        writer.newLine();
-        writer.write(Arrays.toString(palmVelocity(controller, frame, hand)));
-        writer.newLine();
-        writer.write(Arrays.toString(fingerDirectionVelocity(controller, frame, hand)));
-        writer.newLine();
-        writer.write(Arrays.toString(averageMovementDirection(controller, frame, hand)));
-        writer.close();
-        
-    }
+        String gestoName = sc.next();
+        String nomeFicheiro = "gestureData.arff";
+        List<String> fileData = new ArrayList<String>();
+        StringBuilder str = new StringBuilder();
+        str.append(gestoName);
+        if (!Files.exists(Paths.get(nomeFicheiro))) { //(f.exists() && !f.isDirectory()) {
+            System.out.println("Non existing file, initializing it...");
+            try (
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(nomeFicheiro));) {
+                writer.write("@relation GesturePrediction");
+                writer.newLine();
+                writer.newLine();
+                writer.write("@attribute labels {a,b,c,d,e,f,g,h,i,j,k,l}");
+                writer.newLine();
+                writer.write("@attribute zeroFingerFramesRatio  numeric");
+                writer.newLine();
+                writer.write("@attribute oneFingerFramesRatio  numeric");
+                writer.newLine();
+                writer.write("@attribute twoFingerFramesRatio  numeric");
+                writer.newLine();
+                writer.write("@attribute threeFingerFramesRatio  numeric");
+                writer.newLine();
+                writer.write("@attribute fourFingerFramesRatio  numeric");
+                writer.newLine();
+                writer.write("@attribute fiveFingerFramesRatio  numeric");
+                writer.newLine();
+                writer.write("@attribute pitchAngleAverage  numeric");
+                writer.newLine();
+                writer.write("@attribute yawAngleAverage numeric");
+                writer.newLine();
+                writer.write("@attribute rollAngleAverage numeric");
+                writer.newLine();
+                writer.write("@attribute xAveragePalmVelocity numeric");
+                writer.newLine();
+                writer.write("@attribute yAveragePalmVelocity numeric");
+                writer.newLine();
+                writer.write("@attribute zAveragePalmVelocity numeric");
+                writer.newLine();
+                /*
+                writer.write("@attribute thumbAvegareTipVelocity numeric");
+                writer.newLine();
+                writer.write("@attribute indexAvegareTipVelocity numeric");
+                writer.newLine();
+                writer.write("@attribute middleAvegareTipVelocity numeric");
+                writer.newLine();
+                writer.write("@attribute ringAvegareTipVelocity numeric");
+                writer.newLine();
+                writer.write("@attribute pinkyAvegareTipVelocity numeric");
+                writer.newLine();
+                */
+                writer.write("@attribute rightMovementFramesRation numeric");
+                writer.newLine();
+                writer.write("@attribute leftMovementFramesRation numeric");
+                writer.newLine();
+                writer.write("@attribute upMovementFramesRation numeric");
+                writer.newLine();
+                writer.write("@attribute downMovementFramesRation numeric");
+                writer.newLine();
+                writer.newLine();
+                writer.write("@data");
+                writer.newLine();
+                System.out.println("done");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("ERROR");
+                System.out.println(e.getMessage());
 
+            }
+        }
+        System.out.println("Savinging Data.");
+        try (
+                BufferedWriter writer = new BufferedWriter(new FileWriter(nomeFicheiro, true));
+                PrintWriter out = new PrintWriter(writer);) {
+            System.out.println(totalFrames.toString() + " frames processadas.");
+            for (Double d : fingerFramesRatios(controller, frame, hand)) {
+                //fileData.add(d.toString());
+                str.append(",");str.append(d.toString());
+            }
+            //out.println(Arrays.toString(fingerFramesRatios(controller, frame, hand)));
+
+            for (Double d : anglesAverage(controller, frame, hand)) {
+                //fileData.add(d.toString());
+                str.append(",");str.append(d.toString());
+            }
+            //out.println(Arrays.toString(anglesAverage(controller, frame, hand)));
+
+            for (Double d : palmVelocity(controller, frame, hand)) {
+                //fileData.add(d.toString());
+                str.append(",");str.append(d.toString());
+            }
+            //out.println(Arrays.toString(palmVelocity(controller, frame, hand)));
+/*
+            for (Double d : fingerDirectionVelocity(controller, frame, hand)) {
+                fileData.add(d.toString());
+            str.append(",");str.append(d.toString());
+            }
+            //out.println(Arrays.toString(fingerDirectionVelocity(controller, frame, hand)));
+*/
+            for (Double d : averageMovementDirection(controller, frame, hand)) {
+                //fileData.add(d.toString());
+                str.append(",");str.append(d.toString());
+            }
+            out.println(str.toString());
+            
+            //out.println(Arrays.toString(averageMovementDirection(controller, frame, hand)));
+            out.close();
+            writer.close();
+            System.out.println("Done");
+        } catch (IOException e) {
+            System.out.println("ERROR");
+            System.out.println(e.getMessage());
+        }
+
+    }
 }
+
