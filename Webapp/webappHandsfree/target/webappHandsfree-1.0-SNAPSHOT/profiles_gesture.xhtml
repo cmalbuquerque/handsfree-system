@@ -26,7 +26,7 @@
             <b:row>
                 <b:column col-sm="3" col-md="2" styleClass="sidebar" >
                     <h:form>
-                        <p:accordionPanel>
+                        <!--<p:accordionPanel>
                             <p:tab title="Profile 1">
                                 <b:navLink value="Gesture Commands" /><br/>
                                 <b:navLink value="Voice Commands" outcome="/profiles_voice.xhtml" />
@@ -39,9 +39,13 @@
                                 <b:navLink value="Gesture Commands" /><br/>
                                 <b:navLink value="Voice Commands" />
                             </p:tab>
-                        </p:accordionPanel>
+                        </p:accordionPanel>-->
 
-                        </h:form>
+                        <b:accordion p:value="#{menuappbean.profilesApp}" p:var="profiles" expanded-panels="panel1,panel3">
+                            <b:panel id="panel1" title="#{nome}">Content 1</b:panel>
+                        </b:accordion>  
+
+                    </h:form>
                 </b:column>
                 <b:form>
                     <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
@@ -72,7 +76,7 @@
                             </b:column>
                         </b:row>
                     </b:column>
-                    </b:form>
+                </b:form>
             </b:row>
 
             <p:dialog header="Change Gestures" widgetVar="dlg2" modal="true" height="400" width="700">
@@ -97,7 +101,7 @@
                         </b:column>
                     </b:row>
 
-                    
+
 
                 </b:column>
             </p:dialog>  
