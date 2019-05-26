@@ -1,0 +1,23 @@
+@relation GesturePrediction
+
+@attribute labels {a,b,c,d,e,f,g,h,i,j,k,l}
+@attribute zeroFingerFramesRatio  numeric
+@attribute oneFingerFramesRatio  numeric
+@attribute twoFingerFramesRatio  numeric
+@attribute threeFingerFramesRatio  numeric
+@attribute fourFingerFramesRatio  numeric
+@attribute fiveFingerFramesRatio  numeric
+@attribute pitchAngleAverage  numeric
+@attribute yawAngleAverage numeric
+@attribute rollAngleAverage numeric
+@attribute xAveragePalmVelocity numeric
+@attribute yAveragePalmVelocity numeric
+@attribute zAveragePalmVelocity numeric
+@attribute rightMovementFramesRation numeric
+@attribute leftMovementFramesRation numeric
+@attribute upMovementFramesRation numeric
+@attribute downMovementFramesRation numeric
+
+@data
+SwipeLeft,0.0,0.0,0.0,0.0,0.0,1.0,0.5575492067696297,-0.061188426991439844,0.102986312892339,-170.19765955306693,18.91658947484134,22.230878922424903,0.9452054794520548,0.0547945205479452,0.5205479452054794,0.4794520547945205
+swipeDown,0.0,0.208955223880597,0.16417910447761194,0.0,0.11940298507462686,0.5074626865671642,0.9202920625458902,-0.5489346420586999,-2.7086198756943887,3.8236663025706563,-244.19761384245174,6.446325434232826,0.44776119402985076,0.5522388059701493,0.6268656716417911,0.373134328358209
