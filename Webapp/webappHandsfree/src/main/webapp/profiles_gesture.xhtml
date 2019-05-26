@@ -17,9 +17,7 @@
                 <b:navLink value="Logout" icon="log-out" outcome="/index.xhtml"></b:navLink>
             </b:navbarLinks>
             <h:form styleClass="navbar-form navbar-right">
-                <div class="form-group">
-                    <b:inputText placeholder="Search..." fieldSize="sm"/>
-                </div>
+                <p style="margin-top: 4%">Welcome #{authenticationbean.email}</p>
             </h:form>
         </b:navBar>
         <b:container fluid="true">
@@ -42,7 +40,11 @@
                         </p:accordionPanel>-->
 
                         <b:accordion p:value="#{menuappbean.profilesApp}" p:var="profiles" expanded-panels="panel1,panel3">
-                            <b:panel id="panel1" title="#{nome}">Content 1</b:panel>
+                            <b:panel id="panel1" title="#{nome}">
+                                <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/></b:commandButton>
+                                <br/>
+                                <b:commandButton  look="link" action="#{menuappbean.showVoiceCommands}"><b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/></b:commandButton>
+                            </b:panel>
                         </b:accordion>  
 
                     </h:form>

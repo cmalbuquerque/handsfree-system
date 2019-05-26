@@ -68,10 +68,16 @@ public class MenuAppBean implements Serializable {
         return DataDAO.listProfilesOfApp(selectedApp, email);
     }
 
-    public String showDetails() {
+    public String showGestureCommands() {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("app", selectedApp);
         return "profiles_gesture.xhtml";
+    }
+
+    public String showVoiceCommands() {
+        HttpSession session = SessionUtils.getSession();
+        session.setAttribute("app", selectedApp);
+        return "profiles_voice.xhtml";
     }
 
 }
