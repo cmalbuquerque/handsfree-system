@@ -81,37 +81,41 @@
                 </b:form>
             </b:row>
 
-            <p:dialog header="Change Gestures" widgetVar="dlg2" modal="true" height="400" width="700">
-                <h:outputText value="Choose your gesture to scroll down: " />
-                <br></br>
-                <b:column col-sm="9" col-md="10" styleClass="main">
-                    <b:row styleClass="placeholders">
-                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
-                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
-                            <br></br>
-                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
-                        </b:column>
-                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
-                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
-                            <br></br>
-                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
-                        </b:column>
-                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
-                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
-                            <br></br>
-                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
-                        </b:column>
-                    </b:row>
-
-
-
-                </b:column>
-            </p:dialog>  
-
         </b:container> 
 
+        
 
-        <style type="text/css">
+        <h:form id="form">
+            <p:dataGrid var="car" value="#{gesturesbean.listGesto}" columns="3" layout="grid"
+                        rows="12" paginator="true" id="gestures"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="6,12,16">
+
+                <f:facet name="header">
+                    Gestures to Change
+                </f:facet>
+
+                <p:panel header="#{gesto.nome}" style="text-align:center">
+                    <h:panelGrid columns="1" style="width:100%">
+                        <b:row>
+                            <b:commandButton span ="4" value="Change Gesture" look="info" action="#{changegesturebean.change}"></b:commandButton>
+                            <b:column span="2"></b:column>
+                        </b:row>
+                    </h:panelGrid>
+                </p:panel>
+
+            </p:dataGrid>
+        </h:form>
+
+
+
+
+
+
+    <style type="text/css">
+    .value {
+        font-weight: bold;
+    }
             .sub-header {
                 border-bottom: 1px solid #eee;
                 padding-bottom: 10px;
