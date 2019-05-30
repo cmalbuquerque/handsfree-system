@@ -47,4 +47,47 @@ public class ChangeGesture {
         }
         return null;
     }
+    
+    public static Integer GetActionID(String action) throws ClassNotFoundException {
+        Connection con = null;
+        System.out.println("GetActionID + action: " + action);
+
+        try {
+            con = DataConnect.getConnection();
+            System.out.println("-----------------------------");
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("select id_action from action where nome='" + action + "';");
+
+            while (rs.next()) {
+               return rs.getInt(1);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+        } finally {
+            DataConnect.close(con);
+        }
+        return null;
+    }
+
+    public static void Update(int gesture_id, int action_id) throws ClassNotFoundException {
+        Connection con = null;
+        
+        try {
+            con = DataConnect.getConnection();
+            System.out.println("-----------------------------");
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("UPDATE action_list SET id_action=" + action_id + " WHERE gesture_id =" + gesture_id + " ;");
+
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+        } finally {
+            DataConnect.close(con);
+        }
+    }
 }

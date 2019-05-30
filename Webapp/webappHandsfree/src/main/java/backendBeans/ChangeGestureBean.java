@@ -23,19 +23,23 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean(name = "changegesturebean")
 @SessionScoped
-public class ChangeGestureBean implements Serializable{
-    //RECEBER A PUTA DO NOME DO GESTO A MUDAR
-    
+public class ChangeGestureBean implements Serializable{    
     
     private final static String gesture = "profiles_gesture.xhtml";
     
     @ManagedProperty(value = "#{gesto}")
     private String nome;
     
+    //FALTA ESTE
+    @ManagedProperty(value = "#{action}")
+    private String action;
+    
     private Gesto gesto;
     
     public String change() throws ClassNotFoundException {
-        ChangeGesture.GetGestureID(nome);
+        int gesture_id = ChangeGesture.GetGestureID(nome); //primeiro id do gesto a mudar
+        int action_id = ChangeGesture.GetActionID(action);
+        ChangeGesture.Update(gesture_id, action_id);
         System.out.println("------- ");
         return gesture;
     }
