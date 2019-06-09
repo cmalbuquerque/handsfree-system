@@ -6,6 +6,7 @@
 package backendBeans;
 import connectionDB.DataDAO;
 import connectionDB.SessionUtils;
+import entities.Gesto;
 import entities.Profile;
 import java.io.Serializable;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.servlet.http.HttpSession;
+import services.GestoService;
 
 /**
  *
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpSession;
 public class DataListViewBean implements Serializable {
 
     private List<String> profiles;
+    
+    private GestoService service;
 
     private Profile selectedProfile;
     
@@ -50,6 +54,10 @@ public class DataListViewBean implements Serializable {
         String email = (String) session.getAttribute("email");
         System.out.println("********\n" + email);
         return DataDAO.listProfileNames(email);
+    }
+    
+    public List<Gesto> addGestos() throws ClassNotFoundException {
+        return GestoService.getGestos();
     }
 
 }

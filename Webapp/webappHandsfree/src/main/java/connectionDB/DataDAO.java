@@ -6,6 +6,7 @@
 package connectionDB;
 
 import entities.App;
+import entities.Gesto;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -91,6 +92,5 @@ public class DataDAO {
         }
         return list;
     }
-    
 
 }
