@@ -26,9 +26,11 @@ public class Gesto implements Serializable {
     
     
     private String nome;
-    private String  id;
+    private int  id;
     
-    public Gesto(String id, String nome) {
+    private Action action;
+    
+    public Gesto(int id, String nome) {
         this.id = id;
         this.nome = nome;
     }
@@ -43,19 +45,29 @@ public class Gesto implements Serializable {
         this.nome = nome;
     }
     
-    public String getId() {
+    public int getId() {
         return id;
     }
     
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + (this.id != null ? this.id.hashCode() : 0);
+        int hash = 5;
         return hash;
     }
- 
+
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj == null) {
             return false;
         }
@@ -63,10 +75,19 @@ public class Gesto implements Serializable {
             return false;
         }
         final Gesto other = (Gesto) obj;
-        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
+        if (this.id != other.id) {
             return false;
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Gesto{" + "nome=" + nome + ", id=" + id + ", action=" + action + '}';
+    }
+    
+    
+    
+   
     
 }
