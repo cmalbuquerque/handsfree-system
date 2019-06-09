@@ -4,10 +4,12 @@
  * and open the template in the editor.
  */
 package backendBeans;
+
 import connectionDB.DataDAO;
 import connectionDB.SessionUtils;
 import entities.Gesto;
 import entities.Profile;
+import entities.Voice;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -20,33 +22,48 @@ import services.GestoService;
  *
  * @author Carolina
  */
-@ManagedBean(name="dataListView")
+@ManagedBean(name = "dataListView")
 @ViewScoped
 public class DataListViewBean implements Serializable {
 
     private List<String> profiles;
-    
+    private Profile selectedProfile;
+
+    private List<Voice> voices;
+    private Voice selectedVoice;
+
     private GestoService service;
 
-    private Profile selectedProfile;
-    
     private HttpSession session;
 
     @PostConstruct
     public void init() {
         session = SessionUtils.getSession();
         profiles = addProfileData();
+        voices = addVoices();
+    }
+
+    public List<Voice> getVoices() {
+        return voices;
+    }
+
+    public Voice getSelectedVoice() {
+        return selectedVoice;
+    }
+
+    public void setSelectedVoice(Voice selectedVoice) {
+        this.selectedVoice = selectedVoice;
+    }
+
+    public Profile getSelectedProfile() {
+        return selectedProfile;
     }
 
     public List<String> getProfiles() {
         return profiles;
     }
 
-    public Profile getSelectedCar() {
-        return selectedProfile;
-    }
-
-    public void setSelectedCar(Profile selectedProfile) {
+    public void setSelectedProfile(Profile selectedProfile) {
         this.selectedProfile = selectedProfile;
     }
 
@@ -55,9 +72,14 @@ public class DataListViewBean implements Serializable {
         System.out.println("********\n" + email);
         return DataDAO.listProfileNames(email);
     }
-    
+
     public List<Gesto> addGestos() throws ClassNotFoundException {
         return GestoService.getGestos();
+    }
+
+    public List<Voice> addVoices() {
+        System.out.println(DataDAO.voiceCommands());
+        return DataDAO.voiceCommands();
     }
 
 }

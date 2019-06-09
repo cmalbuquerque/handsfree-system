@@ -45,7 +45,7 @@ public class ActionService {
             while (rs.next()) {
 
                 System.out.println("id: " + rs.getString(1) + " nome: " + rs.getString(2));
-                Action action = new Action(rs.getString(1), rs.getString(2));
+                Action action = new Action(Integer.parseInt(rs.getString(1)), rs.getString(2));
                 System.out.println(action.getNome());
                 list.add(action);
                 System.out.println("list_size: " + list.size());
