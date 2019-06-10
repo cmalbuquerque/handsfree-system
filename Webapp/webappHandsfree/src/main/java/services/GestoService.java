@@ -48,12 +48,14 @@ public class GestoService {
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("select * from gesto;");
             System.out.println("OLA");
+            list.clear();
             
-            while(rs.next()) {
+            while(rs.next()) { 
                 System.out.println("id: " + rs.getString(1) +" nome: "+ rs.getString(2));
-                Gesto gesto = new Gesto(rs.getString(1), rs.getString(2));
+                Gesto gesto = new Gesto(Integer.parseInt(rs.getString(1)), rs.getString(2));
                 System.out.println(gesto.getNome());
                 list.add(gesto);
+                System.out.println("list_size: " + list.size());
             }
             rs.close();
             statement.close();
@@ -67,6 +69,14 @@ public class GestoService {
    
    public List<Gesto> getList() {
         return list;
-    }
+   }
+   
+   public String getGestoNome() {
+       String nome = null;
+       for(Gesto gesto: list){
+           nome = gesto.getNome();
+       }
+       return nome;
+   }
      
 }

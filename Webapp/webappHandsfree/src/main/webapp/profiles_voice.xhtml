@@ -11,7 +11,7 @@
     <h:body style="padding-top: 60px">
         <h:outputScript library="holder" name="holder.js" />
         <!--script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.5.2/holder.min.js"></script-->
-        <b:navBar brand="handsfree" brandHref="#" fixed="top" fluid="true" style="background-color: lightblue;">
+        <b:navBar brand="handsfree" brandHref="home.xhtml" fixed="top" fluid="true" style="background-color: lightblue;">
 
             <b:navbarLinks pull="right">
                 <b:navLink value="Logout" icon="log-out" outcome="/index.xhtml"></b:navLink>
@@ -34,37 +34,101 @@
 
                     </h:form>
                 </b:column>
-                <b:form>
 
-                </b:form>
+                <style type="text/css">
+                    .value {
+                        font-weight: bold;
+                    }
+                </style>
+
+
+                <h:form id="form">
+                    <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
+                        <p:dataTable widgetVar="voicesTable" var="voz" value="#{dataListView.voices}"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+
+                            <p:column filterMatchMode="exact" headerText="Voice Command">
+                                <h:outputText value="#{voz.voice}" />
+                            </p:column>
+
+                            <p:column headerText="Action">
+                                <h:outputText value="#{voz.action.nome}" />
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" value="Change Voice">
+                                    <f:setPropertyActionListener value="#{voz}" target="#{dataListView.selectedVoice}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:dialog header="Change Voice Commands" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="carDetail" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty dataListView.selectedVoice}" columnClasses="value,value">
+
+                                    <h:outputText value="Id" />
+                                    <h:outputText value="#{dataListView.selectedVoice.id}" />
+
+                                    <h:outputText value="Action" />
+                                    <h:outputText value="#{dataListView.selectedVoice.action.nome}" />
+
+                                    <h:outputText value="Atual Voice Command" />
+                                    <h:outputText value="#{dataListView.selectedVoice.voice}" />
+
+                                    <h:outputText value="New Voice Command " />
+                                    <b:selectOneMenu required="true">
+                                        <f:selectItem itemLabel="(Please select)" itemValue="" />
+                                        <f:selectItems value="#{dataListView.voices}" var="voz" itemValue="#{voz.voice}" itemLabel="#{voz.voice}" />
+                                    </b:selectOneMenu>
+                                </p:panelGrid>
+                                <br/>
+                                <b:commandButton icon="ok" value="Save Changes" look="info" ></b:commandButton>
+
+                            </p:outputPanel>
+                        </p:dialog>
+                    </b:column>
+                </h:form>
+
+
+                <!--<h:form id="form">
+                    <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
+                        <b:dataTable var="voz" value="#{dataListView.voices}">
+                            <b:column style="text-align:center">
+                                <f:facet name="header"><h:outputText value="Voice Command" /></f:facet>
+                                <h:outputText value="#{voz.voice}" />
+                            </b:column>
+
+                            <b:column style="text-align:center">
+                                <f:facet name="header"><h:outputText value="Action" /></f:facet>
+                                <h:outputText value="#{voz.action.nome}" />
+                            </b:column>
+
+                            <b:column style="text-align:center">
+                                <f:facet name="header"><h:outputText value="" /></f:facet>
+                                <p:commandLink update=":form:carDetail" oncomplete="PF('dlg2').show()" value="Change Voice">
+                                    <f:setPropertyActionListener value="#{voz}" target="#{dataListView.selectedVoice}" />
+                                </p:commandLink>
+
+                            </b:column>
+                        </b:dataTable>
+
+
+                        <p:dialog showEffect="fade" hideEffect="fade" header="Change Voice Commands" widgetVar="dlg2" modal="true">
+                            <p:outputPanel id="carDetail" style="text-align:center;">
+                                <h:outputText value="Table is empty!" rendered="#{empty dataListView.selectedVoice}" />
+                                <p:panelGrid  columns="2" rendered="#{not empty dataListView.selectedVoice}" columnClasses="label,value">
+                                    <h:outputText value="Voz: " />
+                                    <h:outputText value="#{dataListView.selectedVoice.id}" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog> 
+
+                    </b:column>
+                </h:form> -->
             </b:row>
-
-            <p:dialog header="Change Gestures" widgetVar="dlg2" modal="true" height="400" width="700">
-                <h:outputText value="Choose your gesture to scroll down: " />
-                <br></br>
-                <b:column col-sm="9" col-md="10" styleClass="main">
-                    <b:row styleClass="placeholders">
-                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
-                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
-                            <br></br>
-                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
-                        </b:column>
-                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
-                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
-                            <br></br>
-                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
-                        </b:column>
-                        <b:column col-xs="6" col-sm="4" styleClass="placeholder">
-                            <img data-src="holder.js/200x200/sky" class="img-responsive" alt="GIF"/>
-                            <br></br>
-                            <b:commandButton span="12" value="Choose" look="info" type="button"/>
-                        </b:column>
-                    </b:row>
-
-
-
-                </b:column>
-            </p:dialog>  
 
         </b:container> 
 

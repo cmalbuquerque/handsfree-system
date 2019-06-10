@@ -5,7 +5,10 @@
  */
 package connectionDB;
 
+import entities.Action;
 import entities.App;
+import entities.Gesto;
+import entities.Voice;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -91,6 +94,32 @@ public class DataDAO {
         }
         return list;
     }
-    
+
+    public static List<Voice> voiceCommands() {
+
+        Connection con = null;
+        List<Voice> lista = new ArrayList<Voice>();
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT voz.id_voz, voz, action.id_action, action.nome FROM action_list,voz,action WHERE action_list.id_action=action.id_action AND action_list.id_voz=voz.id_voz;");
+            while (rs.next()) {
+                System.out.println(rs.getString(1));
+                Voice v = new Voice(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
+                v.setAction(new Action(Integer.parseInt(rs.getString(3)), (String) rs.getString(4)));
+                lista.add(v);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Search error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DataConnect.close(con);
+        }
+        return lista;
+    }
 
 }

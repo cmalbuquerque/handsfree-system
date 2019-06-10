@@ -24,6 +24,8 @@ public class ChangeGesture {
     //tenho: cima-baixo--> swipe || quero --> baixo-cima --swipe
     //select action from action where id = 1;
     //select id_action from action_list where id_gesto = id_swipe;
+    
+    //O GESTO QUE ESTAMOS A MUDAR
     public static Integer GetGestureID(String gesto) throws ClassNotFoundException {
         Connection con = null;
         System.out.println("GetGestureID + gesto: " + gesto);
@@ -33,7 +35,7 @@ public class ChangeGesture {
             System.out.println("-----------------------------");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("select id_gesto from gesto where gesto='" + gesto + "';");
+            ResultSet rs = statement.executeQuery("select id_gesto from gesto where id_gesto='" + gesto + "';");
 
             while (rs.next()) {
                return rs.getInt(1);
@@ -48,6 +50,7 @@ public class ChangeGesture {
         return null;
     }
     
+    //PELA ACTION QUE VAMOS MUDAR
     public static Integer GetActionID(String action) throws ClassNotFoundException {
         Connection con = null;
         System.out.println("GetActionID + action: " + action);

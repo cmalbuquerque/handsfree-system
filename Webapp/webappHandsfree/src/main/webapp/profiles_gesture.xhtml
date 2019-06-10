@@ -21,24 +21,10 @@
             </h:form>
         </b:navBar>
         <b:container fluid="true">
+            <!-- Menu lateral  -->
             <b:row>
                 <b:column col-sm="3" col-md="2" styleClass="sidebar" >
                     <h:form>
-                        <!--<p:accordionPanel>
-                            <p:tab title="Profile 1">
-                                <b:navLink value="Gesture Commands" /><br/>
-                                <b:navLink value="Voice Commands" outcome="/profiles_voice.xhtml" />
-                            </p:tab>
-                            <p:tab title="Profile 2">
-                                <b:navLink value="Gesture Commands" /><br/>
-                                <b:navLink value="Voice Commands" />
-                            </p:tab>
-                            <p:tab title="Profile 3">
-                                <b:navLink value="Gesture Commands" /><br/>
-                                <b:navLink value="Voice Commands" />
-                            </p:tab>
-                        </p:accordionPanel>-->
-
                         <b:accordion p:value="#{menuappbean.profilesApp}" p:var="profiles" expanded-panels="panel1,panel3">
                             <b:panel id="panel1" title="#{nome}">
                                 <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/></b:commandButton>
@@ -49,73 +35,66 @@
 
                     </h:form>
                 </b:column>
-                <b:form>
+
+                <!-- DataGrid  -->
+                <b:form id="form">
                     <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
-                        <b:row styleClass="placeholders" style="margin-top: 3%">
-                            <b:column col-xs="6" col-sm="3" styleClass="placeholder">
-                                <img data-src="holder.js/200x200/sky" class="img-responsive"/>
-                                <h4>Scroll Up</h4>
-                                <br></br>
-                                <b:commandButton span="12" value="Change Gesture" look="info" type="button" onclick="PF('dlg2').show();" />
-                            </b:column>
-                            <b:column col-xs="6" col-sm="3" styleClass="placeholder">
-                                <img data-src="holder.js/200x200/vine" class="img-responsive"/>
-                                <h4>Scroll Down</h4>
-                                <br></br>
-                                <b:commandButton span="12" value="Change Gesture" look="info"></b:commandButton>
-                            </b:column>
-                            <b:column col-xs="6" col-sm="3" styleClass="placeholder">
-                                <img data-src="holder.js/200x200/sky" class="img-responsive"/>
-                                <h4>Zoom in</h4>
-                                <br></br>
-                                <b:commandButton span="12" value="Change Gesture" look="info"></b:commandButton>
-                            </b:column>
-                            <b:column col-xs="6" col-sm="3" styleClass="placeholder">
-                                <img data-src="holder.js/200x200/vine" class="img-responsive"/>
-                                <h4>Zoom out</h4>
-                                <br></br>
-                                <b:commandButton span="12" value="Change Gesture" look="info"></b:commandButton>
-                            </b:column>
-                        </b:row>
+                        <p:dataGrid var="gestures" value="#{gesturesview.listGesto}" columns="3" layout="grid"
+                                    rows="12" paginator="true" id="gestures"
+                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="6,12,16">
+
+                            <f:facet name="header">
+                                Gestures Panel
+                            </f:facet>
+                            
+                            <!-- dantes gesto.nome -->
+                            <p:panel header="#{gesturesview.nome}" style="text-align:center">
+                                <h:panelGrid columns="1" style="width:100%">
+                                    <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.getgestureid()}" value="Change Gesture">
+                                        <f:param name="gestureNome" value="#{gesturesview.nome}" />
+                                    </p:commandButton>
+                                    
+                                </h:panelGrid>
+                            </p:panel>
+
+                        </p:dataGrid>
                     </b:column>
                 </b:form>
+
             </b:row>
 
+            <!-- Dialog Popup  -->
+            <p:dialog header="Modos de Como Realizar o gesto: " widgetVar="dlg2" modal="true" height="150">
+                <!-- DataGrid  -->
+                <b:form id="form1">
+                    <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
+                        <p:dataGrid var="gestures" value="#{actionview.listAction}" columns="3" layout="grid"
+                                    rows="12"  id="action">
+
+
+                            <!-- dantes gesto.nome -->
+                            <p:panel header="#{actionview.nome}" style="text-align:center">
+                                <h:panelGrid columns="1" style="width:100%">
+                                    <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.getactionid()}" value="Change Action">
+                                        <f:param name="actionNome" value="#{actionview.nome}" />
+                                    </p:commandButton>
+
+                                </h:panelGrid>
+                            </p:panel>
+
+                        </p:dataGrid>
+                    </b:column>
+                </b:form>
+            </p:dialog> 
         </b:container> 
 
-        
-
-        <h:form id="form">
-            <p:dataGrid var="car" value="#{gesturesbean.listGesto}" columns="3" layout="grid"
-                        rows="12" paginator="true" id="gestures"
-                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                        rowsPerPageTemplate="6,12,16">
-
-                <f:facet name="header">
-                    Gestures to Change
-                </f:facet>
-
-                <p:panel header="#{gesto.nome}" style="text-align:center">
-                    <h:panelGrid columns="1" style="width:100%">
-                        <b:row>
-                            <b:commandButton span ="4" value="Change Gesture" look="info" action="#{changegesturebean.change}"></b:commandButton>
-                            <b:column span="2"></b:column>
-                        </b:row>
-                    </h:panelGrid>
-                </p:panel>
-
-            </p:dataGrid>
-        </h:form>
 
 
-
-
-
-
-    <style type="text/css">
-    .value {
-        font-weight: bold;
-    }
+        <style type="text/css">
+            .value {
+                font-weight: bold;
+            }
             .sub-header {
                 border-bottom: 1px solid #eee;
                 padding-bottom: 10px;
