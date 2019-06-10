@@ -47,6 +47,10 @@ public class DataListViewBean implements Serializable {
         return voices;
     }
 
+    public void setVoices(List<Voice> voices) {
+        this.voices = voices;
+    }
+
     public Voice getSelectedVoice() {
         return selectedVoice;
     }
