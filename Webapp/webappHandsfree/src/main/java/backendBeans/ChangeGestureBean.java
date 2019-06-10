@@ -12,9 +12,11 @@ import entities.Gesto;
 import entities.Pessoa;
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -32,12 +34,12 @@ public class ChangeGestureBean implements Serializable{
     
     private final static String gesture = "profiles_gesture.xhtml";
     
-    @ManagedProperty(value = "#{gesto}")
-    private String nome;
+    //@ManagedProperty(value = "#{gesto}")
+    //private String nome;
     
     //FALTA ESTE
-    @ManagedProperty(value = "#{action}")
-    private String action;
+    //@ManagedProperty(value = "#{action}")
+    //private String action;
     
     private Gesto gesto;
     
@@ -54,8 +56,8 @@ public class ChangeGestureBean implements Serializable{
         ChangeGesture.Update(gesture_id, action_id);
         System.out.println("------- ");
         return gesture;
-        */
-        
+         */
+
         ChangeGesture.Update(gesture_id, action_id);
         System.out.println("------- ");
         return gesture;
@@ -69,33 +71,40 @@ public class ChangeGestureBean implements Serializable{
         this.gesto = gesto;
     }
 
+    /*
     public String getNome() {
         return nome;
     }
-      
+     */
     //ver esta parte bem
     /*
     @PostConstruct
     private void init() {
         gesto = new Gesto();
     }
-    */
-    
-    public Integer GetGestureID(String gesto) throws ClassNotFoundException {
+     */
+
+    public Integer getgestureid() throws ClassNotFoundException {
         System.out.println("GESTURE_ID");
         Connection con = null;
-        System.out.println("GetGestureID + gesto: " + gesto);
+        //System.out.println("GetGestureID + gesto: " + gesto);
+        FacesContext fc = FacesContext.getCurrentInstance();
+        String gestoNome = getGestoParam(fc);
+        //Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+        //String gesture = params.get("gestureNome");
+        System.out.println("GetGestureID + gesto: " + gestoNome);
 
         try {
             con = DataConnect.getConnection();
             System.out.println("-----------------------------");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("select id_gesto from gesto where id_gesto='" + gesto + "';");
+            ResultSet rs = statement.executeQuery("select id_gesto from gesto where gesto='" + gestoNome + "';");
 
             while (rs.next()) {
-               gesture_id = rs.getInt(1);
-               return gesture_id;
+                gesture_id = rs.getInt(1);
+                System.out.println("GESTURE ID: " + gesture_id);
+                return gesture_id;
             }
             rs.close();
             statement.close();
@@ -106,24 +115,28 @@ public class ChangeGestureBean implements Serializable{
         }
         return gesture_id;
     }
-    
+
     //PELA ACTION QUE VAMOS MUDAR
-    public Integer GetActionID(String action) throws ClassNotFoundException {
+    public Integer getactionid() throws ClassNotFoundException {
         System.out.println("ACTION_ID");
         Connection con = null;
-        System.out.println("GetActionID + action: " + action);
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+        String actionNome = getActionParam(fc);
+        System.out.println("GetActionID + action: " + actionNome);
 
         try {
             con = DataConnect.getConnection();
             System.out.println("-----------------------------");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("select id_action from action where nome='" + action + "';");
+            ResultSet rs = statement.executeQuery("select id_action from action where nome='" + actionNome + "';");
 
             while (rs.next()) {
-               action_id = rs.getInt(1);
-               Update();
-               return action_id;
+                action_id = rs.getInt(1);
+                System.out.println("ACTION ID: " + action_id);
+                Update();
+                return action_id;
             }
             rs.close();
             statement.close();
@@ -138,15 +151,17 @@ public class ChangeGestureBean implements Serializable{
     public void Update() throws ClassNotFoundException {
         Connection con = null;
         System.out.println("UPDATE");
-        
+        int rs = 0;
+         
         try {
             con = DataConnect.getConnection();
             System.out.println("-----------------------------");
-            con.setAutoCommit(false);
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("UPDATE action_list SET id_action=" + action_id + " WHERE gesture_id =" + gesture_id + " ;");
+            PreparedStatement statement = con.prepareStatement("update action_list set id_action = " + ChangeGestureBean.action_id + " where id_gesto = " + ChangeGestureBean.gesture_id + ";");
+            System.out.println(ChangeGestureBean.action_id);
+            System.out.println(ChangeGestureBean.gesture_id);
+            System.out.println("update action_list set id_action = " + ChangeGestureBean.action_id + " where id_gesto = " + ChangeGestureBean.gesture_id + ";");
+            rs = statement.executeUpdate();
 
-            rs.close();
             statement.close();
         } catch (SQLException ex) {
             System.out.println("Login error -->" + ex.getMessage());
@@ -154,5 +169,15 @@ public class ChangeGestureBean implements Serializable{
             DataConnect.close(con);
         }
     }
-    
+
+    private String getGestoParam(FacesContext fc) {
+        Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+        return params.get("gestureNome");
+    }
+
+    private String getActionParam(FacesContext fc) {
+        Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+        return params.get("actionNome");
+    }
+
 }

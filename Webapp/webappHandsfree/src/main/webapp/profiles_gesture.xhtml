@@ -51,7 +51,9 @@
                             <!-- dantes gesto.nome -->
                             <p:panel header="#{gesturesview.nome}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-                                    <p:commandButton onclick="PF('dlg2').show();"  value="Change Gesture"></p:commandButton>
+                                    <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.getgestureid()}" value="Change Gesture">
+                                        <f:param name="gestureNome" value="#{gesturesview.nome}" />
+                                    </p:commandButton>
                                     
                                 </h:panelGrid>
                             </p:panel>
@@ -74,7 +76,9 @@
                             <!-- dantes gesto.nome -->
                             <p:panel header="#{actionview.nome}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-                                    <p:commandButton onclick="PF('dlg2').show();"  value="Change Action"></p:commandButton>
+                                    <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.getactionid()}" value="Change Action">
+                                        <f:param name="actionNome" value="#{actionview.nome}" />
+                                    </p:commandButton>
 
                                 </h:panelGrid>
                             </p:panel>

@@ -75,6 +75,7 @@ public class GesturesView implements Serializable {
     //se for diferente no if, adicionar depois do if. os que vem a seguir sao diferentes
     //se for igual, eliminar no fim.
     public String getNome() {
+    /*
         String nome = null;
         for (Gesto gesto : getListGesto()) {
             System.out.println("COMECAR");
@@ -93,6 +94,8 @@ public class GesturesView implements Serializable {
             }
         }
         return nome;
+        */
+    return gesto.getNome();
     }
 
     public void setService(GestoService service) {
