@@ -6,10 +6,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  *
@@ -22,24 +20,50 @@ public class Pessoa implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    
-    private int profile;
-
     private String email;
-
     private String password;
+    
+    private List<App> apps;
+    private List<Profile> profiles;
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
-        hash = 53 * hash + Objects.hashCode(this.email);
-        return hash;
+    public Pessoa(){}
+    
+    public Pessoa(int id, String email, String password) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
     }
 
+    public Pessoa(int id, String email, String password, List<App> apps, List<Profile> profiles) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.apps = apps;
+        this.profiles = profiles;
+    }
+    
+
+    public int getId() {
+        return id;
+    }
+    
+    public List<App> getApps() {
+        return apps;
+    }
+
+    public void setApps(List<App> apps) {
+        this.apps = apps;
+    }
+
+    public List<Profile> getProfiles() {
+        return profiles;
+    }
+
+    public void setProfiles(List<Profile> profiles) {
+        this.profiles = profiles;
+    }
+    
     public String getEmail() {
         return email;
     }
@@ -64,6 +88,13 @@ public class Pessoa implements Serializable {
         this.password = password;
     }
     
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.id);
+        hash = 53 * hash + Objects.hashCode(this.email);
+        return hash;
+    }
     
 
     @Override
@@ -98,6 +129,7 @@ public class Pessoa implements Serializable {
 
     @Override
     public String toString() {
-        return "Utilizador com email " + email + "}";
+        return "Pessoa{" + "id=" + id + ", email=" + email + ", password=" + password + ", apps=" + apps + ", profiles=" + profiles + '}';
     }
+
 }

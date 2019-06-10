@@ -59,7 +59,6 @@ public class ChangeGestureBean implements Serializable{
          */
 
         ChangeGesture.Update(gesture_id, action_id);
-        System.out.println("------- ");
         return gesture;
     }
 
@@ -85,25 +84,21 @@ public class ChangeGestureBean implements Serializable{
      */
 
     public Integer getgestureid() throws ClassNotFoundException {
-        System.out.println("GESTURE_ID");
         Connection con = null;
         //System.out.println("GetGestureID + gesto: " + gesto);
         FacesContext fc = FacesContext.getCurrentInstance();
         String gestoNome = getGestoParam(fc);
         //Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
         //String gesture = params.get("gestureNome");
-        System.out.println("GetGestureID + gesto: " + gestoNome);
 
         try {
             con = DataConnect.getConnection();
-            System.out.println("-----------------------------");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("select id_gesto from gesto where gesto='" + gestoNome + "';");
 
             while (rs.next()) {
                 gesture_id = rs.getInt(1);
-                System.out.println("GESTURE ID: " + gesture_id);
                 return gesture_id;
             }
             rs.close();
@@ -118,12 +113,10 @@ public class ChangeGestureBean implements Serializable{
 
     //PELA ACTION QUE VAMOS MUDAR
     public Integer getactionid() throws ClassNotFoundException {
-        System.out.println("ACTION_ID");
         Connection con = null;
 
         FacesContext fc = FacesContext.getCurrentInstance();
         String actionNome = getActionParam(fc);
-        System.out.println("GetActionID + action: " + actionNome);
 
         try {
             con = DataConnect.getConnection();
@@ -134,7 +127,6 @@ public class ChangeGestureBean implements Serializable{
 
             while (rs.next()) {
                 action_id = rs.getInt(1);
-                System.out.println("ACTION ID: " + action_id);
                 Update();
                 return action_id;
             }
@@ -150,16 +142,11 @@ public class ChangeGestureBean implements Serializable{
 
     public void Update() throws ClassNotFoundException {
         Connection con = null;
-        System.out.println("UPDATE");
         int rs = 0;
          
         try {
             con = DataConnect.getConnection();
-            System.out.println("-----------------------------");
             PreparedStatement statement = con.prepareStatement("update action_list set id_action = " + ChangeGestureBean.action_id + " where id_gesto = " + ChangeGestureBean.gesture_id + ";");
-            System.out.println(ChangeGestureBean.action_id);
-            System.out.println(ChangeGestureBean.gesture_id);
-            System.out.println("update action_list set id_action = " + ChangeGestureBean.action_id + " where id_gesto = " + ChangeGestureBean.gesture_id + ";");
             rs = statement.executeUpdate();
 
             statement.close();

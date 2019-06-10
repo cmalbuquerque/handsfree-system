@@ -38,7 +38,6 @@ public class GesturesView implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            System.out.println("SERVICE.GESTOS--> INIT");
             listGesto = service.getGestos();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GesturesView.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,18 +77,10 @@ public class GesturesView implements Serializable {
     
         String nome = null;
         for (Gesto gesto : getListGesto()) {
-            System.out.println("COMECAR");
-            System.out.println("ADD: " + gesto.getNome());
             listed.add(gesto);
             for (Gesto done : listed) {
-                System.out.println("SEGUNDO FOR");
                 if (gesto.getNome() == done.getNome()) {
-                    System.out.println("if");
-                    System.out.println(gesto);
-                    System.out.println(gesto.getNome());
                     nome = gesto.getNome();
-                    System.out.println("NOME: " + nome);
-                    System.out.println("");
                 }
             }
         }

@@ -34,21 +34,14 @@ public class ActionService {
 
         try {
             con = DataConnect.getConnection();
-            System.out.println("-----------------------------");
-            System.out.println("ACTION");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("select * from action;");
-            System.out.println("OLA");
             list.clear();
 
             while (rs.next()) {
-
-                System.out.println("id: " + rs.getString(1) + " nome: " + rs.getString(2));
                 Action action = new Action(Integer.parseInt(rs.getString(1)), rs.getString(2));
-                System.out.println(action.getNome());
                 list.add(action);
-                System.out.println("list_size: " + list.size());
             }
             rs.close();
             statement.close();

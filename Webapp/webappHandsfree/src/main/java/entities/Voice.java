@@ -15,8 +15,6 @@ import javax.persistence.Id;
  */
 public class Voice {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     
     private String voice;
@@ -36,10 +34,6 @@ public class Voice {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getVoice() {

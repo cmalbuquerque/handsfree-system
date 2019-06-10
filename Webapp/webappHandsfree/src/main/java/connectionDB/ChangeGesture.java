@@ -28,11 +28,9 @@ public class ChangeGesture {
     //O GESTO QUE ESTAMOS A MUDAR
     public static Integer GetGestureID(String gesto) throws ClassNotFoundException {
         Connection con = null;
-        System.out.println("GetGestureID + gesto: " + gesto);
 
         try {
             con = DataConnect.getConnection();
-            System.out.println("-----------------------------");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("select id_gesto from gesto where id_gesto='" + gesto + "';");
@@ -53,11 +51,9 @@ public class ChangeGesture {
     //PELA ACTION QUE VAMOS MUDAR
     public static Integer GetActionID(String action) throws ClassNotFoundException {
         Connection con = null;
-        System.out.println("GetActionID + action: " + action);
 
         try {
             con = DataConnect.getConnection();
-            System.out.println("-----------------------------");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("select id_action from action where nome='" + action + "';");
@@ -80,7 +76,6 @@ public class ChangeGesture {
         
         try {
             con = DataConnect.getConnection();
-            System.out.println("-----------------------------");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("UPDATE action_list SET id_action=" + action_id + " WHERE gesture_id =" + gesture_id + " ;");

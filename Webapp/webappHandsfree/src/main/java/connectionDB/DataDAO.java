@@ -8,6 +8,7 @@ package connectionDB;
 import entities.Action;
 import entities.App;
 import entities.Gesto;
+import entities.Profile;
 import entities.Voice;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -45,18 +46,19 @@ public class DataDAO {
         return list;
     }
 
-    public static List<String> listAppsNames(String email) {
+    public static List<App> listApps(String email) {
 
         Connection con = null;
-        List<String> list = new ArrayList<String>();
+        List<App> list = new ArrayList<App>();
         try {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT app.nome FROM app,usa_app,pessoa WHERE app.id_app=usa_app.id_app AND usa_app.id_pessoa=pessoa.id_pessoa AND pessoa.email='" + email + "';");
+            ResultSet rs = statement.executeQuery("SELECT app.id_app, app.nome FROM app,usa_app,pessoa WHERE app.id_app=usa_app.id_app AND usa_app.id_pessoa=pessoa.id_pessoa AND pessoa.email='" + email + "';");
             while (rs.next()) {
                 System.out.println(rs.getString(1));
-                list.add((String) rs.getString(1));
+                App app = new App(Integer.parseInt(rs.getString(1)),(String) rs.getString(2));
+                list.add(app);
             }
             rs.close();
             statement.close();
@@ -70,18 +72,20 @@ public class DataDAO {
         return list;
     }
 
-    public static List<String> listProfilesOfApp(App app, String email) {
+    public static List<Profile> listProfilesOfApp(App app, String email) {
 
         Connection con = null;
-        List<String> list = new ArrayList<String>();
+        List<Profile> list = new ArrayList<Profile>();
         try {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT nome FROM usa_app,perfil,pessoa WHERE perfil.id_perfil=usa_app.id_perfil AND usa_app.id_pessoa=pessoa.id_pessoa AND usa_app.id_app = " + app.getId() + " AND pessoa.email='" + email + "';");
+            ResultSet rs = statement.executeQuery("SELECT perfil.id_perfil, perfil.nome FROM usa_app,perfil,pessoa WHERE perfil.id_perfil=usa_app.id_perfil AND usa_app.id_pessoa=pessoa.id_pessoa AND usa_app.id_app = " + app.getId() + " AND pessoa.email='" + email + "';");
+            
             while (rs.next()) {
-                System.out.println(rs.getString(1));
-                list.add((String) rs.getString(1));
+                Profile p = new Profile(Integer.parseInt(rs.getString(1)), (String)rs.getString(2));
+                list.add(p);
+                System.out.println("---<<<<<<<"+(String)rs.getString(2));
             }
             rs.close();
             statement.close();

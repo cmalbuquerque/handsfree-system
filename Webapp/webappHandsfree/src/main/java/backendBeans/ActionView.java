@@ -37,7 +37,6 @@ public class ActionView implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            System.out.println("SERVICE.GESTOS--> INIT");
             listAction = service.getAction();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GesturesView.class.getName()).log(Level.SEVERE, null, ex);
@@ -68,18 +67,11 @@ public class ActionView implements Serializable {
     public String getNome() {
         String nome = null;
         for (Action action : getListAction()) {
-            System.out.println("COMECAR");
-            System.out.println("ADD: " + action.getNome());
             listed.add(action);
             for (Action done : listed) {
-                System.out.println("SEGUNDO FOR");
                 if (action.getNome() == done.getNome()) {
-                    System.out.println("if");
-                    System.out.println(action);
-                    System.out.println(action.getNome());
                     nome = action.getNome();
-                    System.out.println("NOME: " + nome);
-                    System.out.println("");
+                    
                 }
             }
         }

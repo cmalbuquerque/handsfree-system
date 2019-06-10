@@ -8,8 +8,10 @@ package backendBeans;
 import connectionDB.DataDAO;
 import connectionDB.SessionUtils;
 import entities.App;
+import entities.Profile;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -23,9 +25,9 @@ import javax.servlet.http.HttpSession;
 @ViewScoped
 public class MenuAppBean implements Serializable {
 
-    private List<String> apps;
-
-    private List<String> profilesApp;
+    private String email;
+    
+    private List<App> apps;
 
     private App selectedApp;
 
@@ -35,10 +37,9 @@ public class MenuAppBean implements Serializable {
     public void init() {
         session = SessionUtils.getSession();
         apps = addAppData();
-        //profilesApp = addProfilesOfApp();
     }
 
-    public List<String> getApps() {
+    public List<App> getApps() {
         return apps;
     }
 
@@ -46,36 +47,29 @@ public class MenuAppBean implements Serializable {
         return selectedApp;
     }
 
-    public List<String> getProfilesApp() {
-        return profilesApp;
-    }
-
-    public void setProfilesApp(List<String> profilesApp) {
-        this.profilesApp = profilesApp;
-    }
-
-    public void setSelectedCar(App selectedApp) {
+    public void setSelectedApp(App selectedApp) {
         this.selectedApp = selectedApp;
     }
 
-    public List<String> addAppData() {
-        String email = (String) session.getAttribute("email");
-        return DataDAO.listAppsNames(email);
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public List<String> addProfilesOfApp() {
+    public List<App> addAppData() {
         String email = (String) session.getAttribute("email");
-        return DataDAO.listProfilesOfApp(selectedApp, email);
+        return DataDAO.listApps(email);
     }
 
     public String showGestureCommands() {
         HttpSession session = SessionUtils.getSession();
-        session.setAttribute("app", selectedApp);
+        session.setAttribute("selectedApp", selectedApp);
+        session.setAttribute("email", email);
         return "profiles_gesture.xhtml";
     }
 
     public String showVoiceCommands() {
         HttpSession session = SessionUtils.getSession();
+        session.setAttribute("email", email);
         session.setAttribute("app", selectedApp);
         return "profiles_voice.xhtml";
     }

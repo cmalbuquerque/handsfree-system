@@ -11,7 +11,7 @@
     <h:body style="padding-top: 60px">
         <h:outputScript library="holder" name="holder.js" />
         <!--script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.5.2/holder.min.js"></script-->
-        <b:navBar brand="handsfree" brandHref="#" fixed="top" fluid="true" style="background-color: lightblue;">
+        <b:navBar brand="handsfree" brandHref="home.xhtml" fixed="top" fluid="true" style="background-color: lightblue;">
 
             <b:navbarLinks pull="right">
                 <b:navLink value="Logout" icon="log-out" outcome="/index.xhtml"></b:navLink>
@@ -25,13 +25,15 @@
             <b:row>
                 <b:column col-sm="3" col-md="2" styleClass="sidebar" >
                     <h:form>
-                        <b:accordion p:value="#{menuappbean.profilesApp}" p:var="profiles" expanded-panels="panel1,panel3">
-                            <b:panel id="panel1" title="#{nome}">
+                        <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil">
+                            <p:tab title="#{perfil.nome}">
                                 <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/></b:commandButton>
                                 <br/>
                                 <b:commandButton  look="link" action="#{menuappbean.showVoiceCommands}"><b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/></b:commandButton>
-                            </b:panel>
-                        </b:accordion>  
+
+                            </p:tab>
+                            <br/>
+                        </p:accordionPanel>
 
                     </h:form>
                 </b:column>
@@ -47,14 +49,14 @@
                             <f:facet name="header">
                                 Gestures Panel
                             </f:facet>
-                            
+
                             <!-- dantes gesto.nome -->
                             <p:panel header="#{gesturesview.nome}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
                                     <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.getgestureid()}" value="Change Gesture">
                                         <f:param name="gestureNome" value="#{gesturesview.nome}" />
                                     </p:commandButton>
-                                    
+
                                 </h:panelGrid>
                             </p:panel>
 
@@ -99,7 +101,6 @@
                 border-bottom: 1px solid #eee;
                 padding-bottom: 10px;
             }
-
             .navbar-fixed-top {
                 border: 0 none;
             }
@@ -163,6 +164,3 @@
         </style>
     </h:body>
 </html>
-
-
-

@@ -34,7 +34,7 @@ public class Action implements Serializable {
         return nome;
     }
 
-    public void setId(String nome) {
+    public void setNome(String nome) {
         this.nome = nome;
     }
 

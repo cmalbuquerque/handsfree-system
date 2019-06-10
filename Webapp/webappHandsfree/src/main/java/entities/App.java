@@ -5,6 +5,7 @@
  */
 package entities;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,6 +17,32 @@ public class App {
     private int id;
     
     private String nome;
+    
+    private List<Profile> profiles;
+
+    public App(){}
+    
+    public App(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
+    public App(int id, String nome, List<Profile> profiles) {
+        this.id = id;
+        this.nome = nome;
+        this.profiles = profiles;
+    }
+    
+    
+    
+
+    public List<Profile> getProfiles() {
+        return profiles;
+    }
+
+    public void setProfiles(List<Profile> profiles) {
+        this.profiles = profiles;
+    }
 
     public int getId() {
         return id;
@@ -40,4 +67,11 @@ public class App {
         hash = 53 * hash + Objects.hashCode(this.nome);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "App{" + "id=" + id + ", nome=" + nome + ", profiles=" + profiles + '}';
+    }
+    
+    
 }

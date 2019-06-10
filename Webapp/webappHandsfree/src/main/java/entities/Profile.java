@@ -6,9 +6,6 @@
 package entities;
 
 import java.util.Objects;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  *
@@ -16,18 +13,21 @@ import javax.persistence.Id;
  */
 public class Profile {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     
     private String nome;
 
+    public Profile(){};
+    
+    public Profile(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+    
+    
+
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNome() {
@@ -45,6 +45,13 @@ public class Profile {
         hash = 53 * hash + Objects.hashCode(this.nome);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "Profile{" + "id=" + id + ", nome=" + nome + '}';
+    }
+    
+    
 
     
 }

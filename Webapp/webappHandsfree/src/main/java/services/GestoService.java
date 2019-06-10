@@ -42,20 +42,14 @@ public class GestoService {
 
         try {
             con = DataConnect.getConnection();
-            System.out.println("-----------------------------");
-            System.out.println("GESTOS");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("select * from gesto;");
-            System.out.println("OLA");
             list.clear();
             
             while(rs.next()) { 
-                System.out.println("id: " + rs.getString(1) +" nome: "+ rs.getString(2));
                 Gesto gesto = new Gesto(Integer.parseInt(rs.getString(1)), rs.getString(2));
-                System.out.println(gesto.getNome());
                 list.add(gesto);
-                System.out.println("list_size: " + list.size());
             }
             rs.close();
             statement.close();

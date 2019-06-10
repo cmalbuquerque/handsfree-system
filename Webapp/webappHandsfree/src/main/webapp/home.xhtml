@@ -12,7 +12,7 @@
     <h:body style="padding-top: 60px">
         <h:outputScript library="holder" name="holder.js" />
         <!--script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.5.2/holder.min.js"></script-->
-        <b:navBar brand="handsfree" brandHref="#" fixed="top" fluid="true" style="background-color: lightblue;">
+        <b:navBar brand="handsfree" brandHref="home.xhtml" fixed="top" fluid="true" style="background-color: lightblue;">
 
             <b:navbarLinks pull="right">
                 <b:navLink value="Logout" icon="log-out" outcome="/index.xhtml"></b:navLink>
@@ -25,21 +25,17 @@
             <b:row>
                 <b:column col-sm="3" col-md="2" styleClass="sidebar" >
                     <h:form>
-                        <!--<p:accordionPanel value="#{menuappbean.apps}" var="app">
-                            <p:tab title="app">
-                                <b:navLink value="Show Details" outcome="/profiles_gesture.xhtml" />
-                            </p:tab>
-                        </p:accordionPanel>-->
-
                         <h4>List of Applications</h4>
                         <hr/>
-                        <p:repeat value="#{menuappbean.apps}" var="nome">
+                        <p:repeat value="#{menuappbean.apps}" var="app">
                             <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                                 <p:outputPanel>
                                     <h:panelGrid columns="2" cellpadding="5">
-                                        <b:commandButton look="info" value="App: #{nome}" icon="phone" action="#{menuappbean.showGestureCommands}" />
-                                        <!--<h:outputText value="App: " />
-                                        <h:outputText value="#{nome}" style="font-weight: bold"/>-->
+                                        <b:commandButton look="info" value="App: #{app.nome}" icon="phone" action="#{menuappbean.showGestureCommands}">
+                                            <f:setPropertyActionListener target="#{menuappbean.selectedApp}" value="#{app}" />
+                                            <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
+                                            
+                                        </b:commandButton>
                                     </h:panelGrid>
                                 </p:outputPanel>
                             </h:panelGrid>
