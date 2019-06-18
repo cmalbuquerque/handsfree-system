@@ -105,7 +105,7 @@ public class DataDAO {
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("SELECT voz.id_voz, voz, action.id_action, action.nome FROM action_list,voz,action WHERE action_list.id_action=action.id_action AND action_list.id_voz=voz.id_voz;");
-            //System.out.println(p.getId());            
+                       
             while (rs.next()) {
                 Voice v = new Voice(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
                 v.setAction(new Action(Integer.parseInt(rs.getString(3)), (String) rs.getString(4)));
