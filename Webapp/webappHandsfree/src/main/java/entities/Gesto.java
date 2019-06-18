@@ -45,6 +45,16 @@ public class Gesto implements Serializable {
     public int getId() {
         return id;
     }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
     
     public Action getAction() {
         return action;

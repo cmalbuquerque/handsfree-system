@@ -31,7 +31,6 @@ public class DataDAO {
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("SELECT perfil.nome FROM perfil, pessoa_perfil,pessoa WHERE perfil.id_perfil=pessoa_perfil.id_perfil AND pessoa_perfil.id_pessoa=pessoa.id_pessoa AND pessoa.email='" + email + "';");
             while (rs.next()) {
-                System.out.println(rs.getString(1));
                 list.add((String) rs.getString(1));
             }
             rs.close();
@@ -56,7 +55,6 @@ public class DataDAO {
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("SELECT app.id_app, app.nome FROM app,usa_app,pessoa WHERE app.id_app=usa_app.id_app AND usa_app.id_pessoa=pessoa.id_pessoa AND pessoa.email='" + email + "';");
             while (rs.next()) {
-                System.out.println(rs.getString(1));
                 App app = new App(Integer.parseInt(rs.getString(1)),(String) rs.getString(2));
                 list.add(app);
             }
@@ -85,7 +83,6 @@ public class DataDAO {
             while (rs.next()) {
                 Profile p = new Profile(Integer.parseInt(rs.getString(1)), (String)rs.getString(2));
                 list.add(p);
-                System.out.println("---<<<<<<<"+(String)rs.getString(2));
             }
             rs.close();
             statement.close();
@@ -99,7 +96,7 @@ public class DataDAO {
         return list;
     }
 
-    public static List<Voice> voiceCommands() {
+    public static List<Voice> voiceCommands(Profile p) {
 
         Connection con = null;
         List<Voice> lista = new ArrayList<Voice>();
@@ -108,8 +105,8 @@ public class DataDAO {
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("SELECT voz.id_voz, voz, action.id_action, action.nome FROM action_list,voz,action WHERE action_list.id_action=action.id_action AND action_list.id_voz=voz.id_voz;");
+                        
             while (rs.next()) {
-                System.out.println(rs.getString(1));
                 Voice v = new Voice(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
                 v.setAction(new Action(Integer.parseInt(rs.getString(3)), (String) rs.getString(4)));
                 lista.add(v);

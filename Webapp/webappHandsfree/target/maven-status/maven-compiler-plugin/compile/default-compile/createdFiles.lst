@@ -7,6 +7,7 @@ entities\Profile.class
 generalstuff\Hash.class
 entities\App.class
 connectionDB\DataDAO.class
+backendBeans\ProfilesView.class
 entities\Voice.class
 backendBeans\GesturesView.class
 backendBeans\SignUpBean.class

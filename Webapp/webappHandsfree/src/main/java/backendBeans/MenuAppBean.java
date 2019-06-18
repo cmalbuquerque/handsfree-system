@@ -30,6 +30,8 @@ public class MenuAppBean implements Serializable {
     private List<App> apps;
 
     private App selectedApp;
+    
+    private Profile selectedProfile;
 
     private HttpSession session;
 
@@ -39,6 +41,16 @@ public class MenuAppBean implements Serializable {
         apps = addAppData();
     }
 
+    public Profile getSelectedProfile() {
+        return selectedProfile;
+    }
+
+    public void setSelectedProfile(Profile selectedProfile) {
+        this.selectedProfile = selectedProfile;
+    }
+
+    
+    
     public List<App> getApps() {
         return apps;
     }
@@ -64,6 +76,7 @@ public class MenuAppBean implements Serializable {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("selectedApp", selectedApp);
         session.setAttribute("email", email);
+        session.setAttribute("profile", selectedProfile);
         return "profiles_gesture.xhtml";
     }
 
@@ -71,6 +84,7 @@ public class MenuAppBean implements Serializable {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("email", email);
         session.setAttribute("app", selectedApp);
+        session.setAttribute("profile", selectedProfile);
         return "profiles_voice.xhtml";
     }
 

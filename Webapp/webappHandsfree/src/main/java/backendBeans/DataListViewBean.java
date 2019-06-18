@@ -32,8 +32,6 @@ public class DataListViewBean implements Serializable {
     private List<Voice> voices;
     private Voice selectedVoice;
 
-    private GestoService service;
-
     private HttpSession session;
 
     @PostConstruct
@@ -67,13 +65,13 @@ public class DataListViewBean implements Serializable {
         return profiles;
     }
 
-    public void setSelectedProfile(Profile selectedProfile) {
+    public void setSelectedProfile(Profile selectedProfile) {   
         this.selectedProfile = selectedProfile;
     }
 
     public List<String> addProfileData() {
         String email = (String) session.getAttribute("email");
-        System.out.println("********\n" + email);
+        System.out.println("******** Session " + email);
         return DataDAO.listProfileNames(email);
     }
 
@@ -82,8 +80,9 @@ public class DataListViewBean implements Serializable {
     }
 
     public List<Voice> addVoices() {
-        System.out.println(DataDAO.voiceCommands());
-        return DataDAO.voiceCommands();
+        selectedProfile = (Profile) session.getAttribute("profile");
+        System.out.println(selectedProfile);
+        return DataDAO.voiceCommands(selectedProfile);
     }
 
 }

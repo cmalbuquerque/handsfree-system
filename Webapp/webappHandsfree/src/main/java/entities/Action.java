@@ -38,6 +38,10 @@ public class Action implements Serializable {
         this.nome = nome;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

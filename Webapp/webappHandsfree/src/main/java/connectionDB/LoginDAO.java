@@ -22,15 +22,12 @@ public class LoginDAO {
 
         try {
             con = DataConnect.getConnection();
-            System.out.println("-----------------------------");
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("select * from pessoa where password = crypt('" + pass + "', password);");
             
             while(rs.next()) {
-                System.out.println(rs.getString(3));
                 if(rs.getString(3).equals(email) ){
-                    System.out.print(rs.getString(3) + ":" + rs.getString(4));
                     return true;
                 }  
             }

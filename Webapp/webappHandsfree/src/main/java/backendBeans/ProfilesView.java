@@ -36,7 +36,6 @@ public class ProfilesView implements Serializable {
     @PostConstruct
     public void init() {
         session = SessionUtils.getSession();
-        System.out.println("INIT");
         profilesApp = addProfilesOfApp();
     }
     
@@ -58,10 +57,8 @@ public class ProfilesView implements Serializable {
     }
     
     public List<Profile> addProfilesOfApp() {
-        System.out.println("ENTREI AQUI");
         email = (String) session.getAttribute("email");
         selectedApp = (App) session.getAttribute("selectedApp");
-        System.out.println(email + "" + selectedApp);
         return DataDAO.listProfilesOfApp(selectedApp, email);
     }
 

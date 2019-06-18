@@ -87,7 +87,6 @@ public class SignUpBean implements Serializable {
     public String register() throws ClassNotFoundException {
         id++;
         boolean valid = SignDAO.Sign(fullname, email, password);
-        System.out.println("------- " + valid);
         if (!valid) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Error",
