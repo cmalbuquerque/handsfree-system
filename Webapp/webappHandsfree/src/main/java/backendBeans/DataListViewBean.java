@@ -29,32 +29,12 @@ public class DataListViewBean implements Serializable {
     private List<String> profiles;
     private Profile selectedProfile;
 
-    private List<Voice> voices;
-    private Voice selectedVoice;
-
     private HttpSession session;
 
     @PostConstruct
     public void init() {
         session = SessionUtils.getSession();
         profiles = addProfileData();
-        voices = addVoices();
-    }
-
-    public List<Voice> getVoices() {
-        return voices;
-    }
-
-    public void setVoices(List<Voice> voices) {
-        this.voices = voices;
-    }
-
-    public Voice getSelectedVoice() {
-        return selectedVoice;
-    }
-
-    public void setSelectedVoice(Voice selectedVoice) {
-        this.selectedVoice = selectedVoice;
     }
 
     public Profile getSelectedProfile() {
@@ -77,12 +57,6 @@ public class DataListViewBean implements Serializable {
 
     public List<Gesto> addGestos() throws ClassNotFoundException {
         return GestoService.getGestos();
-    }
-
-    public List<Voice> addVoices() {
-        selectedProfile = (Profile) session.getAttribute("profile");
-        System.out.println(selectedProfile);
-        return DataDAO.voiceCommands(selectedProfile);
     }
 
 }

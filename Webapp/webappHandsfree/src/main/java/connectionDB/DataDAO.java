@@ -82,7 +82,12 @@ public class DataDAO {
             
             while (rs.next()) {
                 Profile p = new Profile(Integer.parseInt(rs.getString(1)), (String)rs.getString(2));
+                System.out.println(p);
                 list.add(p);
+                for(Profile x: list){
+                    System.out.println(x);
+                }
+                return list;
             }
             rs.close();
             statement.close();

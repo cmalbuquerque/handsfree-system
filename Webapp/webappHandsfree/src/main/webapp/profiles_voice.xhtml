@@ -32,7 +32,7 @@
                                 <br/>
                                 <b:commandButton  look="link" action="#{menuappbean.showVoiceCommands}"><b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/>
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
-                                    <f:setPropertyActionListener target="#{dataListView.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
 
@@ -52,7 +52,7 @@
 
                 <h:form id="form">
                     <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
-                        <p:dataTable widgetVar="voicesTable" var="voz" value="#{dataListView.voices}"
+                        <p:dataTable widgetVar="voicesTable" var="voz" value="#{voicesbean.voices}"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="5,10,15">
@@ -67,7 +67,7 @@
 
                             <p:column>
                                 <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" value="Change Voice">
-                                    <f:setPropertyActionListener value="#{voz}" target="#{dataListView.selectedVoice}" />
+                                    <f:setPropertyActionListener value="#{voz}" target="#{voicesbean.selectedVoice}" />
                                 </p:commandButton>
                             </p:column>
 
@@ -75,21 +75,21 @@
 
                         <p:dialog header="Change Voice Commands" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                             <p:outputPanel id="carDetail" style="text-align:center;">
-                                <p:panelGrid  columns="2" rendered="#{not empty dataListView.selectedVoice}" columnClasses="value,value">
+                                <p:panelGrid  columns="2" rendered="#{not empty voicesbean.selectedVoice}" columnClasses="value,value">
 
                                     <h:outputText value="Id" />
-                                    <h:outputText value="#{dataListView.selectedVoice.id}" />
+                                    <h:outputText value="#{voicesbean.selectedVoice.id}" />
 
                                     <h:outputText value="Action" />
-                                    <h:outputText value="#{dataListView.selectedVoice.action.nome}" />
+                                    <h:outputText value="#{voicesbean.selectedVoice.action.nome}" />
 
                                     <h:outputText value="Atual Voice Command" />
-                                    <h:outputText value="#{dataListView.selectedVoice.voice}" />
+                                    <h:outputText value="#{voicesbean.selectedVoice.voice}" />
 
                                     <h:outputText value="New Voice Command " />
                                     <b:selectOneMenu required="true">
                                         <f:selectItem itemLabel="(Please select)" itemValue="" />
-                                        <f:selectItems value="#{dataListView.voices}" var="voz" itemValue="#{voz.voice}" itemLabel="#{voz.voice}" />
+                                        <f:selectItems value="#{voicesbean.voices}" var="voz" itemValue="#{voz.voice}" itemLabel="#{voz.voice}" />
                                     </b:selectOneMenu>
                                 </p:panelGrid>
                                 <br/>
@@ -100,42 +100,6 @@
                     </b:column>
                 </h:form>
 
-
-                <!--<h:form id="form">
-                    <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
-                        <b:dataTable var="voz" value="#{dataListView.voices}">
-                            <b:column style="text-align:center">
-                                <f:facet name="header"><h:outputText value="Voice Command" /></f:facet>
-                                <h:outputText value="#{voz.voice}" />
-                            </b:column>
-
-                            <b:column style="text-align:center">
-                                <f:facet name="header"><h:outputText value="Action" /></f:facet>
-                                <h:outputText value="#{voz.action.nome}" />
-                            </b:column>
-
-                            <b:column style="text-align:center">
-                                <f:facet name="header"><h:outputText value="" /></f:facet>
-                                <p:commandLink update=":form:carDetail" oncomplete="PF('dlg2').show()" value="Change Voice">
-                                    <f:setPropertyActionListener value="#{voz}" target="#{dataListView.selectedVoice}" />
-                                </p:commandLink>
-
-                            </b:column>
-                        </b:dataTable>
-
-
-                        <p:dialog showEffect="fade" hideEffect="fade" header="Change Voice Commands" widgetVar="dlg2" modal="true">
-                            <p:outputPanel id="carDetail" style="text-align:center;">
-                                <h:outputText value="Table is empty!" rendered="#{empty dataListView.selectedVoice}" />
-                                <p:panelGrid  columns="2" rendered="#{not empty dataListView.selectedVoice}" columnClasses="label,value">
-                                    <h:outputText value="Voz: " />
-                                    <h:outputText value="#{dataListView.selectedVoice.id}" />
-                                </p:panelGrid>
-                            </p:outputPanel>
-                        </p:dialog> 
-
-                    </b:column>
-                </h:form> -->
             </b:row>
 
         </b:container> 

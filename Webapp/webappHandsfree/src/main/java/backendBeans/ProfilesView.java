@@ -9,6 +9,7 @@ import connectionDB.DataDAO;
 import connectionDB.SessionUtils;
 import entities.App;
 import entities.Profile;
+import entities.Voice;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -23,23 +24,22 @@ import javax.servlet.http.HttpSession;
 @ManagedBean(name = "profilesbean")
 @ViewScoped
 public class ProfilesView implements Serializable {
-    
+
     private String email;
 
     private App selectedApp;
-    
-    private List<Profile> profilesApp;
 
+    private List<Profile> profilesApp;
+    private Profile selectedProfile;
+    
     private HttpSession session;
 
-    
     @PostConstruct
     public void init() {
         session = SessionUtils.getSession();
         profilesApp = addProfilesOfApp();
     }
-    
-    
+
     public List<Profile> getProfilesApp() {
         return profilesApp;
     }
@@ -55,11 +55,19 @@ public class ProfilesView implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
+    public Profile getSelectedProfile() {
+        return selectedProfile;
+    }
+
+    public void setSelectedProfile(Profile selectedProfile) {
+        this.selectedProfile = selectedProfile;
+    }
+
     public List<Profile> addProfilesOfApp() {
         email = (String) session.getAttribute("email");
         selectedApp = (App) session.getAttribute("selectedApp");
         return DataDAO.listProfilesOfApp(selectedApp, email);
     }
-
+    
 }

@@ -34,7 +34,7 @@
                                 <b:commandButton  look="link" action="#{menuappbean.showVoiceCommands}">
                                     <b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/>
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
-                                    <f:setPropertyActionListener target="#{dataListView.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
 
