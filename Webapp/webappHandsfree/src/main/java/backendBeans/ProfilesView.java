@@ -68,7 +68,6 @@ public class ProfilesView implements Serializable {
     public List<Profile> addProfilesOfApp() {
         email = (String) session.getAttribute("email");
         selectedApp = (App) session.getAttribute("selectedApp");
-        System.out.println(DataDAO.listProfilesOfApp(selectedApp, email));
         return DataDAO.listProfilesOfApp(selectedApp, email);
     }
     

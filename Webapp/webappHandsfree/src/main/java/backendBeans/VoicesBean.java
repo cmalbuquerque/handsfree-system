@@ -9,6 +9,7 @@ import connectionDB.DataDAO;
 import connectionDB.SessionUtils;
 import entities.Profile;
 import entities.Voice;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -27,14 +28,36 @@ public class VoicesBean {
     private HttpSession session;
 
     private List<Voice> voices;
+    private List<Voice> voicesUnsed;
+    private List<Voice> allVoices;
+    
+    
     private Voice selectedVoice;
 
     @PostConstruct
     public void init() {
         session = SessionUtils.getSession();
-        voices=addVoices();
+        voices = addVoices();
+        allVoices = addAllVoices();
+        voicesUnsed = new ArrayList<Voice>();
     }
 
+    public void setAllVoices(List<Voice> allVoices) {
+        this.allVoices = allVoices;
+    }
+
+    public List<Voice> getAllVoices() {
+        return allVoices;
+    }
+    
+    public List<Voice> getVoicesUnsed() {
+        return voicesUnsed;
+    }
+
+    public void setVoicesUnsed(List<Voice> voicesUnsed) {
+        this.voicesUnsed = voicesUnsed;
+    }
+    
     public List<Voice> getVoices() {
         return voices;
     }
@@ -53,8 +76,19 @@ public class VoicesBean {
    
     public List<Voice> addVoices() {
         Profile selectedProfile = (Profile) session.getAttribute("profile");
-        System.out.println(selectedProfile.getId());
         return DataDAO.voiceCommands(selectedProfile);
+    }
+    
+    public List<Voice> addAllVoices() {
+        return DataDAO.getAllVoices();
+    }
+    
+    public List<Voice> addVoicesUnsed() {
+        for(Voice v : allVoices){
+            if(!voices.contains(v))
+                voicesUnsed.add(v);
+        }
+        return voicesUnsed;
     }
 
 }

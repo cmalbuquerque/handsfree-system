@@ -69,7 +69,6 @@ public class MenuAppBean implements Serializable {
 
     public List<App> addAppData() {
         String email = (String) session.getAttribute("email");
-        System.out.println(DataDAO.listApps(email));
         return DataDAO.listApps(email);
     }
 

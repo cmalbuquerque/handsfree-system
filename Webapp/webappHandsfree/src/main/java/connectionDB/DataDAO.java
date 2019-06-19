@@ -55,7 +55,7 @@ public class DataDAO {
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("SELECT DISTINCT app.id_app, app.nome FROM app,usa_app,pessoa WHERE app.id_app=usa_app.id_app AND usa_app.id_pessoa=pessoa.id_pessoa AND pessoa.email='" + email + "';");
             while (rs.next()) {
-                App app = new App(Integer.parseInt(rs.getString(1)),(String) rs.getString(2));
+                App app = new App(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
                 list.add(app);
             }
             rs.close();
@@ -79,10 +79,9 @@ public class DataDAO {
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("SELECT perfil.id_perfil, perfil.nome FROM usa_app,perfil,pessoa WHERE perfil.id_perfil=usa_app.id_perfil AND usa_app.id_pessoa=pessoa.id_pessoa AND usa_app.id_app = " + app.getId() + " AND pessoa.email='" + email + "';");
-            
+
             while (rs.next()) {
-                Profile p = new Profile(Integer.parseInt(rs.getString(1)), (String)rs.getString(2));
-                System.out.println(p);
+                Profile p = new Profile(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
                 list.add(p);
             }
             rs.close();
@@ -105,8 +104,33 @@ public class DataDAO {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT voz.id_voz, voz, action.id_action, action.nome from perfil_action_list, action_list, voz, action WHERE action.id_action=action_list.id_action AND voz.id_voz=action_list.id_voz AND action_list.id_action_list=perfil_action_list.id_action_list AND perfil_action_list.id_perfil="+p.getId()+";");
-            //System.out.println(p.getId());            
+            ResultSet rs = statement.executeQuery("SELECT voz.id_voz, voz, action.id_action, action.nome from perfil_action_list, action_list, voz, action WHERE action.id_action=action_list.id_action AND voz.id_voz=action_list.id_voz AND action_list.id_action_list=perfil_action_list.id_action_list AND perfil_action_list.id_perfil=" + p.getId() + ";");
+            while (rs.next()) {
+                Voice v = new Voice(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
+                v.setAction(new Action(Integer.parseInt(rs.getString(3)), (String) rs.getString(4)));
+                lista.add(v);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Search error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DataConnect.close(con);
+        }
+        return lista;
+    }
+
+    public static List<Voice> getAllVoices() {
+
+        Connection con = null;
+        List<Voice> lista = new ArrayList<Voice>();
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT voz.id_voz, voz.voz, action.id_action, action.nome from voz,action_list,action WHERE action.id_action = action_list.id_action AND action_list.id_voz=voz.id_voz;");
             while (rs.next()) {
                 Voice v = new Voice(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
                 v.setAction(new Action(Integer.parseInt(rs.getString(3)), (String) rs.getString(4)));

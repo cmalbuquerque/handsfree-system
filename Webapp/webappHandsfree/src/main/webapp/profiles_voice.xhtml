@@ -89,7 +89,7 @@
                                     <h:outputText value="New Voice Command " />
                                     <b:selectOneMenu required="true">
                                         <f:selectItem itemLabel="(Please select)" itemValue="" />
-                                        <f:selectItems value="#{voicesbean.voices}" var="voz" itemValue="#{voz.voice}" itemLabel="#{voz.voice}" />
+                                        <f:selectItems value="${voicesbean.addVoicesUnsed()}" var="voz" itemValue="#{voz.voice}" itemLabel="#{voz.voice}" />
                                     </b:selectOneMenu>
                                 </p:panelGrid>
                                 <br/>
