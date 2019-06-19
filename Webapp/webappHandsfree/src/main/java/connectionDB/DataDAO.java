@@ -84,10 +84,6 @@ public class DataDAO {
                 Profile p = new Profile(Integer.parseInt(rs.getString(1)), (String)rs.getString(2));
                 System.out.println(p);
                 list.add(p);
-                for(Profile x: list){
-                    System.out.println(x);
-                }
-                return list;
             }
             rs.close();
             statement.close();
@@ -109,7 +105,7 @@ public class DataDAO {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT voz.id_voz, voz, action.id_action, action.nome FROM action_list,voz,action WHERE action_list.id_action=action.id_action AND action_list.id_voz=voz.id_voz;");
+            ResultSet rs = statement.executeQuery("SELECT voz.id_voz, voz, action.id_action, action.nome from perfil_action_list, action_list, voz, action WHERE action.id_action=action_list.id_action AND voz.id_voz=action_list.id_voz AND action_list.id_action_list=perfil_action_list.id_action_list AND perfil_action_list.id_perfil="+p.getId()+";");
             //System.out.println(p.getId());            
             while (rs.next()) {
                 Voice v = new Voice(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));

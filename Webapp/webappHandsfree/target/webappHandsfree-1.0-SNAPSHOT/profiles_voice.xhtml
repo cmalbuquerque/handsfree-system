@@ -22,7 +22,7 @@
         </b:navBar>
         <b:container fluid="true">
             <b:row>
-                <b:column col-sm="3" col-md="2" styleClass="sidebar" >
+                <b:column col-sm="4" col-md="3" styleClass="sidebar" >
                     <h:form>
                         <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil">
                             <p:tab title="#{perfil.nome}">
@@ -51,7 +51,7 @@
 
 
                 <h:form id="form">
-                    <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
+                    <b:column col-sm="8" offset-sm="4" col-md="9" offset="3" styleClass="main">
                         <p:dataTable widgetVar="voicesTable" var="voz" value="#{voicesbean.voices}"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

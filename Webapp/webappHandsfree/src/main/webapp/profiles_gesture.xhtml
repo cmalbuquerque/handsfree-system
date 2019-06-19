@@ -23,7 +23,7 @@
         <b:container fluid="true">
             <!-- Menu lateral  -->
             <b:row>
-                <b:column col-sm="3" col-md="2" styleClass="sidebar" >
+                <b:column col-sm="4" col-md="3" styleClass="sidebar" >
                     <h:form>
                         <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil">
                             <p:tab title="#{perfil.nome}">
@@ -47,7 +47,7 @@
 
                 <!-- DataGrid  -->
                 <b:form id="form">
-                    <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
+                    <b:column col-sm="8" offset-sm="4" col-md="9" offset="3" styleClass="main">
                         <p:dataGrid var="gestures" value="#{gesturesview.listGesto}" columns="3" layout="grid"
                                     rows="12" paginator="true" id="gestures"
                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
