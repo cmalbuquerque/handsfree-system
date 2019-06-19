@@ -53,7 +53,7 @@ public class DataDAO {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT app.id_app, app.nome FROM app,usa_app,pessoa WHERE app.id_app=usa_app.id_app AND usa_app.id_pessoa=pessoa.id_pessoa AND pessoa.email='" + email + "';");
+            ResultSet rs = statement.executeQuery("SELECT DISTINCT app.id_app, app.nome FROM app,usa_app,pessoa WHERE app.id_app=usa_app.id_app AND usa_app.id_pessoa=pessoa.id_pessoa AND pessoa.email='" + email + "';");
             while (rs.next()) {
                 App app = new App(Integer.parseInt(rs.getString(1)),(String) rs.getString(2));
                 list.add(app);
