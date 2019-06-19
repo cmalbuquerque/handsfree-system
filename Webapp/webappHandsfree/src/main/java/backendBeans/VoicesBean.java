@@ -33,6 +33,7 @@ public class VoicesBean {
     
     
     private Voice selectedVoice;
+    private Voice newVoice;
 
     @PostConstruct
     public void init() {
@@ -42,6 +43,14 @@ public class VoicesBean {
         voicesUnsed = new ArrayList<Voice>();
     }
 
+    public Voice getNewVoice() {
+        return newVoice;
+    }
+
+    public void setNewVoice(Voice newVoice) {
+        this.newVoice = newVoice;
+    }
+    
     public void setAllVoices(List<Voice> allVoices) {
         this.allVoices = allVoices;
     }
@@ -89,6 +98,18 @@ public class VoicesBean {
                 voicesUnsed.add(v);
         }
         return voicesUnsed;
+    }
+    
+    
+    public void updateVoiceCommands(){
+        System.out.println("SELECTED: " + selectedVoice.getAction() + "\nNEW:" +  newVoice);
+        //DataDAO.updateVoiceCommands(selectedVoice.getAction().getId(), newVoice.getId());
+        refresh();
+    }
+    
+    
+    public String refresh(){
+        return "profiles_voice.xhtml";
     }
 
 }

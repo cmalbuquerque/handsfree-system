@@ -11,6 +11,7 @@ import entities.Gesto;
 import entities.Profile;
 import entities.Voice;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -146,6 +147,50 @@ public class DataDAO {
             DataConnect.close(con);
         }
         return lista;
+    }
+
+    public static void updateVoiceCommands(int selectedVoice, int newVoice) {
+        Connection con = null;
+        
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            
+            String querySel = "SELECT * from voz,action_list WHERE action_list.id_voz="+selectedVoice+";";
+            ResultSet rs = statement.executeQuery(querySel);
+            int id_action_list_old=0;
+            while ( rs.next() ) {
+                id_action_list_old = rs.getInt("id_action_list");
+            }
+            
+            querySel = "SELECT * from voz,action_list WHERE action_list.id_voz="+newVoice+";";
+            rs = statement.executeQuery(querySel);
+            int id_action_list_new=0;
+            while ( rs.next() ) {
+                id_action_list_new = rs.getInt("id_action_list");
+            }
+            rs.close();
+            
+            String query = "UPDATE action_list SET id_action=10 WHETE id_voz="+selectedVoice+";";
+            statement.executeUpdate(query);
+            query="UPDATE action_list SET id_action =" + selectedVoice + " WHERE id_voz = " + newVoice + ";";
+            statement.executeUpdate(query);
+            
+            query="INSERT INTO perfil_action_list(id_perfil,id_action_list) VALUES(1,"+id_action_list_new+");";
+            statement.executeUpdate(query);
+            
+            query="DELETE FROM perfil_action_list WHERE id_perfil=1 AND id_action_list="+id_action_list_old+");";
+            statement.executeUpdate(query);
+            
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DataConnect.close(con);
+        }
     }
 
 }

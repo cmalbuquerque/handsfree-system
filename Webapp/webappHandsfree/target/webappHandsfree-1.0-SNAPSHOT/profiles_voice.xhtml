@@ -52,20 +52,25 @@
 
                 <h:form id="form">
                     <b:column col-sm="8" offset-sm="4" col-md="9" offset="3" styleClass="main">
+                        
+                        <h1>Voice Commands Management</h1>
+                        <hr/>
+                        
                         <p:dataTable widgetVar="voicesTable" var="voz" value="#{voicesbean.voices}"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="5,10,15">
 
                             <p:column filterMatchMode="exact" headerText="Voice Command">
-                                <h:outputText value="#{voz.voice}" />
+                                <img src="resources/images/sound-waves.png" alt=""/>&nbsp;&nbsp;
+                                <h:outputText style="" value="#{voz.voice}" />
                             </p:column>
 
-                            <p:column headerText="Action">
+                            <p:column headerText="Action" style="text-align: center;">
                                 <h:outputText value="#{voz.action.nome}" />
                             </p:column>
 
-                            <p:column>
+                            <p:column style="text-align: center;">
                                 <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" value="Change Voice">
                                     <f:setPropertyActionListener value="#{voz}" target="#{voicesbean.selectedVoice}" />
                                 </p:commandButton>
@@ -87,13 +92,14 @@
                                     <h:outputText value="#{voicesbean.selectedVoice.voice}" />
 
                                     <h:outputText value="New Voice Command " />
-                                    <b:selectOneMenu required="true">
+                                    <b:selectOneMenu value="#{voicesbean.newVoice}" required="true">
                                         <f:selectItem itemLabel="(Please select)" itemValue="" />
-                                        <f:selectItems value="${voicesbean.addVoicesUnsed()}" var="voz" itemValue="#{voz.voice}" itemLabel="#{voz.voice}" />
+                                        <f:selectItems value="${voicesbean.addVoicesUnsed()}" var="voz" itemValue="#{voz}" itemLabel="#{voz.voice}" />
                                     </b:selectOneMenu>
                                 </p:panelGrid>
                                 <br/>
-                                <b:commandButton icon="ok" value="Save Changes" look="info" ></b:commandButton>
+                                <b:commandButton action="${voicesbean.updateVoiceCommands()}" icon="ok" value="Save Changes" look="info" > 
+                                </b:commandButton>
 
                             </p:outputPanel>
                         </p:dialog>
