@@ -22,17 +22,18 @@ import java.util.logging.Logger;
 
 public class DataDAO {
 
-    public static List<String> listProfileNames(String email) {
+    public static List<Profile> listProfiles(String email) {
 
         Connection con = null;
-        List<String> list = new ArrayList<String>();
+        List<Profile> list = new ArrayList<Profile>();
         try {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT perfil.nome FROM perfil, pessoa_perfil,pessoa WHERE perfil.id_perfil=pessoa_perfil.id_perfil AND pessoa_perfil.id_pessoa=pessoa.id_pessoa AND pessoa.email='" + email + "';");
+            ResultSet rs = statement.executeQuery("SELECT perfil.id_perfil, perfil.nome FROM perfil, pessoa_perfil,pessoa WHERE perfil.id_perfil=pessoa_perfil.id_perfil AND pessoa_perfil.id_pessoa=pessoa.id_pessoa AND pessoa.email='" + email + "';");
             while (rs.next()) {
-                list.add((String) rs.getString(1));
+                Profile p = new Profile(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
+                list.add(p);
             }
             rs.close();
             statement.close();

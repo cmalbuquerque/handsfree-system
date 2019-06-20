@@ -26,7 +26,7 @@ import services.GestoService;
 @ViewScoped
 public class DataListViewBean implements Serializable {
 
-    private List<String> profiles;
+    private List<Profile> profiles;
     private Profile selectedProfile;
 
     private HttpSession session;
@@ -41,18 +41,22 @@ public class DataListViewBean implements Serializable {
         return selectedProfile;
     }
 
-    public List<String> getProfiles() {
+    public List<Profile> getProfiles() {
         return profiles;
     }
 
+    public void setProfiles(List<Profile> profiles) {
+        this.profiles = profiles;
+    }
+    
     public void setSelectedProfile(Profile selectedProfile) {   
         this.selectedProfile = selectedProfile;
     }
 
-    public List<String> addProfileData() {
+    public List<Profile> addProfileData() {
         String email = (String) session.getAttribute("email");
         System.out.println("******** Session " + email);
-        return DataDAO.listProfileNames(email);
+        return DataDAO.listProfiles(email);
     }
 
     public List<Gesto> addGestos() throws ClassNotFoundException {

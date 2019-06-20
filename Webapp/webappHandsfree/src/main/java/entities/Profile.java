@@ -5,6 +5,7 @@
  */
 package entities;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -17,6 +18,7 @@ public class Profile {
     
     private String nome;
     
+    private List<ActionList> actionList;
     
 
     public Profile(){};
@@ -25,9 +27,15 @@ public class Profile {
         this.id = id;
         this.nome = nome;
     }
-    
-    
 
+    public List<ActionList> getActionList() {
+        return actionList;
+    }
+
+    public void setActionList(List<ActionList> actionList) {
+        this.actionList = actionList;
+    }
+    
     public int getId() {
         return id;
     }

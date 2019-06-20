@@ -1,6 +1,7 @@
 entities\Action.class
 backendBeans\ChangeGestureBean.class
 connectionDB\SessionUtils.class
+backendBeans\VoicesBean.class
 services\ActionService.class
 backendBeans\DataListViewBean.class
 entities\Profile.class
