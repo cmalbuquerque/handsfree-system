@@ -66,13 +66,6 @@ public class GesturesView implements Serializable {
         return listed;
     }
 
-    /*
-    public String getNome() {
-        return service.getGestoNome();
-    }   
-     */
-    //se for diferente no if, adicionar depois do if. os que vem a seguir sao diferentes
-    //se for igual, eliminar no fim.
     public String getNome() {
     
         String nome = null;
@@ -100,48 +93,4 @@ public class GesturesView implements Serializable {
         this.gesto = gesto;
     }
 
-    /*
-    public String display() {
-        String nome = "";
-
-        for (Gesto gesto : listGesto) {
-            System.out.println("name: " + gesto.getNome());
-            System.out.println("" + gesto.getId() + ". " + gesto.getNome());
-            nome += "\r\n ID:" + gesto.getId() + ". " + "Nome: " + gesto.getNome();
-        }
-
-        return nome;
-    }
-     */
-    
-
-
-    //string = ""
-      //      string += cena de fazer paragrao mais valor
-
-    /*
-    String text = new String("<li>"+ name +"</li>");
-    String htmlText = new String("<html><font color='red'>" + text + "</font></html>");
-    JTextPane jTextPane =new JTextPane ();
-    jTextPane.setContentType("text/html");
-    jTextPane.setText(htmlText);
-     */
-    
-    /*
-    public String outro() {
-        int size = getNumberGestures();
-        System.out.println("SIZE: " + size);
-        String nome = null;
-
-        for (int i = 0; i < size; i++) {
-            for (Gesto gesto : listGesto) {
-                System.out.println("name: " + gesto.getNome());
-                System.out.println("" + i + ". " + gesto.getNome());
-                nome = "" + i + ". " + gesto.getNome();
-                return nome;
-            }
-        }
-        return nome;
-    }
-     */
 }
