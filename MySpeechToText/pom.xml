@@ -70,7 +70,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>main.java.com.goxr3plus.sphinx5mavenexample.application.Main</mainClass>
+                            <mainClass>speechToText.MainSpeech</mainClass>
                             <classpathPrefix>Sphinx5_Maven_Example_lib/</classpathPrefix>
                         </manifest>
                     </archive>
