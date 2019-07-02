@@ -1,0 +1,10 @@
+ #JSGF V1.0;
+
+/**
+ * JSGF Grammar 
+ */
+
+grammar grammar;
+
+public <feelings>  = (help) ( Alfred |refresh |hands free | full screen | show menu | show info);
+
