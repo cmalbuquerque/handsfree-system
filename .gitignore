@@ -9,3 +9,4 @@ nbdist/
 .nb-gradle/
 /mySpeetch2Text/target/
 /MySpeechToText/target/
+/DesktopApp/target/

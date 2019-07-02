@@ -16,7 +16,7 @@ import  java.awt.Toolkit;
 import static java.awt.event.KeyEvent.VK_F11;
 /**
  *
- * @author Andreia Patrocínio
+ * @author Andreia Patrocï¿½nio
  */
 public class Keyboard {
     public static final int FIVE_SECONDS = 5000;
@@ -24,13 +24,13 @@ public class Keyboard {
     public static final int MAX_X = 400;
     private static  Robot robot;
 
-    public static void main(String[] args) throws Exception {
-        Keyboard keyboard= new Keyboard();
-        
-        int keyF5 = VK_F5;
-        int keyF11 = VK_F11;
-        keyPress(keyF5);   
-    }
+    //public static void main(String[] args) throws Exception {
+//        Keyboard keyboard= new Keyboard();
+//        
+//        int keyF5 = VK_F5;
+//        int keyF11 = VK_F11;
+//        keyPress(keyF5);   
+//    }
     
     public Keyboard(){
         try{
