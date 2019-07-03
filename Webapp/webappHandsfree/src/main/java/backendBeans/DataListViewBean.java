@@ -28,6 +28,7 @@ public class DataListViewBean implements Serializable {
 
     private List<Profile> profiles;
     private Profile selectedProfile;
+    
 
     private HttpSession session;
 

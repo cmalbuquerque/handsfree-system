@@ -71,9 +71,9 @@
                             </p:column>
 
                             <p:column style="text-align: center;">
-                                <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" value="Change Voice">
+                                <b:commandButton look="info" update=":form:carDetail" oncomplete="PF('carDialog').show()" value="Change Voice" icon="transfer">
                                     <f:setPropertyActionListener value="#{voz}" target="#{voicesbean.selectedVoice}" />
-                                </p:commandButton>
+                                </b:commandButton>
                             </p:column>
 
                         </p:dataTable>
