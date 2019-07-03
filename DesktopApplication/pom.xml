@@ -14,7 +14,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!--mainClass>com.mycompany.desktopapplication.MainApp</mainClass-->
-        <mainClass>Speech2Text.SpeechRecognition</mainClass>
+        <!--<mainClass>UserInterface.MainApp</mainClass>-->
+        <mainClass>appBackend.Creator</mainClass>
 
     </properties>
 
@@ -186,6 +187,32 @@
             <artifactId>sphinx4-data</artifactId>
             <version>5prealpha-SNAPSHOT</version>
         </dependency>
+        <!--         https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server-standalone 
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server-standalone</artifactId>
+            <version>3.141.59</version>
+        </dependency>-->
+        
+        
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>3.141.59</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>3.141.59</version>
+            <type>jar</type>
+        </dependency>
+<!--        <dependency>
+            <groupId>nz.ac.waikato.cms.weka</groupId>
+            <artifactId>weka-stable</artifactId>
+            <version>3.8.3</version>
+        </dependency>-->
+
     </dependencies>
 
 </project>

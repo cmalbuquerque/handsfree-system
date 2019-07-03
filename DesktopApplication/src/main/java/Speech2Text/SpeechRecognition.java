@@ -230,7 +230,9 @@ public class SpeechRecognition {
 	 * @param speechWords
 	 */
 	public void makeDecision(String speech , List<WordResult> speechWords) {
-		
+		for (WordResult wordResult: speechWords){
+                    System.out.println("RRRRR - " + wordResult.toString());
+                }
 		System.out.println(speech);
 		
 	}
