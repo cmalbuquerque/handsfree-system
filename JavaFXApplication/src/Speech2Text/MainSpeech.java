@@ -19,7 +19,7 @@ import static java.awt.event.KeyEvent.VK_F5;
 
 import keyboarEmulator.Keyboard;
 
-public class MainSpeechAppProj extends Thread{
+public class MainSpeech extends Thread{
 
     Keyboard keyboardEmulator;
     // Necessary
@@ -65,7 +65,7 @@ public class MainSpeechAppProj extends Thread{
     /**
      * Constructor
      */
-    public MainSpeechAppProj() {
+    public MainSpeech() {
         keyboardEmulator = new Keyboard();
         // Loading Message
         logger.log(Level.INFO, "Loading Speech Recognizer...\n");
@@ -82,15 +82,15 @@ public class MainSpeechAppProj extends Thread{
         //Uncomment this line of code if you want the recognizer to recognize every word of the language 
         //you are using , here it is English for example	
         //====================================================================================
-        configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+//        configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
         //====================================================================================
         //=====================READ THIS!!!===============================================
         //If you don't want to use a grammar file comment below 3 lines and uncomment the above line for language model	
         //====================================================================================
         // Grammar
-//        configuration.setGrammarPath("resource:/grammars");
-//        configuration.setGrammarName("grammar");
-//        configuration.setUseGrammar(true);
+        configuration.setGrammarPath("resources/grammars");
+        configuration.setGrammarName("grammar");
+        configuration.setUseGrammar(true);
 
         try {
             recognizer = new LiveSpeechRecognizer(configuration);
@@ -260,12 +260,4 @@ public class MainSpeechAppProj extends Thread{
         return speechRecognizerThreadRunning;
     }
 
-    /**
-     * DesktopMain Method
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        new MainSpeechAppProj();
-    }
 }
