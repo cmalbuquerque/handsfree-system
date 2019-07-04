@@ -24,21 +24,34 @@
         <name>Your Organisation</name>
     </organization>
 
-    <build>
+<!--    <build>
         <resources>
             <resource>
                 <directory>resources</directory>
             </resource>
         </resources>
         <plugins>
-            <!-- done -->
+             done 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.0.2</version>
                 <executions>
                     <execution>
                         <id>unpack-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <excludeScope>system</excludeScope>
+                            <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds>
+                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                        </configuration>
+                    </execution>
+                    
+                    <execution>
+                        <id>unpack-dependencies-leap</id>
                         <phase>jar</phase>
                         <goals>
                             <goal>unpack-dependencies</goal>
@@ -49,6 +62,10 @@
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
                     </execution>
+                    
+                    
+                    
+                    
                 </executions>
             </plugin>
             
@@ -102,7 +119,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <!--mainClass>main.java.com.goxr3plus.sphinx5mavenexample.application.Main</mainClass-->
+                            mainClass>main.java.com.goxr3plus.sphinx5mavenexample.application.Main</mainClass
                             <classpathPrefix>Sphinx5_Maven_Example_lib/</classpathPrefix>
                         </manifest>
                     </archive>
@@ -111,7 +128,7 @@
             
             
                     
-            <!-- done -->              
+             done               
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -139,7 +156,7 @@
             
             
             
-            <!--done -->
+            done 
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.0</version>
@@ -150,7 +167,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>unpack-dependencies</id>
+                        <id>create-archive</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -160,7 +177,7 @@
             </plugin>
             
         </plugins>
-    </build>
+    </build>-->
     
     
     <repositories>
@@ -174,7 +191,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-        
     </repositories>
 
     <dependencies>
@@ -208,11 +224,23 @@
             <version>3.141.59</version>
             <type>jar</type>
         </dependency>
+        <!--        <dependency>
+            <groupId>nz.ac.waikato.cms.weka</groupId>
+            <artifactId>weka-stable</artifactId>
+            <version>3.8.3</version>
+        </dependency>-->
+        
         <dependency>
             <groupId>nz.ac.waikato.cms.weka</groupId>
             <artifactId>weka-stable</artifactId>
             <version>3.8.3</version>
             <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.fommil.netlib</groupId>
+                    <artifactId>all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -222,6 +250,7 @@
             <scope>compile</scope>
             <type>jar</type>
         </dependency>
+
     </dependencies>
 
 </project>
