@@ -23,12 +23,11 @@ public class ChromeController extends Thread {
     }
 
     public void openChrome() {
-        //System.setProperty("webdriver.chrome.driver", "D:\\UA\\Ano4\\PI\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver","chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("user-data-dir=C:/Users/DiogoFerreira/AppData/Local/Google/Chrome/User Data");
+        options.addArguments("user-data-dir=C:\\Users\\Andreia Patrocínio\\AppData\\Roaming\\Google\\Chrome\\User Data");
         options.addArguments("--start-maximized");
         driver = new ChromeDriver(options);
-        //driver = new ChromeDriver();
 
         driver.get("http://demo.dicoogle.com/tmg/dwsp/?seriesuid=2.25.40455800108579103101520589961762595191&studyuid=2.25.190719096823403736819300823791323488560&fbclid=IwAR0l77370gBkowE8iEuMfXP2hVXtekJ8Ogwdzu_KkrYcweXPBx5P8uEUjDU");
 
