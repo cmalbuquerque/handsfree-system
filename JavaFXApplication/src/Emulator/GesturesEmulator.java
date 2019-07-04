@@ -32,7 +32,7 @@ public class GesturesEmulator {
         }catch(AWTException e){
             System.out.println("Erro");
         }
-        MouseMover mouseMover= new MouseMover();
+        //GesturesEmulator gesturesEmulator= new GesturesEmulator();
         //        mouseMover.centerMouse();
         //        mouseMover.getPointerInfo();
         

@@ -25,7 +25,9 @@ public class ChromeController extends Thread {
     public void openChrome() {
         System.setProperty("webdriver.chrome.driver","chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("user-data-dir=C:\\Users\\Andreia Patrocínio\\AppData\\Roaming\\Google\\Chrome\\User Data");
+        //options.addArguments("user-data-dir=C:\\Users\\Andreia Patrocínio\\AppData\\Roaming\\Google\\Chrome\\User Data");
+        options.addArguments("user-data-dir=C:/Users/DiogoFerreira/AppData/Local/Google/Chrome/User Data");
+        
         options.addArguments("--start-maximized");
         driver = new ChromeDriver(options);
 
