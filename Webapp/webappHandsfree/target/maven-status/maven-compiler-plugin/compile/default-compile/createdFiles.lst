@@ -22,4 +22,5 @@ backendBeans\AuthenticationBean.class
 entities\Pessoa.class
 backendBeans\MenuAppBean.class
 connectionDB\LoginDAO.class
+backendBeans\AddRowView.class
 backendBeans\ActionView.class

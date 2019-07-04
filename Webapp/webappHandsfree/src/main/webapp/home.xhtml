@@ -31,7 +31,7 @@
                             <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                                 <p:outputPanel>
                                     <h:panelGrid columns="2" cellpadding="5">
-                                        <b:commandButton look="info" value="App: #{app.nome}" icon="phone" action="#{menuappbean.showGestureCommands}">
+                                        <b:commandButton look="info" value="App: #{app.nome}" icon="phone" action="#{menuappbean.showGestureCommands()}">
                                             <f:setPropertyActionListener target="#{menuappbean.selectedApp}" value="#{app}" />
                                             <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
 
@@ -89,6 +89,7 @@
                                 </f:facet>
                             </p:carousel>
                             <p:commandButton style="position:absolute;" oncomplete="PF('criarPerfilDialog').show()" value="Add Profile" icon="plus"/>
+                            <br/>
 
                             <p:dialog header="Create a New Profile" widgetVar="criarPerfilDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                                 <b:form horizontal="true">
@@ -127,23 +128,24 @@
                             <p:dialog header="Select Voice Commands" widgetVar="actionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
 
                                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
-                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
-                                        <p:outputLabel for="actions" value="Actions:" />
-                                        <p:selectOneListbox id="actions" value="#{dtAddRowView.selectedAction}" var="a" filter="true" filterMatchMode="contains">
-                                            <f:selectItems value="#{dtAddRowView.actions}" var="action" itemLabel="#{action}" itemValue="#{action}" />
-                                            <p:column>
-                                                <h:outputText value="#{a.nome}" />
-                                            </p:column>
+                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="8" columnClasses="value, value">
+                                        <p:outputLabel for="selectListBox" value="Actions:" />
+                                        
+
+                                        <p:selectOneListbox id="selectListBox" valueChangeListener="#{dtAddRowView.selectedAction}" filter="true" filterMatchMode="contains">
+                                            <f:selectItems value="#{dtAddRowView.actions}" var="user" 
+                                                           itemLabel="#{user.nome}" itemValue="#{user}" />
                                         </p:selectOneListbox>
+                                        
 
                                     </h:panelGrid>
 
                                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
                                         <p:outputLabel for="voices" value="Voices:" />
-                                        <p:selectManyMenu id="voices" value="#{dtAddRowView.selectedVoices}" var="v" filter="true" filterMatchMode="contains" showCheckbox="true">                                                          var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
-                                            <f:selectItems value="#{dtAddRowView.allVoices}" var="voice" itemLabel="#{voice}" itemValue="#{voice}" />
+                                        <p:selectManyMenu  id="voices" value="#{dtAddRowView.selectedVoices}" filter="true" filterMatchMode="contains" showCheckbox="true">
+                                            <f:selectItems value="#{dtAddRowView.allVoices}" var="v1" itemLabel="#{v1.voice}" itemValue="#{v1}" />
                                             <p:column>
-                                                <h:outputText value="#{v.voice}" />
+                                                <h:outputText value="#{v1.voice}" />
                                             </p:column>
                                         </p:selectManyMenu>
 
@@ -154,7 +156,7 @@
                                 </h:panelGrid>
 
                                 <p:commandButton value="Add Voices" styleClass="ui-priority-primary" process="@this"
-                                                 action="#{dtAddRowView.onAddNew()}" oncomplete="PF('actionDialog').close();">
+                                                 action="#{dtAddRowView.onAddNew()}">
 
                                 </p:commandButton>
 

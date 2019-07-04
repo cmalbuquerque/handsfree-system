@@ -8,6 +8,7 @@ import connectionDB.DataDAO;
 import entities.Action;
 import entities.ActionList;
 import entities.Voice;
+import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
 /**
  *
@@ -33,6 +37,7 @@ public class AddRowView implements Serializable {
     
     private List<Voice> selectedVoices;
     private List<Voice> allVoices;
+   
  
     /*@ManagedProperty("#{carService}")
     private CarService service;
@@ -65,6 +70,8 @@ public class AddRowView implements Serializable {
     public List<Action> getActions() {
         return actions;
     }
+    
+    
 
     public void setActions(List<Action> actions) {
         this.actions = actions;
@@ -93,9 +100,10 @@ public class AddRowView implements Serializable {
     private List<Voice> getVoices() {
         return DataDAO.getAllVoicesWithoutActions();
     }
-     
+    
     public void onAddNew() throws ClassNotFoundException {
         System.out.println(selectedVoices);
+        System.out.println(selectedAction);
         for(Voice v : selectedVoices){
             DataDAO.insertVoicesActionList(selectedAction.getId(), v.getId());
         }
@@ -105,5 +113,12 @@ public class AddRowView implements Serializable {
         //FacesMessage msg = new FacesMessage("New Car added", car2Add.getId());
         //FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+    
+    public void submitSelections(ActionEvent event){
+        
+        
+        
+    }
+   
      
 }
