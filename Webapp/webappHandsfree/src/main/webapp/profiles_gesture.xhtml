@@ -100,16 +100,23 @@
             </p:dialog> 
 
             <!-- Dialog Popup  -->
-            <p:dialog header="Add Profile to this Application" widgetVar="dlgP" modal="true" width="80%">
+            <p:dialog header="Add Profile to Application" widgetVar="dlgP" modal="true" width="80%">
                 <h:form>
-                    <p:carousel value="#{dataListView.profiles}" headerText="" var="perfil" itemStyle="text-align:center" responsive="true">
+                    <p:carousel value="#{applicationBean.unsedProfilesbyApp}" headerText="Profiles not used on this application" var="perfil" itemStyle="text-align:center" responsive="true">
                         <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
                             <f:facet name="header">
+                                <b:commandButton action="#{applicationBean.addProfile()}" onsuccess="refresh()" size="xs" style="background-color: #2C2F33; border-color: #2C2F33; margin-left: 90%" look="info" icon="plus">
+                                    <f:setPropertyActionListener target="#{applicationBean.profileToAdd}" value="#{perfil}" />
+                                </b:commandButton><br/>
                                 <img src="resources/images/sets.png" alt=""/>
                                 <br/><br/>
                                 <h:outputText style="text-style: bold" value="#{perfil.nome}" />
                                 <br/><br/>
+                                <b:commandButton look="info" value="Show Action List" icon="menu-hamburger">
+                                    
+                                </b:commandButton>
                                 <br/><br/>
+                                
                             </f:facet>
 
                             <!--<h:outputText value="Id:" />
@@ -124,10 +131,6 @@
 
 
                         </p:panelGrid>
-
-                        <f:facet name="footer">
-                            In total there are #{fn:length(dataListView.profiles)} profiles.
-                        </f:facet>
                     </p:carousel>
                 </h:form>
             </p:dialog>

@@ -1,5 +1,6 @@
 entities\Action.class
 backendBeans\ChangeGestureBean.class
+backendBeans\ApplicationBean.class
 backendBeans\VoicesBean.class
 backendBeans\DataListViewBean.class
 generalstuff\Hash.class

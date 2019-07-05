@@ -150,7 +150,7 @@ public class DataDAO {
         }
         return lista;
     }
-    
+
     public static List<Voice> getAllVoicesWithoutActions() {
 
         Connection con = null;
@@ -278,13 +278,13 @@ public class DataDAO {
             con = DataConnect.getConnection();
             //Statement statement = con.createStatement();
             //ResultSet rs = statement.executeQuery("CREATE EXTENSION pgcrypto;");
-            
+
             String insert = "INSERT INTO action_list(id_action,id_voz) VALUES(?,?);";
             PreparedStatement pstmt = con.prepareStatement(insert);
-            
+
             pstmt.setInt(1, selectedAction);
             pstmt.setInt(2, selectedVoice);
-            
+
             pstmt.executeUpdate();
 
         } catch (SQLException ex) {
@@ -292,7 +292,108 @@ public class DataDAO {
         } finally {
             DataConnect.close(con);
         }
-    
+
+    }
+
+    public static List<Profile> getUnsedProfilesOfApp(int appID, String email) {
+
+        Connection con = null;
+        List<Profile> list = new ArrayList<Profile>();
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT;");
+
+            while (rs.next()) {
+                Profile p = new Profile(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
+                list.add(p);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Search error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DataConnect.close(con);
+        }
+        return list;
+
+    }
+
+    public static List<Profile> getAllProfilesUser(String email) {
+        Connection con = null;
+        List<Profile> list = new ArrayList<Profile>();
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT perfil.id_perfil, perfil.nome from pessoa_perfil, pessoa, perfil WHERE pessoa_perfil.id_pessoa=pessoa.id_pessoa AND pessoa_perfil.id_perfil=perfil.id_perfil AND pessoa.email='" + email + "';");
+
+            while (rs.next()) {
+                Profile p = new Profile(Integer.parseInt(rs.getString(1)), (String) rs.getString(2));
+                list.add(p);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Search error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DataConnect.close(con);
+        }
+        return list;
+
+    }
+
+    public static void addProfiletoApp(App selectedApp, Profile profileToAdd, int idUser) throws ClassNotFoundException {
+        Connection con = null;
+
+        try {
+            con = DataConnect.getConnection();
+
+            String insert = "INSERT INTO usa_app(id_pessoa,id_perfil,id_app) VALUES(?,?,?);";
+            PreparedStatement pstmt = con.prepareStatement(insert);
+
+            pstmt.setInt(1, idUser);
+            pstmt.setInt(2, profileToAdd.getId());
+            pstmt.setInt(3, selectedApp.getId());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Insert error -->" + ex.getMessage());
+        } finally {
+
+            DataConnect.close(con);
+        }
+    }
+
+    public static int getUserId(String email) {
+
+        Connection con = null;
+        int id = 0;
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT id_pessoa from pessoa WHERE pessoa.email='"+email+"';");
+
+            while (rs.next()) {
+                id = Integer.parseInt(rs.getString(1));
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Search error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DataConnect.close(con);
+        }
+        return id;
     }
 
 }
