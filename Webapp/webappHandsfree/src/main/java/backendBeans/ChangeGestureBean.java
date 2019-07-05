@@ -34,30 +34,13 @@ public class ChangeGestureBean implements Serializable{
     
     private final static String gesture = "profiles_gesture.xhtml";
     
-    //@ManagedProperty(value = "#{gesto}")
-    //private String nome;
-    
-    //FALTA ESTE
-    //@ManagedProperty(value = "#{action}")
-    //private String action;
-    
     private Gesto gesto;
     
     private static int gesture_id;
     private static int action_id;
-    
-    //OU METER TUDO AQUI DENTO, TIPO ESTAS FUNCOES E CHAMO UMA A UMA OU TUDO DIRETO MAS NAO SEI SE DA
-    
-    //String nome, String action
-    public String change() throws ClassNotFoundException {
-        /*
-        int gesture_id = ChangeGesture.GetGestureID(nome); //primeiro id do gesto a mudar
-        int action_id = ChangeGesture.GetActionID(action);
-        ChangeGesture.Update(gesture_id, action_id);
-        System.out.println("------- ");
-        return gesture;
-         */
 
+    public String change() throws ClassNotFoundException {
+        System.out.println("OLA");
         ChangeGesture.Update(gesture_id, action_id);
         return gesture;
     }
@@ -70,27 +53,12 @@ public class ChangeGestureBean implements Serializable{
         this.gesto = gesto;
     }
 
-    /*
-    public String getNome() {
-        return nome;
-    }
-     */
-    //ver esta parte bem
-    /*
-    @PostConstruct
-    private void init() {
-        gesto = new Gesto();
-    }
-     */
-
     public Integer getgestureid() throws ClassNotFoundException {
         Connection con = null;
-        //System.out.println("GetGestureID + gesto: " + gesto);
         FacesContext fc = FacesContext.getCurrentInstance();
         String gestoNome = getGestoParam(fc);
-        //Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
-        //String gesture = params.get("gestureNome");
-
+        
+        System.out.println("GESTO NOME: "  + gestoNome);
         try {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
@@ -98,7 +66,8 @@ public class ChangeGestureBean implements Serializable{
             ResultSet rs = statement.executeQuery("select id_gesto from gesto where gesto='" + gestoNome + "';");
 
             while (rs.next()) {
-                gesture_id = rs.getInt(1);
+                ChangeGestureBean.gesture_id = rs.getInt(1);
+                System.out.println("GESTURE ID: " + gesture_id);
                 return gesture_id;
             }
             rs.close();
@@ -111,7 +80,6 @@ public class ChangeGestureBean implements Serializable{
         return gesture_id;
     }
 
-    //PELA ACTION QUE VAMOS MUDAR
     public Integer getactionid() throws ClassNotFoundException {
         Connection con = null;
 
@@ -126,7 +94,8 @@ public class ChangeGestureBean implements Serializable{
             ResultSet rs = statement.executeQuery("select id_action from action where nome='" + actionNome + "';");
 
             while (rs.next()) {
-                action_id = rs.getInt(1);
+                ChangeGestureBean.action_id = rs.getInt(1);
+                System.out.println("ACTION ID: " + action_id);
                 Update();
                 return action_id;
             }
@@ -141,13 +110,33 @@ public class ChangeGestureBean implements Serializable{
     }
 
     public void Update() throws ClassNotFoundException {
+        System.out.println("here");
         Connection con = null;
-        int rs = 0;
-         
+
         try {
             con = DataConnect.getConnection();
-            PreparedStatement statement = con.prepareStatement("update action_list set id_action = " + ChangeGestureBean.action_id + " where id_gesto = " + ChangeGestureBean.gesture_id + ";");
-            rs = statement.executeUpdate();
+            
+            //o antigo
+            String id_action_list = "select id_action_list from action_list where id_gesto=" + gesto.getId() + " AND id_action=" + ChangeGestureBean.action_id + " ;";
+            PreparedStatement pstmt2 = con.prepareStatement(id_action_list);
+            int old_id = pstmt2.executeUpdate();
+            System.out.println("PRIMEIRO ID: " + old_id);
+
+            String insert = "insert into action_list(id_gesto,id_action) values(?,?)";
+            PreparedStatement pstmt = con.prepareStatement(insert);
+            pstmt.setInt(1, ChangeGestureBean.gesture_id);
+            pstmt.setInt(2, ChangeGestureBean.action_id);
+            pstmt.executeUpdate();
+
+            String select = "select id_action_list from action_list where id_gesto = " + ChangeGestureBean.action_id + " AND id_action = " + ChangeGestureBean.gesture_id + ";";
+            PreparedStatement pstmt1 = con.prepareStatement(select);
+            pstmt.setInt(1, ChangeGestureBean.gesture_id);
+            pstmt.setInt(2, ChangeGestureBean.action_id);
+            int new_id = pstmt1.executeUpdate();
+
+            String update = "update perfil_action_list set id_gesto = " + ChangeGestureBean.gesture_id + "where id_action_list = " + new_id + ";";
+            PreparedStatement statement = con.prepareStatement(update);
+            statement.executeUpdate();
 
             statement.close();
         } catch (SQLException ex) {
