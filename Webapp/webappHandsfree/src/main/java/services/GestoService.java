@@ -6,6 +6,7 @@
 package services;
 
 import connectionDB.DataConnect;
+import entities.Action;
 import entities.Gesto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,11 +45,13 @@ public class GestoService {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("select * from gesto;");
+            ResultSet rs = statement.executeQuery("select gesto.id_gesto, gesto.gesto, action_list.id_action, action.nome from action_list,gesto,action WHERE action_list.id_gesto=gesto.id_gesto AND action_list.id_action=action.id_action;");
             list.clear();
             
             while(rs.next()) { 
                 Gesto gesto = new Gesto(Integer.parseInt(rs.getString(1)), rs.getString(2));
+                Action a = new Action(Integer.parseInt(rs.getString(3)), rs.getString(4));
+                gesto.setAction(a);
                 list.add(gesto);
             }
             rs.close();
