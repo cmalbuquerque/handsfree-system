@@ -61,10 +61,7 @@
                                         <br/><br/>
                                         <h:outputText style="text-style: bold" value="#{perfil.nome}" />
                                         <br/><br/>
-                                        <b:commandButton look="info" value="Show Action List" update=":first:form:actionDetail" oncomplete="PF('perfilDialog').show()" icon="menu-hamburger">
-                                            <f:setPropertyActionListener value="#{perfil}" target="#{dataListView.selectedProfile}" />
-                                        </b:commandButton>
-                                        <br/><br/>
+                                        
                                         <b:commandButton look="info" value="Customize Profile"  icon="menu-hamburger">
                                             <f:setPropertyActionListener value="#{perfil}" target="#{dataListView.selectedProfile}" />
                                         </b:commandButton>
@@ -88,20 +85,23 @@
                                     In total there are #{fn:length(dataListView.profiles)} profiles.
                                 </f:facet>
                             </p:carousel>
-                            <p:commandButton style="position:absolute;" oncomplete="PF('criarPerfilDialog').show()" value="Add Profile" icon="plus"/>
+                            <p:commandButton style="position:absolute; right: 0; margin-right: 5%" oncomplete="PF('criarPerfilDialog').show()" value="Add Profile" icon="fa fa-plus-square"/>
                             <br/>
 
-                            <p:dialog header="Create a New Profile" widgetVar="criarPerfilDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:dialog height="400" width="900" header="Create a New Profile" widgetVar="criarPerfilDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                                 <b:form horizontal="true">
-                                    <b:inputText placeholder="Profile Name" required="true" label="Profile Name" colMd="7" labelColMd="5">
+                                    <b:inputText placeholder="Profile Name" required="true" label="Profile Name" colMd="10" labelColMd="2">
                                     </b:inputText>
                                 </b:form>
                                 <br/>
                                 <br/>
-
+                                <p:commandButton icon="fa fa-plus" value="Add new action" styleClass="ui-priority-primary" process="@this"
+                                                 oncomplete="PF('actionDialog').show();" style="position:absolute; right: 0; margin-right: 2%"/>
+                                <br></br>
+                                <br></br>
                                 <p:dataTable id="table1" widgetVar="table1" var="actionList" value="#{dtAddRowView.actionsList}" editable="true">
                                     <f:facet name="header">
-                                        Row Editing with add functionality
+                                        New Commands Voice to Add
                                     </f:facet>
 
                                     <p:column headerText="Action">
@@ -119,9 +119,10 @@
                                     </p:column>
 
                                 </p:dataTable>
-
-                                <p:commandButton value="Add new action" styleClass="ui-priority-primary" process="@this"
-                                                 oncomplete="PF('actionDialog').show();"/>
+                                <br></br>
+                                <b:commandButton icon="ok" look="info" value="Create Profile" styleClass="ui-priority-primary" process="@this"
+                                                 oncomplete="PF('actionDialog').show();" style="position:relative; left: 40%;" />
+                                
 
                             </p:dialog>
 
