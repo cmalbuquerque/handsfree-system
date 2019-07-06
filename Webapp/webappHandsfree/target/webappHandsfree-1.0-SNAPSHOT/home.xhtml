@@ -126,43 +126,21 @@
                             </p:dialog>
 
                             <p:dialog header="Select Voice Commands" widgetVar="actionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-
-                                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
-                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="8" columnClasses="value, value">
-                                        <p:outputLabel for="selectListBox" value="Actions:" />
+                                <h:form>
+                                    <p:selectOneListbox id="advanced" value="#{selectOneView.action}" filter="true" filterMatchMode="contains">
+                                        <f:selectItems value="#{selectOneView.actions}" var="theme" itemLabel="#{theme}" itemValue="#{theme}" />
                                         
+                                        <p:column>
+                                            <h:outputText value="#{theme}" />
+                                        </p:column>
+                                    </p:selectOneListbox>
+                                    </h:form>
 
-                                        <p:selectOneListbox id="selectListBox" valueChangeListener="#{dtAddRowView.selectedAction}" filter="true" filterMatchMode="contains">
-                                            <f:selectItems value="#{dtAddRowView.actions}" var="user" 
-                                                           itemLabel="#{user.nome}" itemValue="#{user}" />
-                                        </p:selectOneListbox>
-                                        
-
-                                    </h:panelGrid>
-
-                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
-                                        <p:outputLabel for="voices" value="Voices:" />
-                                        <p:selectManyMenu  id="voices" value="#{dtAddRowView.selectedVoices}" filter="true" filterMatchMode="contains" showCheckbox="true">
-                                            <f:selectItems value="#{dtAddRowView.allVoices}" var="v1" itemLabel="#{v1.voice}" itemValue="#{v1}" />
-                                            <p:column>
-                                                <h:outputText value="#{v1.voice}" />
-                                            </p:column>
-                                        </p:selectManyMenu>
-
-                                    </h:panelGrid>
-
-
-
-                                </h:panelGrid>
-
-                                <p:commandButton value="Add Voices" styleClass="ui-priority-primary" process="@this"
-                                                 action="#{dtAddRowView.onAddNew()}">
-
-                                </p:commandButton>
-
-
-
-
+                                <b:commandButton value="Submit" immediate="true" action="#{selectOneView.print}" update="display" icon="pi pi-check">
+                                   
+                                </b:commandButton>
+                                    <h:outputText id="display" value="Selected: #{selectOneView.action}" />
+                                
                             </p:dialog>
 
                             <p:dialog header="Actions List Info" widgetVar="perfilDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">

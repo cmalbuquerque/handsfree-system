@@ -25,3 +25,4 @@ backendBeans\MenuAppBean.class
 connectionDB\LoginDAO.class
 backendBeans\AddRowView.class
 backendBeans\ActionView.class
+backendBeans\SelectOneView.class

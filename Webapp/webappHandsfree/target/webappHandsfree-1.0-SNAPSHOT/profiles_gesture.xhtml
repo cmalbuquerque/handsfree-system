@@ -38,6 +38,7 @@
                                     <b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/>
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{changegesturebean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
 
@@ -62,13 +63,14 @@
 
                             <!-- dantes gesto.nome -->
                             <p:panel header="Action: #{gestures.action.nome}" style="text-align:center">
-                                <h:panelGrid columns="1" style="width:100%" >
+                                <h:panelGrid columns="1" style="width:100%">
                                     <img src="resources/gestures/#{gestures.id}.gif" alt="" style="width: 60%; height: 20%;"/>
                                     <br/><br/>
                                     <h:outputText value="Gesture: #{gestures.nome}"></h:outputText>
                                     <br/>
                                     <p:commandButton icon="transfer" onclick="PF('dlg2').show();"  action="#{changegesturebean.getgestureid()}" value="Change Gesture">
-                                        <f:param name="gestureNome" value="#{gesturesview.nome}" />
+                                        <f:param name="oldgestureID" value="#{gestures.id}" />
+                                        <f:param name="oldactionID" value="#{gestures.action.id}" />
                                     </p:commandButton>
 
                                 </h:panelGrid>
@@ -81,19 +83,18 @@
             </b:row>
 
             <!-- Dialog Popup  -->
-            <p:dialog header="Modos de Como Realizar o gesto: " widgetVar="dlg2" modal="true" height="150">
+            <p:dialog header="Possible Gestures: " widgetVar="dlg2" modal="true">
                 <!-- DataGrid  -->
                 <b:form id="form1">
                     <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
-                        <p:dataGrid var="gestures" value="#{actionview.listAction}" columns="3" layout="grid"
+                        <p:dataGrid var="gestures" value="#{gesturesview.listAllGesto}" columns="3" layout="grid"
                                     rows="12"  id="action">
 
-
-                            <!-- dantes gesto.nome -->
-                            <p:panel header="#{actionview.nome}" style="text-align:center">
+    
+                            <p:panel header="#{gestures.nome}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-                                    <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.getactionid()}" value="Change Action">
-                                        <f:param name="actionNome" value="#{actionview.nome}" />
+                                    <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.change()}" value="Choose Gesture">
+                                        <f:param name="newgestureID" value="#{gestures.id}" />
                                     </p:commandButton>
 
                                 </h:panelGrid>

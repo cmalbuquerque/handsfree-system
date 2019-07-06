@@ -8,7 +8,6 @@ package connectionDB;
 import entities.Action;
 import entities.ActionList;
 import entities.App;
-import entities.Gesto;
 import entities.Profile;
 import entities.Voice;
 import java.sql.Connection;
@@ -21,8 +20,18 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Buscar dados à base de dados
+ * @author Andreia, Carolina, Diogo, Nuno, Pedro
+ */
 public class DataDAO {
 
+    
+    /**
+     * Listar todos os perfis de um utilizador
+     * @param email
+     * @return 
+     */
     public static List<Profile> listProfiles(String email) {
 
         Connection con = null;
@@ -48,6 +57,12 @@ public class DataDAO {
         return list;
     }
 
+    
+    /**
+     * Listagem de aplicações de um utilizador
+     * @param email
+     * @return 
+     */
     public static List<App> listApps(String email) {
 
         Connection con = null;
@@ -73,6 +88,13 @@ public class DataDAO {
         return list;
     }
 
+    
+    /**
+     * Listagem de Perfis de cada Aplicação de um utilizador
+     * @param app
+     * @param email
+     * @return 
+     */
     public static List<Profile> listProfilesOfApp(App app, String email) {
 
         Connection con = null;
@@ -99,6 +121,12 @@ public class DataDAO {
         return list;
     }
 
+    
+    /**
+     * Listagem de comandos de voz de um perfil
+     * @param p
+     * @return 
+     */
     public static List<Voice> voiceCommands(Profile p) {
 
         Connection con = null;
@@ -125,6 +153,11 @@ public class DataDAO {
         return lista;
     }
 
+    
+    /**
+     * Listagem de todos os comandos de voz com ação atribuída
+     * @return 
+     */
     public static List<Voice> getAllVoices() {
 
         Connection con = null;
@@ -151,6 +184,11 @@ public class DataDAO {
         return lista;
     }
 
+    
+    /**
+     * Listagem de todos os comandos de voz
+     * @return 
+     */
     public static List<Voice> getAllVoicesWithoutActions() {
 
         Connection con = null;
@@ -176,6 +214,11 @@ public class DataDAO {
         return lista;
     }
 
+    /**
+     * Update de comandos de voz
+     * @param selectedVoice
+     * @param newVoice 
+     */
     public static void updateVoiceCommands(int selectedVoice, int newVoice) {
         Connection con = null;
 
@@ -220,6 +263,12 @@ public class DataDAO {
         }
     }
 
+    
+    /**
+     * Listagem das actions list de cada perfil
+     * @param p
+     * @return 
+     */
     public static List<ActionList> getActionListofProfile(Profile p) {
         Connection con = null;
         List<ActionList> lista = new ArrayList<ActionList>();
@@ -247,6 +296,11 @@ public class DataDAO {
 
     }
 
+    
+    /**
+     * Listagem de todas as ações
+     * @return 
+     */
     public static List<Action> getAllActions() {
         Connection con = null;
         List<Action> lista = new ArrayList<Action>();
@@ -271,6 +325,13 @@ public class DataDAO {
         return lista;
     }
 
+    
+    /**
+     * Atribuir ações a comandos de voz (inserir dados na ActionList)
+     * @param selectedAction
+     * @param selectedVoice
+     * @throws ClassNotFoundException 
+     */
     public static void insertVoicesActionList(int selectedAction, int selectedVoice) throws ClassNotFoundException {
         Connection con = null;
         System.out.println(selectedAction + ", " + selectedVoice);
@@ -295,6 +356,12 @@ public class DataDAO {
 
     }
 
+    /**
+     * Listagem dos perfis não usados numa aplicação do utilizador
+     * @param appID
+     * @param email
+     * @return 
+     */
     public static List<Profile> getUnsedProfilesOfApp(int appID, String email) {
 
         Connection con = null;
@@ -322,6 +389,12 @@ public class DataDAO {
 
     }
 
+    
+    /**
+     * Listagem de todos os perfis do Utilizador
+     * @param email
+     * @return 
+     */
     public static List<Profile> getAllProfilesUser(String email) {
         Connection con = null;
         List<Profile> list = new ArrayList<Profile>();
@@ -348,6 +421,14 @@ public class DataDAO {
 
     }
 
+    
+    /**
+     * Adicionar perfis existentes a uma aplicação do utilizador
+     * @param selectedApp
+     * @param profileToAdd
+     * @param idUser
+     * @throws ClassNotFoundException 
+     */
     public static void addProfiletoApp(App selectedApp, Profile profileToAdd, int idUser) throws ClassNotFoundException {
         Connection con = null;
 
@@ -371,6 +452,12 @@ public class DataDAO {
         }
     }
 
+    
+    /**
+     * Get pessoa
+     * @param email
+     * @return 
+     */
     public static int getUserId(String email) {
 
         Connection con = null;
@@ -394,6 +481,47 @@ public class DataDAO {
             DataConnect.close(con);
         }
         return id;
+    }
+    
+    
+    public static void updateGesture(int oldGestureID, int oldActionID, int newGestureID, int idPerfil, int userID) throws ClassNotFoundException {
+        System.out.println("here");
+        Connection con = null;
+
+        try {
+            con = DataConnect.getConnection();
+            
+            //Get action_listID do gesto antigo
+            String id_action_list = "select id_action_list from action_list where id_gesto=" + oldGestureID + " AND id_action=" + oldActionID + " ;";
+            PreparedStatement pstmt2 = con.prepareStatement(id_action_list);
+            int actionlistOldID = pstmt2.executeUpdate();
+            System.out.println("ActionListID: " + actionlistOldID);
+
+            // Atribuir uma nova ação ao gesto novo (insert na actionlist)
+            String insert = "insert into action_list(id_gesto,id_action) values(?,?)";
+            PreparedStatement pstmt = con.prepareStatement(insert);
+            pstmt.setInt(1, newGestureID);
+            pstmt.setInt(2, oldActionID);
+            pstmt.executeUpdate();
+
+            // Ir buscar o id da nova actionlist criada
+            String select = "select id_action_list from action_list where id_gesto = " + newGestureID + " AND id_action = " + oldActionID + ";";
+            PreparedStatement pstmt1 = con.prepareStatement(select);
+            pstmt.setInt(1, newGestureID);
+            pstmt.setInt(2, oldActionID);
+            int actionlistNewID = pstmt1.executeUpdate();
+
+            // Update da action_list que o perfil usa
+            String update = "UPDATE perfil_action_list SET id_action_list = " + actionlistNewID + "WHERE id_action_list = " + actionlistOldID + " AND id_perfil="+ idPerfil +";";
+            PreparedStatement statement = con.prepareStatement(update);
+            statement.executeUpdate();
+
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Update error -->" + ex.getMessage());
+        } finally {
+            DataConnect.close(con);
+        }
     }
 
 }
