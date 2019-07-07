@@ -70,7 +70,6 @@ public class MListener extends Listener {
             this.sumMovDir = new int[]{0, 0, 0, 0};            //right, left, up, down
             this.totalFrames = 0.0;
             this.state = "data";
-            System.out.println(eval.toClassDetailsString());
             this.emulator = emulator;
 
         } catch (Exception ex) {
@@ -97,8 +96,9 @@ public class MListener extends Listener {
                         this.state = "average";
                         getData(controller);
                         Double treeResult = eval.evaluateModelOnce(forest, toPredict);
+                        System.out.println("PREDICTED:");
                         System.out.println("forest predicted: " + gestos[treeResult.intValue()]);
-                        emulator.receiveGesture(gestos[treeResult.intValue()]);
+                        //emulator.receiveGesture(gestos[treeResult.intValue()]);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -126,6 +126,7 @@ public class MListener extends Listener {
         if ("average".equals(this.state)) {
             HandList hands = frame.hands();
             int index = 1;
+            int allow = 1;
             for (Hand hand : hands) {
                 if (hand.isValid() && hand.isRight()) {
                     Double[] fingers = fingerFramesRatios(controller, frame, hand);
