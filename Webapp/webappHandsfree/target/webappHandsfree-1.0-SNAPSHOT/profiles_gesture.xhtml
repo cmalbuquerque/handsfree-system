@@ -38,7 +38,6 @@
                                     <b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/>
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
-                                    <f:setPropertyActionListener target="#{changegesturebean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
 
@@ -53,7 +52,7 @@
                 <b:form id="form">
                     <b:column col-sm="8" offset-sm="4" col-md="9" offset="3" styleClass="main">
                         <p:dataGrid var="gestures" value="#{gesturesview.listGesto}" columns="3" layout="grid"
-                                    rows="6" paginator="true" id="gestures"
+                                    rows="12" paginator="true" id="gestures"
                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                     rowsPerPageTemplate="6,12,16">
 
@@ -64,13 +63,12 @@
                             <!-- dantes gesto.nome -->
                             <p:panel header="Action: #{gestures.action.nome}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-                                    <img src="resources/gestures/#{gestures.id}.gif" alt="" style="width: 70%; height: 15%; border-radius: 5%"/>
+                                    <img src="resources/gestures/#{gestures.id}.gif" alt="" style="width: 60%; height: 20%;"/>
                                     <br/><br/>
                                     <h:outputText value="Gesture: #{gestures.nome}"></h:outputText>
                                     <br/>
-                                    <p:commandButton icon="fa fa-exchange" onclick="PF('dlg2').show();"  value="Change Gesture">
-                                        <f:param name="oldgestureID" value="#{gestures.id}" />
-                                        <f:param name="oldactionID" value="#{gestures.action.id}" />
+                                    <p:commandButton icon="transfer" onclick="PF('dlg2').show();"  action="#{changegesturebean.getgestureid()}" value="Change Gesture">
+                                        <f:param name="gestureNome" value="#{gesturesview.nome}" />
                                     </p:commandButton>
 
                                 </h:panelGrid>
@@ -87,7 +85,7 @@
                 <!-- DataGrid  -->
                 <b:form id="form1">
 
-                    <p:dataGrid var="gestures" value="#{gesturesview.listAllGesto}" columns="3" layout="grid"
+                    <p:dataGrid var="gestures" value="#{gesturesview.listGesto}" columns="3" layout="grid"
                                 rows="12"  id="action">
                         <p:panel header="#{gestures.nome}" style="text-align:center">
                             <h:panelGrid columns="1" style="width:100%">
@@ -145,7 +143,7 @@
 
 
         <style type="text/css">
-
+           
             .value {
                 font-weight: bold;
             }

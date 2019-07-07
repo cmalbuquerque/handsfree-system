@@ -75,30 +75,5 @@ public class GestoService {
        }
        return nome;
    }
-
-    public List<Gesto> getAllGestos() throws ClassNotFoundException {
-        Connection con = null;
-
-        try {
-            con = DataConnect.getConnection();
-            con.setAutoCommit(false);
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("select gesto.id_gesto, gesto.gesto from gesto;");
-            list.clear();
-            
-            while(rs.next()) { 
-                Gesto gesto = new Gesto(Integer.parseInt(rs.getString(1)), rs.getString(2));
-                list.add(gesto);
-            }
-            rs.close();
-            statement.close();
-        } catch (SQLException ex) {
-            System.out.println("Error -->" + ex.getMessage());
-        } finally {
-            DataConnect.close(con);
-        }
-        return list;
-    
-    }
      
 }

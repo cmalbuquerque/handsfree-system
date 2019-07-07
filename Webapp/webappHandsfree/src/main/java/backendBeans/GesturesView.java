@@ -27,7 +27,6 @@ import services.GestoService;
 public class GesturesView implements Serializable {
 
     private List<Gesto> listGesto;
-    private List<Gesto> listAllGesto;
 
     private List<Gesto> listed = new ArrayList<Gesto>();
 
@@ -40,7 +39,6 @@ public class GesturesView implements Serializable {
     public void init() {
         try {
             listGesto = service.getGestos();
-            listAllGesto = service.getAllGestos();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GesturesView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,16 +65,6 @@ public class GesturesView implements Serializable {
     public List<Gesto> getListedGesto() {
         return listed;
     }
-
-    public List<Gesto> getListAllGesto() {
-        return listAllGesto;
-    }
-
-    public void setListAllGesto(List<Gesto> listAllGesto) {
-        this.listAllGesto = listAllGesto;
-    }
-    
-    
 
     /*
     public String getNome() {
