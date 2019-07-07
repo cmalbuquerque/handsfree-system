@@ -61,23 +61,12 @@
                                         <br/><br/>
                                         <h:outputText style="text-style: bold" value="#{perfil.nome}" />
                                         <br/><br/>
-                                        
+
                                         <b:commandButton look="info" value="Customize Profile"  icon="menu-hamburger">
                                             <f:setPropertyActionListener value="#{perfil}" target="#{dataListView.selectedProfile}" />
                                         </b:commandButton>
 
                                     </f:facet>
-
-                                    <!--<h:outputText value="Id:" />
-                                    <h:outputText value="None" />
-                                    
-                                    <h:outputText value="Id:" />
-                                    <h:outputText value="None" />
-                                    
-                                    
-                                    <h:outputText value="Used on: " />
-                                    <h:outputText value="#{nome}" />-->
-
 
                                 </p:panelGrid>
 
@@ -85,95 +74,9 @@
                                     In total there are #{fn:length(dataListView.profiles)} profiles.
                                 </f:facet>
                             </p:carousel>
-                            <p:commandButton style="position:absolute;" oncomplete="PF('criarPerfilDialog').show()" value="Add Profile" icon="plus"/>
+                            <b:commandButton style="position:absolute;" action="#{menuappbean.createProfile()}"  value="Add Profile" icon="plus"/>
                             <br/>
-
-                           <p:dialog height="400" width="900" header="Create a New Profile" widgetVar="criarPerfilDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                                <b:form horizontal="true">
-                                    <b:inputText placeholder="Profile Name" required="true" label="Profile Name" colMd="10" labelColMd="2">
-                                    </b:inputText>
-                                </b:form>
-                                <br/>
-                                <br/>
-                                <p:commandButton icon="fa fa-plus" value="Add new action" styleClass="ui-priority-primary" process="@this"
-                                                 oncomplete="PF('actionDialog').show();" style="position:absolute; right: 0; margin-right: 2%"/>
-                                <br></br>
-                                <br></br>
-                                <p:dataTable id="table1" widgetVar="table1" var="actionList" value="#{dtAddRowView.actionsList}" editable="true">
-                                    <f:facet name="header">
-                                        New Commands Voice to Add
-                                    </f:facet>
-
-                                    <p:column headerText="Action">
-                                        <p:cellEditor>
-                                            <f:facet name="output"><h:outputText value="#{actionList.action.nome}" /></f:facet>
-
-                                        </p:cellEditor>
-                                    </p:column>
-
-                                    <p:column headerText="Voice Command">
-                                        <p:cellEditor>
-                                            <f:facet name="output"><h:outputText value="#{actionList.voice.voice}" /></f:facet>
-
-                                        </p:cellEditor>
-                                    </p:column>
-
-                                </p:dataTable>
-                                <br></br>
-                                <b:commandButton icon="ok" look="info" value="Create Profile" styleClass="ui-priority-primary" process="@this"
-                                                 oncomplete="PF('actionDialog').show();" style="position:relative; left: 40%;" />
-
-
-                            </p:dialog>
-
-                            <p:dialog header="Select Voice Commands" widgetVar="actionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-
-                                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
-                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="8" columnClasses="value, value">
-                                        <p:outputLabel for="selectListBox" value="Actions:" />
-                                        
-
-                                        <p:selectOneListbox id="selectListBox" valueChangeListener="#{dtAddRowView.selectedAction}" filter="true" filterMatchMode="contains">
-                                            <f:selectItems value="#{dtAddRowView.actions}" var="user" 
-                                                           itemLabel="#{user.nome}" itemValue="#{user}" />
-                                        </p:selectOneListbox>
-                                        
-
-                                    </h:panelGrid>
-
-                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
-                                        <p:outputLabel for="voices" value="Voices:" />
-                                        <p:selectManyMenu  id="voices" value="#{dtAddRowView.selectedVoices}" filter="true" filterMatchMode="contains" showCheckbox="true">
-                                            <f:selectItems value="#{dtAddRowView.allVoices}" var="v1" itemLabel="#{v1.voice}" itemValue="#{v1}" />
-                                            <p:column>
-                                                <h:outputText value="#{v1.voice}" />
-                                            </p:column>
-                                        </p:selectManyMenu>
-
-                                    </h:panelGrid>
-
-
-
-                                </h:panelGrid>
-
-                                <p:commandButton value="Add Voices" styleClass="ui-priority-primary" process="@this"
-                                                 action="#{dtAddRowView.onAddNew()}">
-
-                                </p:commandButton>
-
-
-
-
-                            </p:dialog>
-
-                            <p:dialog header="Actions List Info" widgetVar="perfilDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                                <p:outputPanel id="actionDetail" style="text-align:center;">
-                                    <p:panelGrid  columns="2" rendered="#{not empty dataListView.selectedProfile}" columnClasses="value,value">
-                                        <h:outputText value="Id:" />
-                                        <h:outputText value="#{dataListView.selectedProfile.id}" />
-                                    </p:panelGrid>
-                                </p:outputPanel>
-                            </p:dialog>
+                            
                         </h:form>
 
                     </b:column>

@@ -273,7 +273,7 @@ public class DataDAO {
 
     public static void insertVoicesActionList(int selectedAction, int selectedVoice) throws ClassNotFoundException {
         Connection con = null;
-        System.out.println(selectedAction + ", " + selectedVoice);
+        System.out.println(">>>>> " + selectedAction + ", " + selectedVoice);
         try {
             con = DataConnect.getConnection();
             //Statement statement = con.createStatement();
@@ -395,5 +395,7 @@ public class DataDAO {
         }
         return id;
     }
+    
+    
 
 }

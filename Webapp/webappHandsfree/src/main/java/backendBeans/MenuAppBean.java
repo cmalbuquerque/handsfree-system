@@ -88,12 +88,10 @@ public class MenuAppBean implements Serializable {
         return "profiles_gesture.xhtml";
     }
 
-    public String showVoiceCommands() {
+    public String createProfile() {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("email", email);
-        session.setAttribute("app", selectedApp);
-        session.setAttribute("profile", selectedProfile);
-        return "profiles_voice.xhtml";
+        return "create_profile.xhtml";
     }
 
 }
