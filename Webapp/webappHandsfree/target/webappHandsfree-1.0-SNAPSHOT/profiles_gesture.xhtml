@@ -25,8 +25,11 @@
             <b:row>
                 <b:column col-sm="4" col-md="3" styleClass="sidebar" >
                     <h:form>
+                        <h4>List of Profiles</h4>
+                        <hr/>
                         <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil">
                             <p:tab title="#{perfil.nome}">
+
                                 <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/>       
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
@@ -41,7 +44,7 @@
                             </p:tab>
                             <br/>
                         </p:accordionPanel>
-
+                        <b:commandButton look="info" value="Add Profile" icon="plus" type="button" onclick="PF('dlgP').show();" style="position:absolute; bottom:0; margin-bottom: 10%;" />
                     </h:form>
                 </b:column>
 
@@ -58,10 +61,14 @@
                             </f:facet>
 
                             <!-- dantes gesto.nome -->
-                            <p:panel header="#{gesturesview.nome}" style="text-align:center">
+                            <p:panel header="Action: #{gestures.action.nome}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-                                    <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.getgestureid()}" value="Change Gesture">
-                                        <f:param name="gestureNome" value="#{gesturesview.nome}" />
+                                    <img src="resources/gestures/#{gestures.id}.gif" alt="" style="width: 60%; height: 20%;"/>
+                                    <br/><br/>
+                                    <h:outputText value="Gesture: #{gestures.nome}"></h:outputText>
+                                    <br/>
+                                    <p:commandButton icon="fa fa-exchange" onclick="PF('dlg2').show();"  action="#{changegesturebean.getgestureid()}" value="Change Gesture">
+                                        <f:setPropertyActionListener target="#{gesturesview.oldActionID}" value="#{gestures.action.id}" /> 
                                     </p:commandButton>
 
                                 </h:panelGrid>
@@ -74,33 +81,57 @@
             </b:row>
 
             <!-- Dialog Popup  -->
-            <p:dialog header="Modos de Como Realizar o gesto: " widgetVar="dlg2" modal="true" height="150">
+            <p:dialog header="Possible Gestures: " widgetVar="dlg2" modal="true" style="margin-top:5%" height="500">
                 <!-- DataGrid  -->
                 <b:form id="form1">
-                    <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
-                        <p:dataGrid var="gestures" value="#{actionview.listAction}" columns="3" layout="grid"
-                                    rows="12"  id="action">
+                    <h:outputText value="Selected Action: #{gesturesview.oldActionID}"></h:outputText>
+                    <p:dataGrid var="gestures" value="#{gesturesview.listAllUnsedGestos}" columns="3" layout="grid"
+                                rows="12"  id="action">
+                        <p:panel header="#{gestures.nome}" style="text-align:center">
+                            <h:panelGrid columns="1" style="width:100%">
+                                <img src="resources/gestures/#{gestures.id}.gif" alt="" style="width: 60%; height: 20%;"/>
+                                <br/><br/>
+                                <p:commandButton icon="fa fa-check" onclick="PF('dlg2').show();"  action="#{changegesturebean.change()}" value="Choose Gesture">
+                                    <f:param name="newgestureID" value="#{gestures.id}" />
+                                </p:commandButton>
 
+                            </h:panelGrid>
+                        </p:panel>
 
-                            <!-- dantes gesto.nome -->
-                            <p:panel header="#{actionview.nome}" style="text-align:center">
-                                <h:panelGrid columns="1" style="width:100%">
-                                    <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.getactionid()}" value="Change Action">
-                                        <f:param name="actionNome" value="#{actionview.nome}" />
-                                    </p:commandButton>
-
-                                </h:panelGrid>
-                            </p:panel>
-
-                        </p:dataGrid>
-                    </b:column>
+                    </p:dataGrid>
                 </b:form>
             </p:dialog> 
+
+            <!-- Dialog Popup  -->
+            <p:dialog header="Add Profile to Application" widgetVar="dlgP" modal="true" width="80%">
+                <h:form>
+                    <p:carousel value="#{applicationBean.unsedProfilesbyApp}" headerText="Profiles not used on this application" var="perfil" itemStyle="text-align:center" responsive="true">
+                        <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+                            <f:facet name="header">
+                                <b:commandButton action="#{applicationBean.addProfile()}" onsuccess="refresh()" size="xs" style="background-color: #2C2F33; border-color: #2C2F33; margin-left: 90%" look="info" icon="plus">
+                                    <f:setPropertyActionListener target="#{applicationBean.profileToAdd}" value="#{perfil}" />
+                                </b:commandButton><br/>
+                                <img src="resources/images/sets.png" alt=""/>
+                                <br/><br/>
+                                <h:outputText style="text-style: bold" value="#{perfil.nome}" />
+                                <br/><br/>
+                                <b:commandButton look="info" value="Show Action List" icon="menu-hamburger">
+
+                                </b:commandButton>
+                                <br/><br/>
+
+                            </f:facet>
+                        </p:panelGrid>
+                    </p:carousel>
+                </h:form>
+            </p:dialog>
+
         </b:container> 
 
 
 
         <style type="text/css">
+           
             .value {
                 font-weight: bold;
             }

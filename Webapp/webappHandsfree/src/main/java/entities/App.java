@@ -33,8 +33,6 @@ public class App {
         this.profiles = profiles;
     }
     
-    
-    
 
     public List<Profile> getProfiles() {
         return profiles;

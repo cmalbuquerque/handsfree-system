@@ -31,10 +31,10 @@
                             <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                                 <p:outputPanel>
                                     <h:panelGrid columns="2" cellpadding="5">
-                                        <b:commandButton look="info" value="App: #{app.nome}" icon="phone" action="#{menuappbean.showGestureCommands}">
+                                        <b:commandButton look="info" value="App: #{app.nome}" icon="phone" action="#{menuappbean.showGestureCommands()}">
                                             <f:setPropertyActionListener target="#{menuappbean.selectedApp}" value="#{app}" />
                                             <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
-                                            
+
                                         </b:commandButton>
                                     </h:panelGrid>
                                 </p:outputPanel>
@@ -45,33 +45,28 @@
 
                     </h:form>
                 </b:column>
-                <b:form>
+                <b:form id="first">
                     <b:column col-sm="8" offset-sm="4" col-md="9" offset="3" styleClass="main">
-                        <h1>Profiles</h1>
+                        <h1>Profiles </h1>
+
+
                         <hr/>
                         <h:form id="form">
 
                             <p:carousel value="#{dataListView.profiles}" headerText="" var="perfil" itemStyle="text-align:center" responsive="true">
                                 <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
                                     <f:facet name="header">
-                                        <b:button style="float:right" value="" icon="trash" look="danger" size="xs"/>
-                                        <br/>
-                                        <br/>
+
                                         <img src="resources/images/sets.png" alt=""/>
                                         <br/><br/>
                                         <h:outputText style="text-style: bold" value="#{perfil.nome}" />
+                                        <br/><br/>
+
+                                        <b:commandButton look="info" value="Customize Profile"  icon="menu-hamburger">
+                                            <f:setPropertyActionListener value="#{perfil}" target="#{dataListView.selectedProfile}" />
+                                        </b:commandButton>
+
                                     </f:facet>
-
-                                    <!--<h:outputText value="Id:" />
-                                    <h:outputText value="None" />
-                                    
-                                    <h:outputText value="Id:" />
-                                    <h:outputText value="None" />
-                                    
-                                    
-                                    <h:outputText value="Used on: " />
-                                    <h:outputText value="#{nome}" />-->
-
 
                                 </p:panelGrid>
 
@@ -79,9 +74,16 @@
                                     In total there are #{fn:length(dataListView.profiles)} profiles.
                                 </f:facet>
                             </p:carousel>
+                            <b:commandButton style="position:absolute;" action="#{menuappbean.createProfile()}"  value="Add Profile" icon="plus"/>
+                            <br/>
+                            
                         </h:form>
+
                     </b:column>
-                    <b:button look="info" value="Add Profile" icon="plus" style="position:absolute; bottom: 0; right: 0; margin-bottom: 2%; margin-right: 2%"/>
+
+
+
+
                 </b:form>
             </b:row>
 
@@ -89,6 +91,11 @@
 
 
         <style type="text/css">
+
+
+            .label, .value {
+                vertical-align: top
+            }
 
             .ui-carousel {
                 margin-bottom: 20px;

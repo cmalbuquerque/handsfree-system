@@ -57,11 +57,6 @@ public class ActionView implements Serializable {
         return listed;
     }
 
-    /*
-    public String getNome() {
-        return service.getGestoNome();
-    }   
-     */
     //se for diferente no if, adicionar depois do if. os que vem a seguir sao diferentes
     //se for igual, eliminar no fim.
     public String getNome() {
@@ -70,8 +65,7 @@ public class ActionView implements Serializable {
             listed.add(action);
             for (Action done : listed) {
                 if (action.getNome() == done.getNome()) {
-                    nome = action.getNome();
-                    
+                    nome = action.getNome();           
                 }
             }
         }
@@ -89,48 +83,4 @@ public class ActionView implements Serializable {
     public void setSelectedAction(Action action) {
         this.action = action;
     }
-    
-    
-/*
-    public String display() {
-        String nome = "";
-
-        for (Action action : listAction) {
-            System.out.println("name: " + action.getNome());
-            System.out.println("" + action.getId() + ". " + action.getNome());
-            nome += "\r\n ID:" + action.getId() + ". " + "Nome: " + action.getNome();
-        }
-
-        return nome;
-    }
-*/
-
-    //string = ""
-      //      string += cena de fazer paragrao mais valor
-
-    /*
-    String text = new String("<li>"+ name +"</li>");
-    String htmlText = new String("<html><font color='red'>" + text + "</font></html>");
-    JTextPane jTextPane =new JTextPane ();
-    jTextPane.setContentType("text/html");
-    jTextPane.setText(htmlText);
-     */
-    
-    /*
-    public String outro() {
-        int size = getNumberGestures();
-        System.out.println("SIZE: " + size);
-        String nome = null;
-
-        for (int i = 0; i < size; i++) {
-            for (Gesto gesto : listGesto) {
-                System.out.println("name: " + gesto.getNome());
-                System.out.println("" + i + ". " + gesto.getNome());
-                nome = "" + i + ". " + gesto.getNome();
-                return nome;
-            }
-        }
-        return nome;
-    }
-     */
 }

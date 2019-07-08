@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Dashboard</title>
+    </h:head>
+    <h:body style="padding-top: 60px">
+        <h:outputScript library="holder" name="holder.js" />
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.5.2/holder.min.js"></script-->
+        <b:navBar brand="handsfree" brandHref="home.xhtml" fixed="top" fluid="true" style="background-color: lightblue;">
+
+            <b:navbarLinks pull="right">
+                <b:navLink value="Logout" icon="log-out" outcome="/index.xhtml"></b:navLink>
+            </b:navbarLinks>
+            <h:form styleClass="navbar-form navbar-right">
+                <p style="margin-top: 4%">Welcome #{authenticationbean.email}</p>
+            </h:form>
+        </b:navBar>
+        <h:form>
+            <b:container fluid="true">
+                <br/>
+                <h1>Create a New Profile </h1>
+                <hr/>
+                <b:form horizontal="true">
+                    <b:inputText placeholder="Profile Name" required="true" label="Profile Name" colMd="10" labelColMd="2">
+                    </b:inputText>
+                </b:form>
+                <br/><br/><br/><br/>
+                <b:column col-md="6">
+                    <h:form>
+                        <p:commandButton icon="fa fa-plus" value="Add new action" styleClass="ui-priority-primary" process="@this"
+                                         oncomplete="PF('actionDialog').show();" style="position:absolute; right: 0; margin-right: 2%"/>
+                        <br></br>
+                        <br></br>
+
+                        <p:dataTable id="table1" widgetVar="table1" var="row" rows="#{selectOneView.listRow.size()}" value="#{selectOneView.listRow}" editable="true">
+                            <f:facet name="header">
+                                New Gestures to Add
+                            </f:facet>
+
+                            <p:column headerText="Action">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{row.selectAction}" /></f:facet>
+
+                                </p:cellEditor>
+
+                            </p:column>
+
+                            <p:column headerText="Gesture">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{row.selectedVoice}" /></f:facet>
+
+                                </p:cellEditor>
+                            </p:column>
+
+                        </p:dataTable>
+                        <br></br>
+
+                    </h:form>
+                </b:column>
+
+                <b:column col-md="6">
+                    <h:form>
+                        <p:commandButton icon="fa fa-plus" value="Add new action" styleClass="ui-priority-primary" process="@this"
+                                         oncomplete="PF('actionDialog').show();" style="position:absolute; right: 0; margin-right: 2%"/>
+                        <br></br>
+                        <br></br>
+
+                        <p:dataTable id="table2" widgetVar="table2" var="entry" value="#{selectOneView.map.entrySet().toArray()}" editable="true">
+                            <f:facet name="header">
+                                New Voice Commands to Add
+                            </f:facet>
+
+                            <p:column headerText="Action">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{entry.key}" /></f:facet>
+
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Voice Command">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{entry.value}" /></f:facet>
+
+                                </p:cellEditor>
+                            </p:column>
+
+                        </p:dataTable>
+                        <br></br>
+                    </h:form>
+                </b:column>
+
+
+
+            </b:container>
+
+            <b:commandButton icon="ok" look="info" value="Create Profile" styleClass="ui-priority-primary" process="@this"
+                             style="position:relative; left: 45%;" />
+
+        </h:form>
+
+        <p:dialog header="Select Voice Commands" widgetVar="actionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+            <h:form>
+                <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
+                    <p:outputLabel style="margin-left: 10%" for="advanced" value="Actions:" />
+                    <p:selectOneListbox id="advanced" value="#{selectOneView.selectedAction}" filter="true" filterMatchMode="contains">
+                        <f:selectItems value="#{selectOneView.actions}" var="action" itemLabel="#{action.nome}" itemValue="#{action.id}" />
+                    </p:selectOneListbox>
+
+                    <p:outputLabel style="margin-left: 10%" for="advancedVoices" value="Voices:" />
+                    <p:selectOneListbox id="advancedVoices" value="#{selectOneView.selectedVoice}" filter="true" filterMatchMode="contains">
+                        <f:selectItems value="#{selectOneView.voices}" var="voice" itemLabel="#{voice.voice}" itemValue="#{voice.id}" />
+                    </p:selectOneListbox>
+                    
+                    <p:spacer /><p:spacer /><p:spacer /><p:spacer />
+                    
+                    <p:spacer />
+                    <p:spacer />
+                    <p:spacer />
+                    <input type="button" icon="ok" look="info" update="@form" value="Submit" 
+                                     action="#{selectOneView.onAddNew()}" onClick="document.location.reload(true)" oncomplete="actionDialog.hide()" />
+                    
+
+                    <h:outputText value="Selected Action:" />
+                    <h:outputText id="display" value="#{selectOneView.selectedAction} #{selectOneView.selectedVoice}" style="font-weight: bold" />
+                </h:panelGrid>
+            </h:form>
+
+
+        </p:dialog>
+
+    </h:body>
+</html>
+

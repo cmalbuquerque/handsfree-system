@@ -27,7 +27,12 @@ import services.GestoService;
 public class GesturesView implements Serializable {
 
     private List<Gesto> listGesto;
+    private List<Gesto> allGestos;
+    private List<Gesto> listAllUnsedGestos;
+    
+    private int oldActionID, oldGestoID, newGestoID;
 
+    
     private List<Gesto> listed = new ArrayList<Gesto>();
 
     private Gesto gesto;
@@ -39,26 +44,57 @@ public class GesturesView implements Serializable {
     public void init() {
         try {
             listGesto = service.getGestos();
+            allGestos = service.getAllGestos();
+            listAllUnsedGestos = getUnsed();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GesturesView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+    public List<Gesto> getUnsed(){
+        List<Gesto> unsed = new ArrayList<Gesto>();
+        for(Gesto g : allGestos){
+            if(!listGesto.contains(g))
+                unsed.add(g);
+        }
+        return unsed;
+    }
+
+    public List<Gesto> getListAllUnsedGestos() {
+        return listAllUnsedGestos;
+    }
+
+    public void setListAllUnsedGestos(List<Gesto> listAllUnsedGestos) {
+        this.listAllUnsedGestos = listAllUnsedGestos;
+    }
+    
+    
+    
+    
 
     public List<String> getListNome() {
-        listGesto = service.getList();
         List<String> listName = listGesto.stream().map(Gesto::getNome).collect(Collectors.toList());
         //um de cada vez-->listName.stream().forEach(strGestureName -> System.out.println(strGestureName));
         return listName;
     }
+
+    public List<Gesto> getAllGestos() {
+        return allGestos;
+    }
+
+    public void setAllGestos(List<Gesto> allGestos) {
+        this.allGestos = allGestos;
+    }
+    
+    
     
     public List<Gesto> getListGesto() {
-        listGesto = service.getList();
         return listGesto;
     }
     
 
     public Integer getNumberGestures() {
-        listGesto = service.getList();
         return listGesto.size();
     }
 
@@ -100,48 +136,30 @@ public class GesturesView implements Serializable {
         this.gesto = gesto;
     }
 
-    /*
-    public String display() {
-        String nome = "";
-
-        for (Gesto gesto : listGesto) {
-            System.out.println("name: " + gesto.getNome());
-            System.out.println("" + gesto.getId() + ". " + gesto.getNome());
-            nome += "\r\n ID:" + gesto.getId() + ". " + "Nome: " + gesto.getNome();
-        }
-
-        return nome;
+    public int getOldActionID() {
+        return oldActionID;
     }
-     */
+
+    public void setOldActionID(int oldActionID) {
+        this.oldActionID = oldActionID;
+    }
+
+    public int getOldGestoID() {
+        return oldGestoID;
+    }
+
+    public void setOldGestoID(int oldGestoID) {
+        this.oldGestoID = oldGestoID;
+    }
+
+    public int getNewGestoID() {
+        return newGestoID;
+    }
+
+    public void setNewGestoID(int newGestoID) {
+        this.newGestoID = newGestoID;
+    }
+    
     
 
-
-    //string = ""
-      //      string += cena de fazer paragrao mais valor
-
-    /*
-    String text = new String("<li>"+ name +"</li>");
-    String htmlText = new String("<html><font color='red'>" + text + "</font></html>");
-    JTextPane jTextPane =new JTextPane ();
-    jTextPane.setContentType("text/html");
-    jTextPane.setText(htmlText);
-     */
-    
-    /*
-    public String outro() {
-        int size = getNumberGestures();
-        System.out.println("SIZE: " + size);
-        String nome = null;
-
-        for (int i = 0; i < size; i++) {
-            for (Gesto gesto : listGesto) {
-                System.out.println("name: " + gesto.getNome());
-                System.out.println("" + i + ". " + gesto.getNome());
-                nome = "" + i + ". " + gesto.getNome();
-                return nome;
-            }
-        }
-        return nome;
-    }
-     */
 }
