@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 
 /**
@@ -81,8 +80,6 @@ public class SelectOneView implements Serializable {
         this.map = map;
     }
 
-    
-    
     public void onAddNew() throws ClassNotFoundException {
         map.put(selectedAction, selectedVoice);
     }

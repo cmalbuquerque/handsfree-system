@@ -397,5 +397,37 @@ public class DataDAO {
     }
     
     
+    /**
+     * Update gestos
+     * @param oldActionID
+     * @param oldGestoID
+     * @param newGestoID
+     * @throws ClassNotFoundException 
+     */
+    public static void Update(int oldActionID , int oldGestoID, int newGestoID) throws ClassNotFoundException {
+        Connection con = null;
+        System.out.println(">> OldActionID: " + oldActionID);
+        System.out.println(">> OldGestoID: " + oldGestoID);
+        System.out.println(">> newGestoID: " + newGestoID);
+        
+        String SQL = "UPDATE action_list "
+                + "SET id_gesto = ? "
+                + "WHERE id_action = ? AND id_gesto=?";
+        try {      
+            con = DataConnect.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+
+            pstmt.setInt(1, newGestoID);
+            pstmt.setInt(2, oldActionID);
+            pstmt.setInt(3, oldGestoID);
+            pstmt.executeUpdate();
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println("Update error -->" + ex.getMessage());
+        } finally {
+            DataConnect.close(con);
+        }
+    }
+    
 
 }

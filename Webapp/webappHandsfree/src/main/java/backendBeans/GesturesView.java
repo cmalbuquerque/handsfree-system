@@ -5,6 +5,7 @@
  */
 package backendBeans;
 
+import connectionDB.DataDAO;
 import entities.Gesto;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -160,6 +161,12 @@ public class GesturesView implements Serializable {
         this.newGestoID = newGestoID;
     }
     
+    
+    
+    public String change() throws ClassNotFoundException {
+        DataDAO.Update(oldActionID, oldGestoID, newGestoID);       
+        return "profiles_gesture.xhtml";
+    }
     
 
 }
