@@ -116,15 +116,15 @@
                     <p:selectOneListbox id="advancedVoices" value="#{selectOneView.selectedVoice}" filter="true" filterMatchMode="contains">
                         <f:selectItems value="#{selectOneView.voices}" var="voice" itemLabel="#{voice.voice}" itemValue="#{voice.id}" />
                     </p:selectOneListbox>
-                    
+
                     <p:spacer /><p:spacer /><p:spacer /><p:spacer />
-                    
+
                     <p:spacer />
                     <p:spacer />
                     <p:spacer />
-                    <input type="button" icon="ok" look="info" update="@form" value="Submit" 
-                                     action="#{selectOneView.onAddNew()}" oncomplete="actionDialog.hide()" onclick="document.location.reload(true)"/>
-                    
+                    <b:commandButton icon="ok" look="info" update="@form" value="Submit" 
+                                     action="#{selectOneView.onAddNew()}" onclick="document.location.reload(true)" oncomplete="actionDialog.hide()" />
+
 
                     <h:outputText value="Selected Action:" />
                     <h:outputText id="display" value="#{selectOneView.selectedAction} #{selectOneView.selectedVoice}" style="font-weight: bold" />
@@ -136,4 +136,3 @@
 
     </h:body>
 </html>
-

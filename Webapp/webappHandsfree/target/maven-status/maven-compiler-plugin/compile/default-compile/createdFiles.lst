@@ -11,6 +11,7 @@ entities\Gesto.class
 connectionDB\ChangeGesture.class
 services\GestoService.class
 connectionDB\SessionUtils.class
+entities\Row.class
 services\ActionService.class
 entities\Profile.class
 entities\App.class
