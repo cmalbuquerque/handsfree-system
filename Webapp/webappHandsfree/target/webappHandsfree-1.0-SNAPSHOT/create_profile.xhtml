@@ -122,8 +122,8 @@
                     <p:spacer />
                     <p:spacer />
                     <p:spacer />
-                    <b:commandButton icon="ok" look="info" update="@form" value="Submit" 
-                                     action="#{selectOneView.onAddNew()}" oncomplete="actionDialog.hide()" />
+                    <input type="button" icon="ok" look="info" update="@form" value="Submit" 
+                                     action="#{selectOneView.onAddNew()}" onClick="document.location.reload(true)" oncomplete="actionDialog.hide()" />
                     
 
                     <h:outputText value="Selected Action:" />
