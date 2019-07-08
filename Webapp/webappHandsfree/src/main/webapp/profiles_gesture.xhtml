@@ -67,8 +67,8 @@
                                     <br/><br/>
                                     <h:outputText value="Gesture: #{gestures.nome}"></h:outputText>
                                     <br/>
-                                    <p:commandButton icon="transfer" onclick="PF('dlg2').show();"  action="#{changegesturebean.getgestureid()}" value="Change Gesture">
-                                        <f:param name="gestureNome" value="#{gesturesview.nome}" />
+                                    <p:commandButton icon="fa fa-exchange" onclick="PF('dlg2').show();"  action="#{changegesturebean.getgestureid()}" value="Change Gesture">
+                                        <f:setPropertyActionListener target="#{gesturesview.oldActionID}" value="#{gestures.action.id}" /> 
                                     </p:commandButton>
 
                                 </h:panelGrid>
@@ -84,14 +84,14 @@
             <p:dialog header="Possible Gestures: " widgetVar="dlg2" modal="true" style="margin-top:5%" height="500">
                 <!-- DataGrid  -->
                 <b:form id="form1">
-
-                    <p:dataGrid var="gestures" value="#{gesturesview.listGesto}" columns="3" layout="grid"
+                    <h:outputText value="Selected Action: #{gesturesview.oldActionID}"></h:outputText>
+                    <p:dataGrid var="gestures" value="#{gesturesview.listAllUnsedGestos}" columns="3" layout="grid"
                                 rows="12"  id="action">
                         <p:panel header="#{gestures.nome}" style="text-align:center">
                             <h:panelGrid columns="1" style="width:100%">
                                 <img src="resources/gestures/#{gestures.id}.gif" alt="" style="width: 60%; height: 20%;"/>
                                 <br/><br/>
-                                <p:commandButton onclick="PF('dlg2').show();"  action="#{changegesturebean.change()}" value="Choose Gesture">
+                                <p:commandButton icon="fa fa-check" onclick="PF('dlg2').show();"  action="#{changegesturebean.change()}" value="Choose Gesture">
                                     <f:param name="newgestureID" value="#{gestures.id}" />
                                 </p:commandButton>
 
@@ -121,18 +121,6 @@
                                 <br/><br/>
 
                             </f:facet>
-
-                            <!--<h:outputText value="Id:" />
-                            <h:outputText value="None" />
-                            
-                            <h:outputText value="Id:" />
-                            <h:outputText value="None" />
-                            
-                            
-                            <h:outputText value="Used on: " />
-                            <h:outputText value="#{nome}" />-->
-
-
                         </p:panelGrid>
                     </p:carousel>
                 </h:form>

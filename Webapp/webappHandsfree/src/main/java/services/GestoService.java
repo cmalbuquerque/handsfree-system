@@ -23,32 +23,29 @@ import javax.faces.bean.ManagedBean;
  *
  * @author nunos
  */
-
 //serve para ir buscar todos os gestos a BD para dar display no changeGestures
 @ManagedBean(name = "gestoService")
 @ApplicationScoped
 public class GestoService {
-    static List<Gesto> list = new ArrayList<Gesto>();
 
-    
-     //buscar bd todos os gestos
+     
+
+    //buscar bd todos os gestos
     //select * from gesto;
     //chamar gesto e construir objecto?????
     //recebe nome como parametro.
     //string resultaod query
-   
-    
     public static List<Gesto> getGestos() throws ClassNotFoundException {
         Connection con = null;
-
+        List<Gesto> list = new ArrayList<Gesto>();
         try {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("select gesto.id_gesto, gesto.gesto, action_list.id_action, action.nome from action_list,gesto,action WHERE action_list.id_gesto=gesto.id_gesto AND action_list.id_action=action.id_action;");
             list.clear();
-            
-            while(rs.next()) { 
+
+            while (rs.next()) {
                 Gesto gesto = new Gesto(Integer.parseInt(rs.getString(1)), rs.getString(2));
                 Action a = new Action(Integer.parseInt(rs.getString(3)), rs.getString(4));
                 gesto.setAction(a);
@@ -62,18 +59,30 @@ public class GestoService {
             DataConnect.close(con);
         }
         return list;
-   }
-   
-   public List<Gesto> getList() {
+    }
+
+    public static List<Gesto> getAllGestos() throws ClassNotFoundException {
+        Connection con = null;
+        List<Gesto> list = new ArrayList<Gesto>();
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("select gesto.id_gesto, gesto.gesto from gesto;");
+            list.clear();
+
+            while (rs.next()) {
+                Gesto gesto = new Gesto(Integer.parseInt(rs.getString(1)), rs.getString(2));
+                list.add(gesto);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Error -->" + ex.getMessage());
+        } finally {
+            DataConnect.close(con);
+        }
         return list;
-   }
-   
-   public String getGestoNome() {
-       String nome = null;
-       for(Gesto gesto: list){
-           nome = gesto.getNome();
-       }
-       return nome;
-   }
-     
+    }
+
 }
