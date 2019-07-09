@@ -101,14 +101,9 @@ public class VoicesBean {
     }
     
     
-    public void updateVoiceCommands(){
+    public String updateVoiceCommands() throws ClassNotFoundException{
         System.out.println("SELECTED: " + selectedVoice.getAction() + "\nNEW:" +  newVoice);
-        //DataDAO.updateVoiceCommands(selectedVoice.getAction().getId(), newVoice.getId());
-        refresh();
-    }
-    
-    
-    public String refresh(){
+        DataDAO.updateVoiceCommands(selectedVoice.getAction().getId(), selectedVoice.getId(), newVoice.getId());
         return "profiles_voice.xhtml";
     }
 

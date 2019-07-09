@@ -177,48 +177,28 @@ public class DataDAO {
         return lista;
     }
 
-    public static void updateVoiceCommands(int selectedVoice, int newVoice) {
+    public static void updateVoiceCommands(int selectedAction, int selectedVoiceID, int newVoice) throws ClassNotFoundException {
         Connection con = null;
 
+        String SQL = "UPDATE action_list "
+                + "SET id_voz = ? "
+                + "WHERE id_action = ? AND id_voz=?";
         try {
             con = DataConnect.getConnection();
-            con.setAutoCommit(false);
-            Statement statement = con.createStatement();
+            PreparedStatement pstmt = con.prepareStatement(SQL);
 
-            String querySel = "SELECT * from voz,action_list WHERE action_list.id_voz=" + selectedVoice + ";";
-            ResultSet rs = statement.executeQuery(querySel);
-            int id_action_list_old = 0;
-            while (rs.next()) {
-                id_action_list_old = rs.getInt("id_action_list");
-            }
-
-            querySel = "SELECT * from voz,action_list WHERE action_list.id_voz=" + newVoice + ";";
-            rs = statement.executeQuery(querySel);
-            int id_action_list_new = 0;
-            while (rs.next()) {
-                id_action_list_new = rs.getInt("id_action_list");
-            }
-            rs.close();
-
-            String query = "UPDATE action_list SET id_action=10 WHETE id_voz=" + selectedVoice + ";";
-            statement.executeUpdate(query);
-            query = "UPDATE action_list SET id_action =" + selectedVoice + " WHERE id_voz = " + newVoice + ";";
-            statement.executeUpdate(query);
-
-            query = "INSERT INTO perfil_action_list(id_perfil,id_action_list) VALUES(1," + id_action_list_new + ");";
-            statement.executeUpdate(query);
-
-            query = "DELETE FROM perfil_action_list WHERE id_perfil=1 AND id_action_list=" + id_action_list_old + ");";
-            statement.executeUpdate(query);
-
-            statement.close();
+            pstmt.setInt(1, newVoice);
+            pstmt.setInt(2, selectedAction);
+            pstmt.setInt(3, selectedVoiceID);
+            pstmt.executeUpdate();
+            con.close();
         } catch (SQLException ex) {
-            System.out.println("Login error -->" + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Update error -->" + ex.getMessage());
         } finally {
             DataConnect.close(con);
         }
+        
+        
     }
 
     public static List<ActionList> getActionListofProfile(Profile p) {
