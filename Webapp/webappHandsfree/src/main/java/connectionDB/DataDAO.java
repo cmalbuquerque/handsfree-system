@@ -428,6 +428,83 @@ public class DataDAO {
             DataConnect.close(con);
         }
     }
+
+    public static void insertProfile(String profileName){
+        
+        Connection con = null;
+
+        try {
+            con = DataConnect.getConnection();
+
+            String insert = "INSERT INTO perfil(nome) VALUES(?);";
+            PreparedStatement pstmt = con.prepareStatement(insert);
+
+            pstmt.setString(1, profileName);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Insert error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            DataConnect.close(con);
+        }
+    
+    }
+
+    public static int selectPerfilID(String profileName) {
+        
+        Connection con = null;
+        int id = 0;
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT id_perfil from perfil WHERE perfil.nome='"+profileName+"';");
+
+            while (rs.next()) {
+                id = Integer.parseInt(rs.getString(1));
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Search error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DataConnect.close(con);
+        }
+        return id;
+    
+    }
+
+    public static void insertPerfilPessoa(int userID, int id_perfil) {
+        
+        Connection con = null;
+
+        try {
+            con = DataConnect.getConnection();
+
+            String insert = "INSERT INTO pessoa_perfil(id_pessoa, id_perfil) VALUES(?,?);";
+            PreparedStatement pstmt = con.prepareStatement(insert);
+
+            pstmt.setInt(1, userID);
+            pstmt.setInt(2, id_perfil);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Insert error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            DataConnect.close(con);
+        }
+    
+    }
     
 
 }

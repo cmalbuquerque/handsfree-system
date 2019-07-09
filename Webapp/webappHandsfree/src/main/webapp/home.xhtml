@@ -74,9 +74,9 @@
                                     In total there are #{fn:length(dataListView.profiles)} profiles.
                                 </f:facet>
                             </p:carousel>
-                            <b:commandButton style="position:absolute;" action="#{menuappbean.createProfile()}"  value="Add Profile" icon="plus"/>
+                            <p:commandButton oncomplete="PF('createDialog').show();" style="position:absolute;" value="Add Profile" icon="plus"/>
                             <br/>
-                            
+
                         </h:form>
 
                     </b:column>
@@ -88,6 +88,20 @@
             </b:row>
 
         </b:container> 
+
+
+        <p:dialog header="Add new Profile" widgetVar="createDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <b:container fluid="true">
+                <h:form>
+                    <b:inputText value="#{dataListView.profileName}" placeholder="Profile Name" required="true" label="Profile Name" colMd="10" labelColMd="2">
+                    </b:inputText>
+                    <b:commandButton action="#{dataListView.createProfile()}" icon="ok" look="info" value="Create Profile" styleClass="ui-priority-primary"
+                             style="position:relative; left: 45%;" />
+                    
+                </h:form>
+            </b:container>
+
+        </p:dialog>
 
 
         <style type="text/css">

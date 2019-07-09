@@ -29,6 +29,8 @@ public class DataListViewBean implements Serializable {
     private List<Profile> profiles;
     private Profile selectedProfile;
     
+    private String profileName;
+    
 
     private HttpSession session;
 
@@ -54,6 +56,15 @@ public class DataListViewBean implements Serializable {
         this.selectedProfile = selectedProfile;
     }
 
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
+    }
+    
+   
     public List<Profile> addProfileData() {
         String email = (String) session.getAttribute("email");
         System.out.println("******** Session " + email);
@@ -62,6 +73,20 @@ public class DataListViewBean implements Serializable {
 
     public List<Gesto> addGestos() throws ClassNotFoundException {
         return GestoService.getGestos();
+    }
+    
+    
+    
+    
+    public String createProfile() {
+        String email = (String) session.getAttribute("email");
+        int userID = DataDAO.getUserId(email);
+        DataDAO.insertProfile(profileName);
+        int id_perfil = DataDAO.selectPerfilID(profileName);
+        DataDAO.insertPerfilPessoa(userID, id_perfil);
+        
+        return "home.xhtml";
+        
     }
 
 }
