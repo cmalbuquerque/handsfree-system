@@ -27,12 +27,16 @@
                         <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil">
                             <p:tab title="#{perfil.nome}">
                                 <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/>
+                                    <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedApp}" value="#{menuappbean.selectedApp}" />
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
                                 <br/>
                                 <b:commandButton  look="link" action="#{menuappbean.showVoiceCommands}"><b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/>
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedApp}" value="#{menuappbean.selectedApp}" />
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
 

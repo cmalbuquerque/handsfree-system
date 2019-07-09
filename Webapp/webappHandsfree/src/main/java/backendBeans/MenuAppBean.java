@@ -95,7 +95,6 @@ public class MenuAppBean implements Serializable {
     public String showVoiceCommands() {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("email", email);
-        session.setAttribute("app", selectedApp);
         session.setAttribute("profile", selectedProfile);
         return "profiles_voice.xhtml";
     }

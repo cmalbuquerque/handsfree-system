@@ -45,6 +45,14 @@ public class ProfilesView implements Serializable {
         return profilesApp;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public App getSelectedApp() {
+        return selectedApp;
+    }
+    
     public void setProfilesApp(List<Profile> profilesApp) {
         this.profilesApp = profilesApp;
     }

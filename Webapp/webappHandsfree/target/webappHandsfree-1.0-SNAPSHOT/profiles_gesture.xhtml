@@ -34,12 +34,14 @@
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />                                
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedApp}" value="#{menuappbean.selectedApp}" />
                                 </b:commandButton>
                                 <br/>
                                 <b:commandButton  look="link" action="#{menuappbean.showVoiceCommands}">
                                     <b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/>
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedApp}" value="#{menuappbean.selectedApp}" />
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
 
