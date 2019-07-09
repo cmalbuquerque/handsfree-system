@@ -8,6 +8,7 @@ package backendBeans;
 import connectionDB.DataDAO;
 import connectionDB.SessionUtils;
 import entities.Action;
+import entities.Gesto;
 import entities.Profile;
 import entities.Row;
 import entities.Voice;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpSession;
 @ViewScoped
 public class SelectOneView implements Serializable {
 
-    int selectedAction, selectedVoice;
+    int selectedAction, selectedVoice, selectedGesture;
     private Profile selectedProfile;
 
     private HttpSession session;
@@ -40,14 +41,25 @@ public class SelectOneView implements Serializable {
     private List<Row> listRow;
     private HashMap<Integer, Integer> map;
 
+    private List<Gesto> allGestures;
+
     @PostConstruct
     public void init() {
         session = SessionUtils.getSession();
+        allGestures = addAllGestos();
         actions = getListActions();
         voices = getListVoices();
         map = new HashMap<Integer, Integer>();
         listRow = new ArrayList<Row>();
         voicesUnsed = new ArrayList<Voice>();
+    }
+
+    public int getSelectedGesture() {
+        return selectedGesture;
+    }
+
+    public void setSelectedGesture(int selectedGesture) {
+        this.selectedGesture = selectedGesture;
     }
 
     public List<Row> getListRow() {
@@ -122,10 +134,28 @@ public class SelectOneView implements Serializable {
         this.map = map;
     }
 
-    public String addAction() {
-        int actionListID = DataDAO.insertAction(selectedAction, selectedVoice);
+    public List<Gesto> getAllGestures() {
+        return allGestures;
+    }
+
+    public void setAllGestures(List<Gesto> allGestures) {
+        this.allGestures = allGestures;
+    }
+
+    public String addVoiceAction() {
+        int actionListID = DataDAO.insertVoiceAction(selectedAction, selectedVoice);
         DataDAO.inserPerfilActionList(actionListID, selectedProfile);
         return "home.xhtml";
+    }
+
+    public String addGestureAction() {
+        int actionListID = DataDAO.insertGestureAction(selectedAction, selectedGesture);
+        DataDAO.inserPerfilActionList(actionListID, selectedProfile);
+        return "home.xhtml";
+    }
+
+    public List<Gesto> addAllGestos() {
+        return DataDAO.getAllGestos();
     }
 
     /*public List<Voice> addVoicesUnsed() {
@@ -144,7 +174,7 @@ public class SelectOneView implements Serializable {
         Profile selectedProfile = (Profile) session.getAttribute("profile");
         return DataDAO.voiceCommands(selectedProfile);
     }
-    */
+     */
 }
 
 //onclick="document.location.reload(true)

@@ -79,9 +79,6 @@
 
                         </p:dataGrid>
 
-                        <h:outputText value="Selected Action:" />
-                        <h:outputText  value="#{gesturesview.oldActionID}" style="font-weight: bold" />
-
                     </b:column>
                 </b:form>
 
@@ -91,7 +88,6 @@
             <p:dialog header="Possible Gestures: " id="display" widgetVar="dlg2" modal="true" style="margin-top:5%" height="500">
                 <!-- DataGrid  -->
                 <b:form id="form1">
-                    <h:outputText value="Selected Action: #{gesturesview.oldActionID}"></h:outputText>
                     <p:dataGrid var="gestures" value="#{gesturesview.listAllUnsedGestos}" columns="3" layout="grid"
                                 rows="12"  id="action">
                         <p:panel header="#{gestures.nome}" style="text-align:center">

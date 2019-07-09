@@ -466,7 +466,7 @@ public class DataDAO {
 
     }
 
-    public static int insertAction(int selectedAction, int selectedVoice) {
+    public static int insertVoiceAction(int selectedAction, int selectedVoice) {
         Connection con = null;
         int id = 0;
         try {
@@ -520,6 +520,62 @@ public class DataDAO {
             DataConnect.close(con);
         }
 
+    }
+    
+    public static List<Gesto> getAllGestos(){
+        Connection con = null;
+        List<Gesto> list = new ArrayList<Gesto>();
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("select gesto.id_gesto, gesto.gesto from gesto;");
+            list.clear();
+
+            while (rs.next()) {
+                Gesto gesto = new Gesto(Integer.parseInt(rs.getString(1)), rs.getString(2));
+                list.add(gesto);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DataConnect.close(con);
+        }
+        return list;
+    }
+    
+    
+    public static int insertGestureAction(int selectedAction, int selectedGesture) {
+        Connection con = null;
+        int id = 0;
+        try {
+            con = DataConnect.getConnection();
+
+            String insert = "INSERT INTO action_list(id_action,id_gesto) VALUES(?,?) RETURNING id_action_list;";
+            PreparedStatement pstmt = con.prepareStatement(insert);
+
+            pstmt.setInt(1, selectedAction);
+            pstmt.setInt(2, selectedGesture);
+
+            ResultSet st = pstmt.executeQuery();
+
+            while (st.next()) {
+                id = st.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Insert error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            DataConnect.close(con);
+        }
+        return id;
     }
     
     

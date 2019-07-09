@@ -62,15 +62,15 @@
                                         <h:outputText style="text-style: bold" value="#{perfil.nome}" />
                                         <br/><br/>
 
-                                        <b:commandButton look="info" value="Customize Profile"  icon="menu-hamburger">
+                                        <!--<b:commandButton look="info" value="Customize Profile"  icon="menu-hamburger">
                                             <f:setPropertyActionListener value="#{perfil}" target="#{dataListView.selectedProfile}" />
                                         </b:commandButton>
 
-                                        <br/><br/>
+                                        <br/><br/>-->
                                         <p:commandButton oncomplete="PF('addActions').show();" value="Add Actions" icon="fa fa-plus">
                                             <f:setPropertyActionListener value="#{perfil}" target="#{selectOneView.selectedProfile}" />
-                                            
-                                            
+
+
                                         </p:commandButton>
 
 
@@ -113,27 +113,47 @@
         </p:dialog>
 
 
-        <p:dialog header="Add actions" widgetVar="addActions" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:dialog header="Add actions" widgetVar="addActions" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="700">
             <b:container fluid="true">
-                <h:form>
-                    
-                    <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
-                        <p:outputLabel style="margin-left: 10%" for="advanced" value="Actions:" />
-                        <p:selectOneListbox id="advanced" value="#{selectOneView.selectedAction}" filter="true" filterMatchMode="contains">
-                            <f:selectItems value="#{selectOneView.actions}" var="action" itemLabel="#{action.nome}" itemValue="#{action.id}" />
-                        </p:selectOneListbox>
+                <p:tabView>
+                    <p:tab title="Gestures">
+                        <h:form>
+                            <h:panelGrid columns="4" style="margin-bottom:10px" columnClasses="value, value">
+                                <p:outputLabel style="margin-left: 10%" for="advanced1" value="Actions:" />
+                                <p:selectOneListbox id="advanced1" value="#{selectOneView.selectedAction}" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{selectOneView.actions}" var="action" itemLabel="#{action.nome}" itemValue="#{action.id}" />
+                                </p:selectOneListbox>
 
-                        <p:outputLabel style="margin-left: 10%" for="advancedVoices" value="Voices:" />
-                        <p:selectOneListbox id="advancedVoices" value="#{selectOneView.selectedVoice}" filter="true" filterMatchMode="contains">
-                            <f:selectItems value="#{selectOneView.voices}" var="voice" itemLabel="#{voice.voice}" itemValue="#{voice.id}" />
-                        </p:selectOneListbox>
-                    </h:panelGrid>
-                    
-                    <b:commandButton icon="ok" look="info" value="Submit" action="#{selectOneView.addAction()}" 
-                                       />
+                                <p:outputLabel style="margin-left: 10%" for="advancedGestures" value="Gestures:" />
+                                <p:selectOneListbox id="advancedGestures" value="#{selectOneView.selectedGesture}" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{selectOneView.allGestures}" var="gesture" itemLabel="#{gesture.nome}" itemValue="#{gesture.id}" />
+                                </p:selectOneListbox>
+                            </h:panelGrid>
 
-                    
-                </h:form>
+                            <b:commandButton style="margin-left: 40%" icon="ok" look="info" value="Add Action" action="#{selectOneView.addGestureAction()}"/>
+                         </h:form>
+                    </p:tab>
+                    <p:tab title="Voices">
+                        <h:form>
+                            <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
+                                <p:outputLabel style="margin-left: 10%" for="advanced" value="Actions:" />
+                                <p:selectOneListbox id="advanced" value="#{selectOneView.selectedAction}" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{selectOneView.actions}" var="action" itemLabel="#{action.nome}" itemValue="#{action.id}" />
+                                </p:selectOneListbox>
+
+                                <p:outputLabel style="margin-left: 10%" for="advancedVoices" value="Voices:" />
+                                <p:selectOneListbox id="advancedVoices" value="#{selectOneView.selectedVoice}" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{selectOneView.voices}" var="voice" itemLabel="#{voice.voice}" itemValue="#{voice.id}" />
+                                </p:selectOneListbox>
+                            </h:panelGrid>
+
+                            <b:commandButton style="margin-left: 40%" icon="ok" look="info" value="Add Action" action="#{selectOneView.addVoiceAction()}"/>
+                        </h:form>
+
+                    </p:tab>
+                </p:tabView>
+
+
             </b:container>
 
         </p:dialog>
