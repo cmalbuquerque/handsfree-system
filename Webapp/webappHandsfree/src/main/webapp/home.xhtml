@@ -102,7 +102,7 @@
         <p:dialog header="Add new Profile" widgetVar="createDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
             <b:container fluid="true">
                 <h:form>
-                    <b:inputText value="#{dataListView.profileName}" placeholder="Profile Name" required="true" label="Profile Name" colMd="10" labelColMd="2">
+                    <b:inputText value="#{dataListView.profileName}" placeholder="Profile Name" required="true" label="Profile Name">
                     </b:inputText>
                     <b:commandButton action="#{dataListView.createProfile()}" icon="ok" look="info" value="Create Profile" styleClass="ui-priority-primary"
                                      style="position:relative; left: 45%;" />
@@ -116,8 +116,6 @@
         <p:dialog header="Add actions" widgetVar="addActions" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
             <b:container fluid="true">
                 <h:form>
-                    
-                    
                     
                     <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
                         <p:outputLabel style="margin-left: 10%" for="advanced" value="Actions:" />

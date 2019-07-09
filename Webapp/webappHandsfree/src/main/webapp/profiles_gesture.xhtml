@@ -31,7 +31,9 @@
                             <p:tab title="#{perfil.nome}">
 
                                 <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/>       
-                                    <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
+                                    <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />                                
+                                    <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
                                 </b:commandButton>
                                 <br/>
                                 <b:commandButton  look="link" action="#{menuappbean.showVoiceCommands}">

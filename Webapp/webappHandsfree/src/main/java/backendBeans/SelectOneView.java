@@ -6,6 +6,7 @@
 package backendBeans;
 
 import connectionDB.DataDAO;
+import connectionDB.SessionUtils;
 import entities.Action;
 import entities.Profile;
 import entities.Row;
@@ -18,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,18 +31,23 @@ public class SelectOneView implements Serializable {
 
     int selectedAction, selectedVoice;
     private Profile selectedProfile;
-    
+
+    private HttpSession session;
+
     private List<Action> actions;
     private List<Voice> voices;
+    private List<Voice> voicesUnsed;
     private List<Row> listRow;
     private HashMap<Integer, Integer> map;
 
     @PostConstruct
     public void init() {
+        session = SessionUtils.getSession();
         actions = getListActions();
         voices = getListVoices();
         map = new HashMap<Integer, Integer>();
         listRow = new ArrayList<Row>();
+        voicesUnsed = new ArrayList<Voice>();
     }
 
     public List<Row> getListRow() {
@@ -57,6 +64,14 @@ public class SelectOneView implements Serializable {
 
     public int getSelectedAction() {
         return selectedAction;
+    }
+
+    public List<Voice> getVoicesUnsed() {
+        return voicesUnsed;
+    }
+
+    public void setVoicesUnsed(List<Voice> voicesUnsed) {
+        this.voicesUnsed = voicesUnsed;
     }
 
     public void setSelectedAction(int selectedAction) {
@@ -78,7 +93,6 @@ public class SelectOneView implements Serializable {
     public List<Voice> getVoices() {
         return voices;
     }
-    
 
     public void setVoices(List<Voice> voices) {
         this.voices = voices;
@@ -91,7 +105,7 @@ public class SelectOneView implements Serializable {
     public void setSelectedProfile(Profile selectedProfile) {
         this.selectedProfile = selectedProfile;
     }
-    
+
     public List<Action> getListActions() {
         return DataDAO.getAllActions();
     }
@@ -108,35 +122,29 @@ public class SelectOneView implements Serializable {
         this.map = map;
     }
 
-    public void onAddNew() throws ClassNotFoundException {
-        System.out.println("UNICO" + selectedAction);
-        System.out.println("OLA" + selectedAction);
-        System.out.println("XAU" + selectedVoice);
-
-        Row row = new Row();
-        row.setSelectAction(selectedAction);
-        row.setSelectedVoice(selectedVoice);
-        System.out.println(row.toString());
-
-        System.out.println("ADEUS");
-        listRow.add(row);
-        System.out.println("SIZE: " + listRow.size());
-
-        for (Row r : listRow) {
-            System.out.println("ENTROU NO LOOP");
-            System.out.println("R - ACTION : " + r.getSelectAction());
-            System.out.println("R - Voice : " + r.getSelectedVoice());
-
-        }
-    }
-
     public String addAction() {
-            int actionListID = DataDAO.insertAction(selectedAction, selectedVoice);
-            DataDAO.inserPerfilActionList(actionListID, selectedProfile);
+        int actionListID = DataDAO.insertAction(selectedAction, selectedVoice);
+        DataDAO.inserPerfilActionList(actionListID, selectedProfile);
         return "home.xhtml";
     }
 
-//input type="button"
+    /*public List<Voice> addVoicesUnsed() {
+        List<Voice> voicesUsed = addVoices();
+        System.out.println(voices);
+        System.out.println(voicesUsed);
+        for (Voice v : voices) {
+            if (!voicesUsed.contains(v)) {
+                voicesUnsed.add(v);
+            }
+        }
+        return voicesUnsed;
+    }
+
+    public List<Voice> addVoices() {
+        Profile selectedProfile = (Profile) session.getAttribute("profile");
+        return DataDAO.voiceCommands(selectedProfile);
+    }
+    */
 }
+
 //onclick="document.location.reload(true)
-//<h:outputText value="#{car.id}" />

@@ -101,7 +101,7 @@ public class DataDAO {
     }
 
     public static List<Voice> voiceCommands(Profile p) {
-
+        System.out.println(p);
         Connection con = null;
         List<Voice> lista = new ArrayList<Voice>();
         try {
@@ -541,5 +541,7 @@ public class DataDAO {
         }
 
     }
+    
+    
 
 }

@@ -78,8 +78,6 @@ public class MenuAppBean implements Serializable {
         return "application.xhtml";
     }
 
-    
-
     public String showGestureCommands() {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("selectedApp", selectedApp);
@@ -92,6 +90,14 @@ public class MenuAppBean implements Serializable {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("email", email);
         return "create_profile.xhtml";
+    }
+
+    public String showVoiceCommands() {
+        HttpSession session = SessionUtils.getSession();
+        session.setAttribute("email", email);
+        session.setAttribute("app", selectedApp);
+        session.setAttribute("profile", selectedProfile);
+        return "profiles_voice.xhtml";
     }
 
 }
