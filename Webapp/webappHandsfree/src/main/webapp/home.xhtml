@@ -66,6 +66,15 @@
                                             <f:setPropertyActionListener value="#{perfil}" target="#{dataListView.selectedProfile}" />
                                         </b:commandButton>
 
+                                        <br/><br/>
+                                        <p:commandButton oncomplete="PF('addActions').show();" value="Add Actions" icon="fa fa-plus">
+                                            <f:setPropertyActionListener value="#{perfil}" target="#{selectOneView.selectedProfile}" />
+                                            
+                                            
+                                        </p:commandButton>
+
+
+
                                     </f:facet>
 
                                 </p:panelGrid>
@@ -74,7 +83,7 @@
                                     In total there are #{fn:length(dataListView.profiles)} profiles.
                                 </f:facet>
                             </p:carousel>
-                            <p:commandButton oncomplete="PF('createDialog').show();" style="position:absolute;" value="Add Profile" icon="plus"/>
+                            <p:commandButton oncomplete="PF('createDialog').show();" style="position:absolute;" value="Add Profile" icon="fa fa-plus"/>
                             <br/>
 
                         </h:form>
@@ -96,7 +105,35 @@
                     <b:inputText value="#{dataListView.profileName}" placeholder="Profile Name" required="true" label="Profile Name" colMd="10" labelColMd="2">
                     </b:inputText>
                     <b:commandButton action="#{dataListView.createProfile()}" icon="ok" look="info" value="Create Profile" styleClass="ui-priority-primary"
-                             style="position:relative; left: 45%;" />
+                                     style="position:relative; left: 45%;" />
+
+                </h:form>
+            </b:container>
+
+        </p:dialog>
+
+
+        <p:dialog header="Add actions" widgetVar="addActions" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <b:container fluid="true">
+                <h:form>
+                    
+                    
+                    
+                    <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
+                        <p:outputLabel style="margin-left: 10%" for="advanced" value="Actions:" />
+                        <p:selectOneListbox id="advanced" value="#{selectOneView.selectedAction}" filter="true" filterMatchMode="contains">
+                            <f:selectItems value="#{selectOneView.actions}" var="action" itemLabel="#{action.nome}" itemValue="#{action.id}" />
+                        </p:selectOneListbox>
+
+                        <p:outputLabel style="margin-left: 10%" for="advancedVoices" value="Voices:" />
+                        <p:selectOneListbox id="advancedVoices" value="#{selectOneView.selectedVoice}" filter="true" filterMatchMode="contains">
+                            <f:selectItems value="#{selectOneView.voices}" var="voice" itemLabel="#{voice.voice}" itemValue="#{voice.id}" />
+                        </p:selectOneListbox>
+                    </h:panelGrid>
+                    
+                    <b:commandButton icon="ok" look="info" value="Submit" action="#{selectOneView.addAction()}" 
+                                       />
+
                     
                 </h:form>
             </b:container>

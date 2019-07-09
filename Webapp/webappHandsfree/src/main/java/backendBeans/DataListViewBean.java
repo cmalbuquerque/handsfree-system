@@ -81,8 +81,8 @@ public class DataListViewBean implements Serializable {
     public String createProfile() {
         String email = (String) session.getAttribute("email");
         int userID = DataDAO.getUserId(email);
-        DataDAO.insertProfile(profileName);
-        int id_perfil = DataDAO.selectPerfilID(profileName);
+        
+        int id_perfil = DataDAO.insertProfile(profileName);
         DataDAO.insertPerfilPessoa(userID, id_perfil);
         
         return "home.xhtml";

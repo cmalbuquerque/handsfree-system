@@ -7,6 +7,7 @@ package backendBeans;
 
 import connectionDB.DataDAO;
 import entities.Action;
+import entities.Profile;
 import entities.Row;
 import entities.Voice;
 import java.io.Serializable;
@@ -27,6 +28,8 @@ import javax.faces.bean.ViewScoped;
 public class SelectOneView implements Serializable {
 
     int selectedAction, selectedVoice;
+    private Profile selectedProfile;
+    
     private List<Action> actions;
     private List<Voice> voices;
     private List<Row> listRow;
@@ -36,10 +39,9 @@ public class SelectOneView implements Serializable {
     public void init() {
         actions = getListActions();
         voices = getListVoices();
-        map = new HashMap<Integer,Integer>();
+        map = new HashMap<Integer, Integer>();
         listRow = new ArrayList<Row>();
     }
-
 
     public List<Row> getListRow() {
         return listRow;
@@ -76,11 +78,20 @@ public class SelectOneView implements Serializable {
     public List<Voice> getVoices() {
         return voices;
     }
+    
 
     public void setVoices(List<Voice> voices) {
         this.voices = voices;
     }
 
+    public Profile getSelectedProfile() {
+        return selectedProfile;
+    }
+
+    public void setSelectedProfile(Profile selectedProfile) {
+        this.selectedProfile = selectedProfile;
+    }
+    
     public List<Action> getListActions() {
         return DataDAO.getAllActions();
     }
@@ -115,12 +126,17 @@ public class SelectOneView implements Serializable {
             System.out.println("ENTROU NO LOOP");
             System.out.println("R - ACTION : " + r.getSelectAction());
             System.out.println("R - Voice : " + r.getSelectedVoice());
-            
-            
+
         }
     }
-//input type="button"
 
+    public String addAction() {
+            int actionListID = DataDAO.insertAction(selectedAction, selectedVoice);
+            DataDAO.inserPerfilActionList(actionListID, selectedProfile);
+        return "home.xhtml";
+    }
+
+//input type="button"
 }
 //onclick="document.location.reload(true)
 //<h:outputText value="#{car.id}" />

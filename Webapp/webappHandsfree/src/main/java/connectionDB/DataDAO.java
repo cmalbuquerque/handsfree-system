@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.jsp.jstl.sql.Result;
 
 public class DataDAO {
 
@@ -379,7 +380,7 @@ public class DataDAO {
             con = DataConnect.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT id_pessoa from pessoa WHERE pessoa.email='"+email+"';");
+            ResultSet rs = statement.executeQuery("SELECT id_pessoa from pessoa WHERE pessoa.email='" + email + "';");
 
             while (rs.next()) {
                 id = Integer.parseInt(rs.getString(1));
@@ -395,25 +396,25 @@ public class DataDAO {
         }
         return id;
     }
-    
-    
+
     /**
      * Update gestos
+     *
      * @param oldActionID
      * @param oldGestoID
      * @param newGestoID
-     * @throws ClassNotFoundException 
+     * @throws ClassNotFoundException
      */
-    public static void Update(int oldActionID , int oldGestoID, int newGestoID) throws ClassNotFoundException {
+    public static void Update(int oldActionID, int oldGestoID, int newGestoID) throws ClassNotFoundException {
         Connection con = null;
         System.out.println(">> OldActionID: " + oldActionID);
         System.out.println(">> OldGestoID: " + oldGestoID);
         System.out.println(">> newGestoID: " + newGestoID);
-        
+
         String SQL = "UPDATE action_list "
                 + "SET id_gesto = ? "
                 + "WHERE id_action = ? AND id_gesto=?";
-        try {      
+        try {
             con = DataConnect.getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQL);
 
@@ -429,19 +430,23 @@ public class DataDAO {
         }
     }
 
-    public static void insertProfile(String profileName){
-        
-        Connection con = null;
+    public static int insertProfile(String profileName) {
 
+        Connection con = null;
+        int id = 0;
         try {
             con = DataConnect.getConnection();
 
-            String insert = "INSERT INTO perfil(nome) VALUES(?);";
+            String insert = "INSERT INTO perfil(nome) VALUES(?) RETURNING id_perfil;";
             PreparedStatement pstmt = con.prepareStatement(insert);
 
             pstmt.setString(1, profileName);
 
-            pstmt.executeUpdate();
+            ResultSet st = pstmt.executeQuery();
+
+            while (st.next()) {
+                id = st.getInt(1);
+            }
 
         } catch (SQLException ex) {
             System.out.println("Insert error -->" + ex.getMessage());
@@ -451,37 +456,12 @@ public class DataDAO {
 
             DataConnect.close(con);
         }
-    
-    }
-
-    public static int selectPerfilID(String profileName) {
-        
-        Connection con = null;
-        int id = 0;
-        try {
-            con = DataConnect.getConnection();
-            con.setAutoCommit(false);
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT id_perfil from perfil WHERE perfil.nome='"+profileName+"';");
-
-            while (rs.next()) {
-                id = Integer.parseInt(rs.getString(1));
-            }
-            rs.close();
-            statement.close();
-        } catch (SQLException ex) {
-            System.out.println("Search error -->" + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            DataConnect.close(con);
-        }
         return id;
-    
+
     }
 
     public static void insertPerfilPessoa(int userID, int id_perfil) {
-        
+
         Connection con = null;
 
         try {
@@ -503,8 +483,63 @@ public class DataDAO {
 
             DataConnect.close(con);
         }
-    
+
     }
-    
+
+    public static int insertAction(int selectedAction, int selectedVoice) {
+        Connection con = null;
+        int id = 0;
+        try {
+            con = DataConnect.getConnection();
+
+            String insert = "INSERT INTO action_list(id_action,id_voz) VALUES(?,?) RETURNING id_action_list;";
+            PreparedStatement pstmt = con.prepareStatement(insert);
+
+            pstmt.setInt(1, selectedAction);
+            pstmt.setInt(2, selectedVoice);
+
+            ResultSet st = pstmt.executeQuery();
+
+            while (st.next()) {
+                id = st.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ESTE Insert error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            DataConnect.close(con);
+        }
+        return id;
+    }
+
+    public static void inserPerfilActionList(int actionListID, Profile selectedProfile) {
+
+        Connection con = null;
+        try {
+            con = DataConnect.getConnection();
+
+            String insert = "INSERT INTO perfil_action_list(id_action_list,id_perfil) VALUES(?,?);";
+            PreparedStatement pstmt = con.prepareStatement(insert);
+
+            pstmt.setInt(1, actionListID);
+            pstmt.setInt(2, selectedProfile.getId());
+
+            pstmt.executeUpdate();
+
+            //pstmt.execute(insert, PreparedStatement.RETURN_GENERATED_KEYS);
+            //ResultSet keySet = pstmt.getGeneratedKeys();
+        } catch (SQLException ex) {
+            System.out.println("ESTE Insert error -->" + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            DataConnect.close(con);
+        }
+
+    }
 
 }
