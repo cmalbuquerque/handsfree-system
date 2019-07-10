@@ -61,6 +61,32 @@ public class GestoService {
         return list;
     }
 
+        public static List<Gesto> getGestosPerfil(int selectedProfile) throws ClassNotFoundException {
+        Connection con = null;
+        List<Gesto> list = new ArrayList<Gesto>();
+        try {
+            con = DataConnect.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("select gesto.id_gesto, gesto.gesto, action.id_action, action.nome from perfil_action_list, action_list, action, gesto WHERE perfil_action_list.id_perfil="+selectedProfile + " AND perfil_action_list.id_action_list=action_list.id_action_list AND action_list.id_action=action.id_action AND action_list.id_gesto=gesto.id_gesto;");
+            list.clear();
+
+            while (rs.next()) {
+                Gesto gesto = new Gesto(Integer.parseInt(rs.getString(1)), rs.getString(2));
+                Action a = new Action(Integer.parseInt(rs.getString(3)), rs.getString(4));
+                gesto.setAction(a);
+                list.add(gesto);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Error -->" + ex.getMessage());
+        } finally {
+            DataConnect.close(con);
+        }
+        return list;
+    }
+    
     public static List<Gesto> getAllGestos() throws ClassNotFoundException {
         Connection con = null;
         List<Gesto> list = new ArrayList<Gesto>();

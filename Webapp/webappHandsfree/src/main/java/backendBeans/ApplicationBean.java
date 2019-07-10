@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
 public class ApplicationBean implements Serializable {
 
     private HttpSession session;
-    
+
     private Profile profileToAdd;
 
     List<Profile> unsedProfilesbyApp;
@@ -55,8 +55,6 @@ public class ApplicationBean implements Serializable {
     public void setProfileToAdd(Profile profileToAdd) {
         this.profileToAdd = profileToAdd;
     }
-    
-    
 
     private List<Profile> getUnsedProfilesOfApp() {
         App selectedApp = (App) session.getAttribute("selectedApp");
@@ -81,5 +79,20 @@ public class ApplicationBean implements Serializable {
         return "profiles_gesture.xhtml";
     }
 
+    public String addProfile1() throws ClassNotFoundException {
+        App selectedApp = (App) session.getAttribute("selectedApp");
+        String email = (String) session.getAttribute("email");
+        int userID = DataDAO.getUserId(email);
+        DataDAO.addProfiletoApp(selectedApp, profileToAdd, userID);
+        return "emptypage.xhtml";
+    }
+    
+        public String addProfile2() throws ClassNotFoundException {
+        App selectedApp = (App) session.getAttribute("selectedApp");
+        String email = (String) session.getAttribute("email");
+        int userID = DataDAO.getUserId(email);
+        DataDAO.addProfiletoApp(selectedApp, profileToAdd, userID);
+        return "profiles_voice.xhtml";
+    }
 
 }

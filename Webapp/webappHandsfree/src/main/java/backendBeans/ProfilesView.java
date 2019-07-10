@@ -78,6 +78,7 @@ public class ProfilesView implements Serializable {
         selectedApp = (App) session.getAttribute("selectedApp");
         System.out.println("EMAIL: " + email);
         System.out.println("App: " + selectedApp);
+        selectedApp.setProfiles(DataDAO.listProfilesOfApp(selectedApp, email));
         return DataDAO.listProfilesOfApp(selectedApp, email);
     }
     

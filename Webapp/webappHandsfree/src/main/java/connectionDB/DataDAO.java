@@ -197,8 +197,7 @@ public class DataDAO {
         } finally {
             DataConnect.close(con);
         }
-        
-        
+
     }
 
     public static List<ActionList> getActionListofProfile(Profile p) {
@@ -521,8 +520,8 @@ public class DataDAO {
         }
 
     }
-    
-    public static List<Gesto> getAllGestos(){
+
+    public static List<Gesto> getAllGestos() {
         Connection con = null;
         List<Gesto> list = new ArrayList<Gesto>();
         try {
@@ -547,8 +546,7 @@ public class DataDAO {
         }
         return list;
     }
-    
-    
+
     public static int insertGestureAction(int selectedAction, int selectedGesture) {
         Connection con = null;
         int id = 0;
@@ -577,7 +575,5 @@ public class DataDAO {
         }
         return id;
     }
-    
-    
 
 }

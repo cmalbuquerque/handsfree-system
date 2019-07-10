@@ -29,6 +29,7 @@
                         <hr/>
                         <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil" >
                             <p:tab title="#{perfil.nome}">
+                                
                                 <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/>       
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />                                
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
@@ -55,66 +56,20 @@
                 <!-- DataGrid  -->
                 <b:form id="form">
                     <b:column col-sm="8" offset-sm="4" col-md="9" offset="3" styleClass="main">
-                        <p:dataGrid var="gestures" value="#{gesturesview.listGesto}" columns="3" layout="grid"
-                                    rows="12" paginator="true" id="gestures"
-                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                    rowsPerPageTemplate="6,12,16">
-
-                            <f:facet name="header">
-                                Gestures Panel
-                            </f:facet>
-
-                            <!-- dantes gesto.nome -->
-                            <p:panel header="Action: #{gestures.action.nome}" style="text-align:center">
-                                <h:panelGrid columns="1" style="width:100%">
-                                    <img src="resources/gestures/#{gestures.id}.gif" alt="" style="width: 100%; height: 20%;"/>
-                                    <br/><br/>
-                                    <h:outputText value="Gesture: #{gestures.nome}"></h:outputText>
-                                    <br/>
-                                    <p:commandButton icon="fa fa-exchange" onclick="PF('dlg2').show();" action="#{changegesturebean.getgestureid()}" value="Change Gesture">
-                                        <f:setPropertyActionListener target="#{gesturesview.oldActionID}" value="#{gestures.action.id}" /> 
-                                        <f:setPropertyActionListener target="#{gesturesview.oldGestoID}" value="#{gestures.id}" /> 
-                                    </p:commandButton>
-
-                                </h:panelGrid>
-                            </p:panel>
-
-                        </p:dataGrid>
+                        
 
                     </b:column>
                 </b:form>
 
             </b:row>
-
-            <!-- Dialog Popup  -->
-            <p:dialog header="Possible Gestures: " id="display" widgetVar="dlg2" modal="true" style="margin-top:5%" height="500">
-                <!-- DataGrid  -->
-                <b:form id="form1">
-                    <p:dataGrid var="gestures" value="#{gesturesview.listAllUnsedGestos}" columns="3" layout="grid"
-                                rows="12"  id="action">
-                        <p:panel header="#{gestures.nome}" style="text-align:center">
-                            <h:panelGrid columns="1" style="width:100%">
-                                <img src="resources/gestures/#{gestures.id}.gif" alt="" style="width: 60%; height: 20%;"/>
-                                <br/><br/>
-                                <p:commandButton icon="fa fa-check" onclick="document.location.reload(true)"  action="#{gesturesview.change()}" value="Choose Gesture">
-                                    <f:setPropertyActionListener target="#{gesturesview.newGestoID}" value="#{gestures.id}" /> 
-
-                                </p:commandButton>
-
-                            </h:panelGrid>
-                        </p:panel>
-
-                    </p:dataGrid>
-                </b:form>
-            </p:dialog> 
-
+            
             <!-- Dialog Popup  -->
             <p:dialog header="Add Profile to Application" widgetVar="dlgP" modal="true" width="80%">
                 <h:form>
                     <p:carousel value="#{applicationBean.unsedProfilesbyApp}" headerText="Profiles not used on this application" var="perfil" itemStyle="text-align:center" responsive="true">
                         <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
                             <f:facet name="header">
-                                <b:commandButton action="#{applicationBean.addProfile()}" onsuccess="refresh()" size="xs" style="background-color: #2C2F33; border-color: #2C2F33; margin-left: 90%" look="info" icon="plus">
+                                <b:commandButton action="#{applicationBean.addProfile1()}" onsuccess="refresh()" size="xs" style="background-color: #2C2F33; border-color: #2C2F33; margin-left: 90%" look="info" icon="plus">
                                     <f:setPropertyActionListener target="#{applicationBean.profileToAdd}" value="#{perfil}" />
                                 </b:commandButton><br/>
                                 <img src="resources/images/sets.png" alt=""/>

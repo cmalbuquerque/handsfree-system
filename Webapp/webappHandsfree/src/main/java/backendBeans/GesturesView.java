@@ -6,7 +6,9 @@
 package backendBeans;
 
 import connectionDB.DataDAO;
+import connectionDB.SessionUtils;
 import entities.Gesto;
+import entities.Profile;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.servlet.http.HttpSession;
 import services.GestoService;
 
 /**
@@ -31,12 +34,16 @@ public class GesturesView implements Serializable {
     private List<Gesto> allGestos;
     private List<Gesto> listAllUnsedGestos;
     
+    private Profile selectedProfile;
+    
     private int oldActionID, oldGestoID, newGestoID;
 
     
     private List<Gesto> listed = new ArrayList<Gesto>();
 
     private Gesto gesto;
+    
+    private HttpSession session;
 
     @ManagedProperty("#{gestoService}")
     private GestoService service;
@@ -44,7 +51,9 @@ public class GesturesView implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            listGesto = service.getGestos();
+            
+            session = SessionUtils.getSession();
+            listGesto = new ArrayList<>();
             allGestos = service.getAllGestos();
             listAllUnsedGestos = getUnsed();
         } catch (ClassNotFoundException ex) {
@@ -69,6 +78,14 @@ public class GesturesView implements Serializable {
     public void setListAllUnsedGestos(List<Gesto> listAllUnsedGestos) {
         this.listAllUnsedGestos = listAllUnsedGestos;
     }
+
+    public Profile getSelectedProfile() {
+        return selectedProfile;
+    }
+
+    public void setSelectedProfile(Profile selectedProfile) {
+        this.selectedProfile = selectedProfile;
+    }
     
     
     
@@ -90,8 +107,9 @@ public class GesturesView implements Serializable {
     
     
     
-    public List<Gesto> getListGesto() {
-        return listGesto;
+    public List<Gesto> getListGesto() throws ClassNotFoundException {
+        selectedProfile = (Profile) session.getAttribute("profile");
+        return service.getGestosPerfil(selectedProfile.getId());
     }
     
 
@@ -103,27 +121,6 @@ public class GesturesView implements Serializable {
         return listed;
     }
 
-    /*
-    public String getNome() {
-        return service.getGestoNome();
-    }   
-     */
-    //se for diferente no if, adicionar depois do if. os que vem a seguir sao diferentes
-    //se for igual, eliminar no fim.
-    public String getNome() {
-    
-        String nome = null;
-        for (Gesto gesto : getListGesto()) {
-            listed.add(gesto);
-            for (Gesto done : listed) {
-                if (gesto.getNome() == done.getNome()) {
-                    nome = gesto.getNome();
-                }
-            }
-        }
-        return nome;
-        
-    }
 
     public void setService(GestoService service) {
         this.service = service;

@@ -31,7 +31,7 @@
                             <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                                 <p:outputPanel>
                                     <h:panelGrid columns="2" cellpadding="5">
-                                        <b:commandButton look="info" value="App: #{app.nome}" icon="phone" action="#{menuappbean.showGestureCommands()}">
+                                        <b:commandButton look="info" value="App: #{app.nome}" icon="phone" action="#{menuappbean.showEmptyPage()}">
                                             <f:setPropertyActionListener target="#{menuappbean.selectedApp}" value="#{app}" />
                                             <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
 

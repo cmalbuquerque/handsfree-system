@@ -78,9 +78,16 @@ public class MenuAppBean implements Serializable {
         return "application.xhtml";
     }
 
-    public String showGestureCommands() {
+        public String showEmptyPage() {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("selectedApp", selectedApp);
+        session.setAttribute("email", email);
+        session.setAttribute("profile", selectedProfile);
+        return "emptypage.xhtml";
+    }
+    
+    public String showGestureCommands() {
+        HttpSession session = SessionUtils.getSession();
         session.setAttribute("email", email);
         session.setAttribute("profile", selectedProfile);
         return "profiles_gesture.xhtml";

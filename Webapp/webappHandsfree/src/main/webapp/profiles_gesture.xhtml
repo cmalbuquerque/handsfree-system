@@ -27,12 +27,12 @@
                     <h:form>
                         <h4>List of Profiles</h4>
                         <hr/>
-                        <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil">
+                        <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil" >
                             <p:tab title="#{perfil.nome}">
-
                                 <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/>       
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />                                
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{gesturesview.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{profilesbean.selectedApp}" value="#{menuappbean.selectedApp}" />
                                 </b:commandButton>
