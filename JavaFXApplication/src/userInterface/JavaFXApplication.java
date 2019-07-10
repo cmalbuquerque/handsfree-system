@@ -5,7 +5,7 @@
  */
 package userInterface;
 
-import Emulator.GesturesEmulator;
+import Emulator.GesturesVoiceEmulator;
 import Speech2Text.MainSpeech;
 import appBackend.ChromeController;
 import com.leapmotion.leap.Controller;
@@ -54,19 +54,19 @@ public class JavaFXApplication extends Application {
         //create database
         DatabaseConnection databaseConnection = new DatabaseConnection();
 
+        //chromeController
+        chromeController = new ChromeController();
+
         //leap motion stuff
-        GesturesEmulator emulator = new GesturesEmulator();
+        GesturesVoiceEmulator emulator = new GesturesVoiceEmulator(chromeController, this);
         MListener listener = new MListener(emulator);
         Controller controller = new Controller();
         controller.addListener(listener);
 
-        //chromeController
-        chromeController = new ChromeController();
-
         HashMap<Integer, String> userApps = dbGetUserApps();
 
         //start speech recognition
-        MainSpeech mainSpeech = new MainSpeech();
+        MainSpeech mainSpeech = new MainSpeech(emulator);
         mainSpeech.start();
 
         //-------------------------------------------------------------User Interface---------------------------------------------------------
@@ -207,6 +207,14 @@ public class JavaFXApplication extends Application {
         primaryStage.setScene(scene);
         primaryMenuController.setApps(userApps, chromeController);
         primaryStage.show();
+    }
+
+    public void showSecondaryMenu() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void showMainMenu() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

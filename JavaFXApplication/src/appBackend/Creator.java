@@ -2,7 +2,6 @@ package appBackend;
 
 import databaseDB.DatabaseConnection;
 import Speech2Text.MainSpeech;
-import Emulator.GesturesEmulator;
 import machineLearning.MListener;
 import com.leapmotion.leap.Controller;
 import java.util.Scanner;

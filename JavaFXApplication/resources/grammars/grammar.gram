@@ -6,5 +6,5 @@
 
 grammar grammar;
 
-public <feelings>  = (help) ( Alfred |refresh |hands free | full screen | show menu | show info);
+public <feelings>  = (help) (  change app | down | eight | eleven | flip | flip left | flip right | five | four | full screen | image info | hide | left | new tab | nine | ten | one | refresh | reset | resize | right | rotate | rotate left | rotate right | seven | six | show menu | space | ten | three | two | twelve | undo | up | zoom in | zoom out | reload);
 

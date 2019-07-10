@@ -1,5 +1,6 @@
 package Speech2Text;
 
+import Emulator.GesturesVoiceEmulator;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -58,12 +59,13 @@ public class MainSpeech extends Thread{
      * executed in an order
      */
     private ExecutorService eventsExecutorService = Executors.newFixedThreadPool(2);
-
+    public GesturesVoiceEmulator emulator;
     //------------------------------------------------------------------------------------
     /**
      * Constructor
      */
-    public MainSpeech() {
+    public MainSpeech(GesturesVoiceEmulator emulator) {
+         this.emulator = emulator;
         // Loading Message
         logger.log(Level.INFO, "Loading Speech Recognizer...\n");
 
@@ -146,7 +148,14 @@ public class MainSpeech extends Thread{
 
                                 //You said?
                                 System.out.println("You said: [" + speechRecognitionResult + "]\n");
-
+                                String[] array = speechRecognitionResult.split(" ");
+        
+                                if (array.length != 1) {
+                                    if (array[0].equals("help")) {
+                                        String command = speechRecognitionResult.substring(5);
+                                        emulator.receiveVoiceCommand(command);
+                                    }
+                                }
                             }
                         } else {
                             logger.log(Level.INFO, "Ingoring Speech Recognition Results...");
