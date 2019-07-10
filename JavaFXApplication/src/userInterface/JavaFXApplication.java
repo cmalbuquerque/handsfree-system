@@ -5,8 +5,14 @@
  */
 package userInterface;
 
+import Emulator.GesturesEmulator;
+import Speech2Text.MainSpeech;
 import appBackend.ChromeController;
+import com.leapmotion.leap.Controller;
+import databaseDB.DatabaseConnection;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,6 +23,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import machineLearning.MListener;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -42,34 +51,30 @@ public class JavaFXApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        aplicationHash = new HashMap<>();
-        System.out.println("Srsl: " + getChromeController());
-        //go get data from data base
-        aplicationHash.put("http://9gag.com", "9GAG");
-        aplicationHash.put("http://doctors0.com", "I'm a doctor");
-        aplicationHash.put("http://doctors1.com", "You'r a doctor");
-        aplicationHash.put("http://doctors2.com", "He's a doctor");
-        aplicationHash.put("http://doctors3.com", "We'r doctors");
-        aplicationHash.put("http://doctors4.com", "They'r doctors");
-        aplicationHash.put("http://doctors5.com", "Fuck doctors doctors");
-        System.out.println("--------------------------------" + chromeController + "--------------------------------");
-        System.out.println("WTAF - " + getChromeController());
+        //create database
+        DatabaseConnection databaseConnection = new DatabaseConnection();
 
+        //leap motion stuff
+        GesturesEmulator emulator = new GesturesEmulator();
+        MListener listener = new MListener(emulator);
+        Controller controller = new Controller();
+        controller.addListener(listener);
+
+        //chromeController
+        chromeController = new ChromeController();
+
+        HashMap<Integer, String> userApps = dbGetUserApps();
+
+        //start speech recognition
+        MainSpeech mainSpeech = new MainSpeech();
+        mainSpeech.start();
+
+        //-------------------------------------------------------------User Interface---------------------------------------------------------
         if (!checklogedIn()) {
-            Parent root = FXMLLoader.load(getClass().getResource("logIn.fxml"));
-            Stage logInStage = new Stage();
-            Scene scene = new Scene(root);
-            logInStage.setScene(scene);
-            logInStage.showAndWait();
+            logInWindow();
         }
 
-        FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("Menu.fxml"));
-        Parent root = fXMLLoader.load();
-        PrimaryMenuController primaryMenuController = fXMLLoader.<PrimaryMenuController>getController();
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryMenuController.setApps(aplicationHash, this);
-        primaryStage.show();
+        mainMenuWindow(primaryStage, userApps);
 
 //        Button btn = new Button();
 //        btn.setText("Say 'Hello World'");
@@ -145,22 +150,63 @@ public class JavaFXApplication extends Application {
         JavaFXApplication.loggedIn = loggedIn;
     }
 
-    public void setChromeControler(ChromeController controller) {
-        System.out.println("Chrome controller set: " + controller);
-        chromeController = controller;
-        System.out.println("Chrome controller seted: " + chromeController);
-
-    }
-
-    public void changeURL(String url) {
-
-        System.out.println("CC - " + getChromeController());
-        getChromeController().changeURL("https://9gag.com/");
-
-    }
-
     public ChromeController getChromeController() {
         return chromeController;
+    }
+
+    private void logInWindow() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("logIn.fxml"));
+        Stage logInStage = new Stage();
+        Scene scene = new Scene(root);
+        logInStage.setScene(scene);
+        logInStage.showAndWait();
+    }
+
+    private HashMap dbGetUserApps() {
+        Connection con = null;
+        HashMap<String, String> hash = new HashMap<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        try {
+            con = DatabaseConnection.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * from usa_app where id_pessoa=1;");
+            while (rs.next()) {
+                list.add(rs.getInt(3));
+            }
+        } catch (Exception e) {
+        }
+
+        return dbGetAppURL(list);
+    }
+
+    private HashMap dbGetAppURL(ArrayList<Integer> list) {
+        Connection con = null;
+        HashMap<Integer, String> hash = new HashMap<>();
+        try {
+            con = DatabaseConnection.getConnection();
+            con.setAutoCommit(false);
+            Statement statement = con.createStatement();
+            for (Integer i : list) {
+                ResultSet rs = statement.executeQuery("SELECT * FROM app where id_app=" + i + ";");
+                while (rs.next()) {
+                    hash.put(i, rs.getString(3));
+                }
+            }
+
+        } catch (Exception e) {
+        }
+        return hash;
+    }
+
+    private void mainMenuWindow(Stage primaryStage, HashMap<Integer, String> userApps) throws IOException {
+        FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("Menu.fxml"));
+        Parent root = fXMLLoader.load();
+        PrimaryMenuController primaryMenuController = fXMLLoader.<PrimaryMenuController>getController();
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryMenuController.setApps(userApps, chromeController);
+        primaryStage.show();
     }
 
 }

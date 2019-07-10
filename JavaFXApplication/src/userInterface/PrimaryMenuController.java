@@ -5,6 +5,7 @@
  */
 package userInterface;
 
+import appBackend.ChromeController;
 import java.awt.TextField;
 import java.net.URL;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class PrimaryMenuController implements Initializable {
 
     }
 
-    public void setApps(HashMap<String, String> hashMap, JavaFXApplication uiApp) {
+    public void setApps(HashMap<Integer, String> hashMap, ChromeController chromeController) {
         GridPane gridPane = new GridPane();
         gridPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         gridPane.setPrefSize(Double.MAX_VALUE, Double.MIN_VALUE);
@@ -58,16 +59,16 @@ public class PrimaryMenuController implements Initializable {
         double nrOfColumns = Math.ceil((double) (size + 2) / 2);
         System.out.println("Size -> " + size + " Columns -> " + nrOfColumns);
         int i = 0;
-        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+        for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
             i++;
-            String appURL = entry.getKey();
+            String appURL = entry.getKey().toString();
             String appName = entry.getValue();
             Button button = new Button(i + "\n" + appName);
             button.setMaxWidth(Double.MAX_VALUE);
             button.setId(Integer.toString(i));
             button.setOnAction(e -> {
                 System.out.println("Id " + button.getId());
-                uiApp.changeURL("URL");
+                chromeController.changeURL("https://9gag.com/");
             });
 
             if (i <= nrOfColumns) {

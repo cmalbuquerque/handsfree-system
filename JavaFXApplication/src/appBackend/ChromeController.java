@@ -42,6 +42,7 @@ public class ChromeController {
     }
 
     public void changeURL(String url) {
+        System.out.println("----------------------------");
         driver.get(url);
     }
 }

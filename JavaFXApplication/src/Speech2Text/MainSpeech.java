@@ -17,11 +17,9 @@ import edu.cmu.sphinx.result.WordResult;
 import static java.awt.event.KeyEvent.VK_F11;
 import static java.awt.event.KeyEvent.VK_F5;
 
-import keyboarEmulator.Keyboard;
 
 public class MainSpeech extends Thread{
 
-    Keyboard keyboardEmulator;
     // Necessary
     private LiveSpeechRecognizer recognizer;
 
@@ -66,7 +64,6 @@ public class MainSpeech extends Thread{
      * Constructor
      */
     public MainSpeech() {
-        keyboardEmulator = new Keyboard();
         // Loading Message
         logger.log(Level.INFO, "Loading Speech Recognizer...\n");
 
@@ -150,9 +147,6 @@ public class MainSpeech extends Thread{
                                 //You said?
                                 System.out.println("You said: [" + speechRecognitionResult + "]\n");
 
-                                //Call the appropriate method 
-                                makeDecision(speechRecognitionResult, speechResult.getWords());
-
                             }
                         } else {
                             logger.log(Level.INFO, "Ingoring Speech Recognition Results...");
@@ -227,31 +221,7 @@ public class MainSpeech extends Thread{
         }
     }
 
-    /**
-     * Takes a decision based on the given result
-     *
-     * @param speechWords
-     */
-    public void makeDecision(String speech, List<WordResult> speechWords) {
-        int keyF5 = VK_F5;
-        int keyF11 = VK_F11;
-        String[] array = speech.split(" ");
-        
-        if (array.length != 1) {
-            if (array[0].equals("help")) {
-                String command = speech.substring(5);
-                if (command.equals("refresh")) {
-                    keyboardEmulator.keyPress(keyF5);
-                } else if (command.equals("full screen")) {
-                    keyboardEmulator.keyPress(keyF11);
-                }
-            }
-        }
-
-        System.out.println(speech);
-
-    }
-
+   
     public boolean getIgnoreSpeechRecognitionResults() {
         return ignoreSpeechRecognitionResults;
     }
