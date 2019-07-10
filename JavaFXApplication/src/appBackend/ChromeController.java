@@ -28,8 +28,8 @@ public class ChromeController {
     public void openChrome() {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
-        //options.addArguments("user-data-dir=C:\\Users\\Andreia Patrocínio\\AppData\\Roaming\\Google\\Chrome\\User Data");
-        options.addArguments("user-data-dir=C:/Users/DiogoFerreira/AppData/Local/Google/Chrome/User Data");
+        options.addArguments("user-data-dir=C:\\Users\\Andreia Patrocínio\\AppData\\Roaming\\Google\\Chrome\\User Data");
+        //options.addArguments("user-data-dir=C:/Users/DiogoFerreira/AppData/Local/Google/Chrome/User Data");
 
         options.addArguments("--start-maximized");
         driver = new ChromeDriver(options);
@@ -45,6 +45,12 @@ public class ChromeController {
         System.out.println("----------------------------");
         driver.get(url);
     }
+
+    public WebDriver getDriver() {
+        return driver;
+    }
+    
+    
 }
 
 //class UrlUpdater extends Thread {

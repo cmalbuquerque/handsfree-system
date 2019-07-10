@@ -5,7 +5,7 @@
  */
 package machineLearning;
 
-import Emulator.GesturesEmulator;
+import Emulator.GesturesVoiceEmulator;
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Finger;
 import com.leapmotion.leap.Frame;
@@ -47,9 +47,9 @@ public class MListener extends Listener {
     private Double totalFrames;
     private String state;
         String[] gestos= {"click", "twoFingerClick", "panLeft", "panRight", "panUp", "panDown", "closedUp", "up", "stoped", "closedStoped"};
-        private GesturesEmulator emulator;
+        private GesturesVoiceEmulator emulator;
         
-    public MListener(GesturesEmulator emulator) {
+    public MListener(GesturesVoiceEmulator emulator) {
         try {
             this.trainreader = new FileReader(filepath);
             this.train = new Instances(trainreader);
@@ -98,7 +98,7 @@ public class MListener extends Listener {
                         Double treeResult = eval.evaluateModelOnce(forest, toPredict);
                         System.out.println("PREDICTED:");
                         System.out.println("forest predicted: " + gestos[treeResult.intValue()]);
-                        //emulator.receiveGesture(gestos[treeResult.intValue()]);
+                        emulator.receiveGesture(gestos[treeResult.intValue()]);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
