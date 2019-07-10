@@ -13,21 +13,24 @@ import org.openqa.selenium.chrome.ChromeOptions;
  *
  * @author DiogoFerreira
  */
-public class ChromeController extends Thread {
+public class ChromeController {
 
     WebDriver driver;
     public static String currentUrl;
+    public static String setUrl;
 
-    public void run() {
+    public ChromeController() {
         openChrome();
     }
 
+
+    
     public void openChrome() {
-        System.setProperty("webdriver.chrome.driver","chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         //options.addArguments("user-data-dir=C:\\Users\\Andreia Patrocínio\\AppData\\Roaming\\Google\\Chrome\\User Data");
         options.addArguments("user-data-dir=C:/Users/DiogoFerreira/AppData/Local/Google/Chrome/User Data");
-        
+
         options.addArguments("--start-maximized");
         driver = new ChromeDriver(options);
 
@@ -36,6 +39,10 @@ public class ChromeController extends Thread {
         //check if UrlChanged
 //        UrlUpdater urlUpdater = new UrlUpdater(driver);
 //        urlUpdater.start();
+    }
+
+    public void changeURL(String url) {
+        driver.get(url);
     }
 }
 

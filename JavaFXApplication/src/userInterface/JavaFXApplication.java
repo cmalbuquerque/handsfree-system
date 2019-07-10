@@ -5,10 +5,14 @@
  */
 package userInterface;
 
+import appBackend.ChromeController;
 import java.io.IOException;
+import java.util.HashMap;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -20,45 +24,76 @@ import javafx.stage.Stage;
  */
 public class JavaFXApplication extends Application {
 
+    HashMap<String, String> aplicationHash;
+    public ChromeController chromeController;
+
+    public JavaFXApplication(ChromeController chromeController) {
+        this.chromeController = chromeController;
+    }
+
+    public JavaFXApplication() {
+    }
+
     public static void startUI(String[] args) {
         Application.launch(args);
     }
 
+    public static Boolean loggedIn = false;
+
     @Override
     public void start(Stage primaryStage) throws IOException {
-//        Parent root = FXMLLoader.load(getClass().getResource("resources/fxml/Scene.fxml"));
-//        Scene scene = new Scene(root);
+        aplicationHash = new HashMap<>();
+        System.out.println("Srsl: " + getChromeController());
+        //go get data from data base
+        aplicationHash.put("http://9gag.com", "9GAG");
+        aplicationHash.put("http://doctors0.com", "I'm a doctor");
+        aplicationHash.put("http://doctors1.com", "You'r a doctor");
+        aplicationHash.put("http://doctors2.com", "He's a doctor");
+        aplicationHash.put("http://doctors3.com", "We'r doctors");
+        aplicationHash.put("http://doctors4.com", "They'r doctors");
+        aplicationHash.put("http://doctors5.com", "Fuck doctors doctors");
+        System.out.println("--------------------------------" + chromeController + "--------------------------------");
+        System.out.println("WTAF - " + getChromeController());
 
-
-        if (!checklogedIn()){
-            //log in page
-            LogInWindow.display();
+        if (!checklogedIn()) {
+            Parent root = FXMLLoader.load(getClass().getResource("logIn.fxml"));
+            Stage logInStage = new Stage();
+            Scene scene = new Scene(root);
+            logInStage.setScene(scene);
+            logInStage.showAndWait();
         }
 
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello Worlddd!");
-            }
-        });
-
-        btn.setOnAction(e -> {
-            System.out.println("Olá");
-        });
-
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-
-        Scene scene = new Scene(root, 300, 250);
-        //scene.getStylesheets().add("D:\\UA\\Ano4\\PI\\HandsfreeSystem\\JavaFXApplication\\resources\\styles\\Styles.css");
-
-        primaryStage.setTitle("Hello World!");
+        FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("Menu.fxml"));
+        Parent root = fXMLLoader.load();
+        PrimaryMenuController primaryMenuController = fXMLLoader.<PrimaryMenuController>getController();
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryMenuController.setApps(aplicationHash, this);
         primaryStage.show();
 
+//        Button btn = new Button();
+//        btn.setText("Say 'Hello World'");
+//        btn.setOnAction(new EventHandler<ActionEvent>() {
+//
+//            @Override
+//            public void handle(ActionEvent event) {
+//                System.out.println("Hello Worlddd!");
+//            }
+//        });
+//
+//        btn.setOnAction(e -> {
+//            System.out.println("Olá");
+//        });
+//
+//        StackPane pane = new StackPane();
+//        pane.getChildren().add(btn);
+//
+//        Scene scene = new Scene(pane, 300, 250);
+//        //scene.getStylesheets().add("D:\\UA\\Ano4\\PI\\HandsfreeSystem\\JavaFXApplication\\resources\\styles\\Styles.css");
+//
+//        primaryStage.setTitle("Hello World!");
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
 //        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 //        double screenRightEdge = primScreenBounds.getMaxX() ;
 //        stage.setX(screenRightEdge);
@@ -103,8 +138,29 @@ public class JavaFXApplication extends Application {
     }
 
     private boolean checklogedIn() {
-        return true;
+        return loggedIn;
     }
 
+    public static void setLoggedIn(Boolean loggedIn) {
+        JavaFXApplication.loggedIn = loggedIn;
+    }
+
+    public void setChromeControler(ChromeController controller) {
+        System.out.println("Chrome controller set: " + controller);
+        chromeController = controller;
+        System.out.println("Chrome controller seted: " + chromeController);
+
+    }
+
+    public void changeURL(String url) {
+
+        System.out.println("CC - " + getChromeController());
+        getChromeController().changeURL("https://9gag.com/");
+
+    }
+
+    public ChromeController getChromeController() {
+        return chromeController;
+    }
 
 }
