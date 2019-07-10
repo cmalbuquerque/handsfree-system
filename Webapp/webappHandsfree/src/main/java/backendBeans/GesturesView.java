@@ -55,7 +55,7 @@ public class GesturesView implements Serializable {
             session = SessionUtils.getSession();
             listGesto = new ArrayList<>();
             allGestos = service.getAllGestos();
-            listAllUnsedGestos = getUnsed();
+            listAllUnsedGestos = new ArrayList<>();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GesturesView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -109,7 +109,9 @@ public class GesturesView implements Serializable {
     
     public List<Gesto> getListGesto() throws ClassNotFoundException {
         selectedProfile = (Profile) session.getAttribute("profile");
-        return service.getGestosPerfil(selectedProfile.getId());
+        listGesto=service.getGestosPerfil(selectedProfile.getId());
+        listAllUnsedGestos = getUnsed();
+        return listGesto;
     }
     
 
