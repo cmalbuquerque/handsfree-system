@@ -109,7 +109,7 @@ public class VoicesBean {
     }
     
     public List<Voice> addVoicesUnsed() {
-        for(Voice v : allVoices){
+        for(Voice v : allVoices2){
             if(!voices.contains(v))
                 voicesUnsed.add(v);
         }
