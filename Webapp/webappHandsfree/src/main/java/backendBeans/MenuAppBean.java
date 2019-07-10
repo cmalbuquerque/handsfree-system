@@ -26,11 +26,11 @@ import javax.servlet.http.HttpSession;
 public class MenuAppBean implements Serializable {
 
     private String email;
-    
+
     private List<App> apps;
 
     private App selectedApp;
-    
+
     private Profile selectedProfile;
 
     private HttpSession session;
@@ -49,8 +49,6 @@ public class MenuAppBean implements Serializable {
         this.selectedProfile = selectedProfile;
     }
 
-    
-    
     public List<App> getApps() {
         return apps;
     }
@@ -72,18 +70,38 @@ public class MenuAppBean implements Serializable {
         return DataDAO.listApps(email);
     }
 
-    public String showGestureCommands() {
+    public String showApps() {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("selectedApp", selectedApp);
+        session.setAttribute("email", email);
+        session.setAttribute("profile", selectedProfile);
+        return "application.xhtml";
+    }
+
+        public String showEmptyPage() {
+        HttpSession session = SessionUtils.getSession();
+        session.setAttribute("selectedApp", selectedApp);
+        session.setAttribute("email", email);
+        session.setAttribute("profile", selectedProfile);
+        return "emptypage.xhtml";
+    }
+    
+    public String showGestureCommands() {
+        HttpSession session = SessionUtils.getSession();
         session.setAttribute("email", email);
         session.setAttribute("profile", selectedProfile);
         return "profiles_gesture.xhtml";
     }
 
+    public String createProfile() {
+        HttpSession session = SessionUtils.getSession();
+        session.setAttribute("email", email);
+        return "create_profile.xhtml";
+    }
+
     public String showVoiceCommands() {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("email", email);
-        session.setAttribute("app", selectedApp);
         session.setAttribute("profile", selectedProfile);
         return "profiles_voice.xhtml";
     }

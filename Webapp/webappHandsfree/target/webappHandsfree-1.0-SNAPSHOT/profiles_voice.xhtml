@@ -27,18 +27,23 @@
                         <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil">
                             <p:tab title="#{perfil.nome}">
                                 <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/>
+                                    <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedApp}" value="#{menuappbean.selectedApp}" />
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
                                 <br/>
                                 <b:commandButton  look="link" action="#{menuappbean.showVoiceCommands}"><b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/>
                                     <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
                                     <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedApp}" value="#{menuappbean.selectedApp}" />
                                     <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
                                 </b:commandButton>
 
                             </p:tab>
                             <br/>
                         </p:accordionPanel>
+                        <b:commandButton look="info" value="Add Profile" icon="plus" type="button" onclick="PF('dlgP').show();" style="position:absolute; bottom:0; margin-bottom: 10%;" />
 
                     </h:form>
                 </b:column>
@@ -52,10 +57,10 @@
 
                 <h:form id="form">
                     <b:column col-sm="8" offset-sm="4" col-md="9" offset="3" styleClass="main">
-                        
+
                         <h1>Voice Commands Management</h1>
                         <hr/>
-                        
+
                         <p:dataTable widgetVar="voicesTable" var="voz" value="#{voicesbean.voices}"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -71,9 +76,9 @@
                             </p:column>
 
                             <p:column style="text-align: center;">
-                                <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" value="Change Voice">
+                                <b:commandButton look="info" update=":form:carDetail" oncomplete="PF('carDialog').show()" value="Change Voice" icon="transfer">
                                     <f:setPropertyActionListener value="#{voz}" target="#{voicesbean.selectedVoice}" />
-                                </p:commandButton>
+                                </b:commandButton>
                             </p:column>
 
                         </p:dataTable>
@@ -94,7 +99,7 @@
                                     <h:outputText value="New Voice Command " />
                                     <b:selectOneMenu value="#{voicesbean.newVoice}" required="true">
                                         <f:selectItem itemLabel="(Please select)" itemValue="" />
-                                        <f:selectItems value="${voicesbean.addVoicesUnsed()}" var="voz" itemValue="#{voz}" itemLabel="#{voz.voice}" />
+                                        <f:selectItems value="${voicesbean.allVoices2}" var="voz" itemValue="#{voz}" itemLabel="#{voz.voice}" />
                                     </b:selectOneMenu>
                                 </p:panelGrid>
                                 <br/>
@@ -107,6 +112,30 @@
                 </h:form>
 
             </b:row>
+
+            <!-- Dialog Popup  -->
+            <p:dialog header="Add Profile to Application" widgetVar="dlgP" modal="true" width="80%">
+                <h:form>
+                    <p:carousel value="#{applicationBean.unsedProfilesbyApp}" headerText="Profiles not used on this application" var="perfil" itemStyle="text-align:center" responsive="true">
+                        <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+                            <f:facet name="header">
+                                <b:commandButton action="#{applicationBean.addProfile2()}" onsuccess="refresh()" size="xs" style="background-color: #2C2F33; border-color: #2C2F33; margin-left: 90%" look="info" icon="plus">
+                                    <f:setPropertyActionListener target="#{applicationBean.profileToAdd}" value="#{perfil}" />
+                                </b:commandButton><br/>
+                                <img src="resources/images/sets.png" alt=""/>
+                                <br/><br/>
+                                <h:outputText style="text-style: bold" value="#{perfil.nome}" />
+                                <br/><br/>
+                                <b:commandButton look="info" value="Show Action List" icon="menu-hamburger">
+
+                                </b:commandButton>
+                                <br/><br/>
+
+                            </f:facet>
+                        </p:panelGrid>
+                    </p:carousel>
+                </h:form>
+            </p:dialog>
 
         </b:container> 
 

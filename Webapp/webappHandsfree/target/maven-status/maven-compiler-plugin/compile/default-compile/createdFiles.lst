@@ -1,5 +1,6 @@
 entities\Action.class
 backendBeans\ChangeGestureBean.class
+backendBeans\ApplicationBean.class
 backendBeans\VoicesBean.class
 backendBeans\DataListViewBean.class
 generalstuff\Hash.class
@@ -10,6 +11,7 @@ entities\Gesto.class
 connectionDB\ChangeGesture.class
 services\GestoService.class
 connectionDB\SessionUtils.class
+entities\Row.class
 services\ActionService.class
 entities\Profile.class
 entities\App.class
@@ -23,3 +25,4 @@ entities\Pessoa.class
 backendBeans\MenuAppBean.class
 connectionDB\LoginDAO.class
 backendBeans\ActionView.class
+backendBeans\SelectOneView.class

@@ -45,6 +45,14 @@ public class ProfilesView implements Serializable {
         return profilesApp;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public App getSelectedApp() {
+        return selectedApp;
+    }
+    
     public void setProfilesApp(List<Profile> profilesApp) {
         this.profilesApp = profilesApp;
     }
@@ -68,6 +76,9 @@ public class ProfilesView implements Serializable {
     public List<Profile> addProfilesOfApp() {
         email = (String) session.getAttribute("email");
         selectedApp = (App) session.getAttribute("selectedApp");
+        System.out.println("EMAIL: " + email);
+        System.out.println("App: " + selectedApp);
+        selectedApp.setProfiles(DataDAO.listProfilesOfApp(selectedApp, email));
         return DataDAO.listProfilesOfApp(selectedApp, email);
     }
     

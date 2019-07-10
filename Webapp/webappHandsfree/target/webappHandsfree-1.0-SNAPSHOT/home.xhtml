@@ -31,10 +31,10 @@
                             <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                                 <p:outputPanel>
                                     <h:panelGrid columns="2" cellpadding="5">
-                                        <b:commandButton look="info" value="App: #{app.nome}" icon="phone" action="#{menuappbean.showGestureCommands}">
+                                        <b:commandButton look="info" value="App: #{app.nome}" icon="phone" action="#{menuappbean.showEmptyPage()}">
                                             <f:setPropertyActionListener target="#{menuappbean.selectedApp}" value="#{app}" />
                                             <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
-                                            
+
                                         </b:commandButton>
                                     </h:panelGrid>
                                 </p:outputPanel>
@@ -45,33 +45,37 @@
 
                     </h:form>
                 </b:column>
-                <b:form>
+                <b:form id="first">
                     <b:column col-sm="8" offset-sm="4" col-md="9" offset="3" styleClass="main">
-                        <h1>Profiles</h1>
+                        <h1>Profiles </h1>
+
+
                         <hr/>
                         <h:form id="form">
 
                             <p:carousel value="#{dataListView.profiles}" headerText="" var="perfil" itemStyle="text-align:center" responsive="true">
                                 <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
                                     <f:facet name="header">
-                                        <b:button style="float:right" value="" icon="trash" look="danger" size="xs"/>
-                                        <br/>
-                                        <br/>
+
                                         <img src="resources/images/sets.png" alt=""/>
                                         <br/><br/>
                                         <h:outputText style="text-style: bold" value="#{perfil.nome}" />
+                                        <br/><br/>
+
+                                        <!--<b:commandButton look="info" value="Customize Profile"  icon="menu-hamburger">
+                                            <f:setPropertyActionListener value="#{perfil}" target="#{dataListView.selectedProfile}" />
+                                        </b:commandButton>
+
+                                        <br/><br/>-->
+                                        <p:commandButton oncomplete="PF('addActions').show();" value="Add Actions" icon="fa fa-plus">
+                                            <f:setPropertyActionListener value="#{perfil}" target="#{selectOneView.selectedProfile}" />
+
+
+                                        </p:commandButton>
+
+
+
                                     </f:facet>
-
-                                    <!--<h:outputText value="Id:" />
-                                    <h:outputText value="None" />
-                                    
-                                    <h:outputText value="Id:" />
-                                    <h:outputText value="None" />
-                                    
-                                    
-                                    <h:outputText value="Used on: " />
-                                    <h:outputText value="#{nome}" />-->
-
 
                                 </p:panelGrid>
 
@@ -79,16 +83,88 @@
                                     In total there are #{fn:length(dataListView.profiles)} profiles.
                                 </f:facet>
                             </p:carousel>
+                            <p:commandButton oncomplete="PF('createDialog').show();" style="position:absolute;" value="Add Profile" icon="fa fa-plus"/>
+                            <br/>
+
                         </h:form>
+
                     </b:column>
-                    <b:button look="info" value="Add Profile" icon="plus" style="position:absolute; bottom: 0; right: 0; margin-bottom: 2%; margin-right: 2%"/>
+
+
+
+
                 </b:form>
             </b:row>
 
         </b:container> 
 
 
+        <p:dialog header="Add new Profile" widgetVar="createDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <b:container fluid="true">
+                <h:form>
+                    <b:inputText value="#{dataListView.profileName}" placeholder="Profile Name" required="true" label="Profile Name">
+                    </b:inputText>
+                    <b:commandButton action="#{dataListView.createProfile()}" icon="ok" look="info" value="Create Profile" styleClass="ui-priority-primary"
+                                     style="position:relative; left: 45%;" />
+
+                </h:form>
+            </b:container>
+
+        </p:dialog>
+
+
+        <p:dialog header="Add actions" widgetVar="addActions" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="700">
+            <b:container fluid="true">
+                <p:tabView>
+                    <p:tab title="Gestures">
+                        <h:form>
+                            <h:panelGrid columns="4" style="margin-bottom:10px" columnClasses="value, value">
+                                <p:outputLabel style="margin-left: 10%" for="advanced1" value="Actions:" />
+                                <p:selectOneListbox id="advanced1" value="#{selectOneView.selectedAction}" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{selectOneView.actions}" var="action" itemLabel="#{action.nome}" itemValue="#{action.id}" />
+                                </p:selectOneListbox>
+
+                                <p:outputLabel style="margin-left: 10%" for="advancedGestures" value="Gestures:" />
+                                <p:selectOneListbox id="advancedGestures" value="#{selectOneView.selectedGesture}" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{selectOneView.allGestures}" var="gesture" itemLabel="#{gesture.nome}" itemValue="#{gesture.id}" />
+                                </p:selectOneListbox>
+                            </h:panelGrid>
+
+                            <b:commandButton style="margin-left: 40%" icon="ok" look="info" value="Add Action" action="#{selectOneView.addGestureAction()}"/>
+                         </h:form>
+                    </p:tab>
+                    <p:tab title="Voices">
+                        <h:form>
+                            <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5" columnClasses="value, value">
+                                <p:outputLabel style="margin-left: 10%" for="advanced" value="Actions:" />
+                                <p:selectOneListbox id="advanced" value="#{selectOneView.selectedAction}" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{selectOneView.actions}" var="action" itemLabel="#{action.nome}" itemValue="#{action.id}" />
+                                </p:selectOneListbox>
+
+                                <p:outputLabel style="margin-left: 10%" for="advancedVoices" value="Voices:" />
+                                <p:selectOneListbox id="advancedVoices" value="#{selectOneView.selectedVoice}" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{selectOneView.voices}" var="voice" itemLabel="#{voice.voice}" itemValue="#{voice.id}" />
+                                </p:selectOneListbox>
+                            </h:panelGrid>
+
+                            <b:commandButton style="margin-left: 40%" icon="ok" look="info" value="Add Action" action="#{selectOneView.addVoiceAction()}"/>
+                        </h:form>
+
+                    </p:tab>
+                </p:tabView>
+
+
+            </b:container>
+
+        </p:dialog>
+
+
         <style type="text/css">
+
+
+            .label, .value {
+                vertical-align: top
+            }
 
             .ui-carousel {
                 margin-bottom: 20px;

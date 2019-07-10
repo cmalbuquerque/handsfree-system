@@ -30,6 +30,7 @@ public class VoicesBean {
     private List<Voice> voices;
     private List<Voice> voicesUnsed;
     private List<Voice> allVoices;
+    private List<Voice> allVoices2;
     
     
     private Voice selectedVoice;
@@ -40,6 +41,7 @@ public class VoicesBean {
         session = SessionUtils.getSession();
         voices = addVoices();
         allVoices = addAllVoices();
+        allVoices2 = addAllVoices2();
         voicesUnsed = new ArrayList<Voice>();
     }
 
@@ -82,6 +84,16 @@ public class VoicesBean {
     public void setSelectedVoice(Voice selectedVoice) {
         this.selectedVoice = selectedVoice;
     }
+
+    public List<Voice> getAllVoices2() {
+        return allVoices2;
+    }
+
+    public void setAllVoices2(List<Voice> allVoices2) {
+        this.allVoices2 = allVoices2;
+    }
+    
+    
    
     public List<Voice> addVoices() {
         Profile selectedProfile = (Profile) session.getAttribute("profile");
@@ -92,8 +104,12 @@ public class VoicesBean {
         return DataDAO.getAllVoices();
     }
     
+    public List<Voice> addAllVoices2(){
+        return DataDAO.getAllVoicesWithoutActions();
+    }
+    
     public List<Voice> addVoicesUnsed() {
-        for(Voice v : allVoices){
+        for(Voice v : allVoices2){
             if(!voices.contains(v))
                 voicesUnsed.add(v);
         }
@@ -101,14 +117,9 @@ public class VoicesBean {
     }
     
     
-    public void updateVoiceCommands(){
+    public String updateVoiceCommands() throws ClassNotFoundException{
         System.out.println("SELECTED: " + selectedVoice.getAction() + "\nNEW:" +  newVoice);
-        //DataDAO.updateVoiceCommands(selectedVoice.getAction().getId(), newVoice.getId());
-        refresh();
-    }
-    
-    
-    public String refresh(){
+        DataDAO.updateVoiceCommands(selectedVoice.getAction().getId(), selectedVoice.getId(), newVoice.getId());
         return "profiles_voice.xhtml";
     }
 
