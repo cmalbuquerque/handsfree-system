@@ -61,14 +61,15 @@ public class PrimaryMenuController implements Initializable {
         int i = 0;
         for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
             i++;
-            String appURL = entry.getKey().toString();
-            String appName = entry.getValue();
-            Button button = new Button(i + "\n" + appName);
+            String appId = entry.getKey().toString();
+            String appURL = entry.getValue();
+            Button button = new Button(i + "\n" + appURL);
             button.setMaxWidth(Double.MAX_VALUE);
             button.setId(Integer.toString(i));
             button.setOnAction(e -> {
                 System.out.println("Id " + button.getId());
-                chromeController.changeURL("https://9gag.com/");
+                ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
+                chromeController.changeURL(appURL);
             });
 
             if (i <= nrOfColumns) {
@@ -81,11 +82,18 @@ public class PrimaryMenuController implements Initializable {
         i++;
         Button addBtn = new Button(i++ + "\n" + "Adicionar Aplicação");
         addBtn.setMaxWidth(Double.MAX_VALUE);
-        addBtn.setOnAction(e -> System.out.println("Id " + addBtn.getId()));
+        addBtn.setOnAction(e -> {
+            System.out.println("Id " + addBtn.getId());
+            ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
+
+        });
 
         Button exitBtn = new Button(i++ + "\n" + "Sair");
         exitBtn.setMaxWidth(Double.MAX_VALUE);
-        exitBtn.setOnAction(e -> System.out.println("Id " + exitBtn.getId()));
+        exitBtn.setOnAction(e -> {
+            System.out.println("Id " + exitBtn.getId());
+            ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
+        });
 
         gridPane.addRow(1, addBtn);
         gridPane.addRow(1, exitBtn);

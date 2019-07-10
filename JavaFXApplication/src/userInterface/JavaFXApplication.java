@@ -75,6 +75,9 @@ public class JavaFXApplication extends Application {
         }
 
         mainMenuWindow(primaryStage, userApps);
+        
+        
+        secondaryMenuWindow();
 
 //        Button btn = new Button();
 //        btn.setText("Say 'Hello World'");
@@ -154,14 +157,6 @@ public class JavaFXApplication extends Application {
         return chromeController;
     }
 
-    private void logInWindow() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("logIn.fxml"));
-        Stage logInStage = new Stage();
-        Scene scene = new Scene(root);
-        logInStage.setScene(scene);
-        logInStage.showAndWait();
-    }
-
     private HashMap dbGetUserApps() {
         Connection con = null;
         HashMap<String, String> hash = new HashMap<>();
@@ -175,6 +170,7 @@ public class JavaFXApplication extends Application {
                 list.add(rs.getInt(3));
             }
         } catch (Exception e) {
+            System.out.println(e.toString());
         }
 
         return dbGetAppURL(list);
@@ -195,8 +191,17 @@ public class JavaFXApplication extends Application {
             }
 
         } catch (Exception e) {
+            System.out.println(e.toString());
         }
         return hash;
+    }
+
+    private void logInWindow() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("logIn.fxml"));
+        Stage logInStage = new Stage();
+        Scene scene = new Scene(root);
+        logInStage.setScene(scene);
+        logInStage.showAndWait();
     }
 
     private void mainMenuWindow(Stage primaryStage, HashMap<Integer, String> userApps) throws IOException {
@@ -207,6 +212,10 @@ public class JavaFXApplication extends Application {
         primaryStage.setScene(scene);
         primaryMenuController.setApps(userApps, chromeController);
         primaryStage.show();
+    }
+
+    private void secondaryMenuWindow() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
