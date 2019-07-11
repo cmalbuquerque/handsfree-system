@@ -5,6 +5,7 @@
  */
 package userInterface;
 
+import Emulator.GesturesVoiceEmulator;
 import appBackend.ChromeController;
 import java.awt.TextField;
 import java.net.URL;
@@ -47,7 +48,7 @@ public class PrimaryMenuController implements Initializable {
 
     }
 
-    public void setApps(HashMap<Integer, String> hashMap, ChromeController chromeController) {
+    public void setApps(HashMap<String, String> hashApps, ChromeController chromeController, HashMap<String, String> hashProfile, GesturesVoiceEmulator emulator) {
         GridPane gridPane = new GridPane();
         gridPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         gridPane.setPrefSize(Double.MAX_VALUE, Double.MIN_VALUE);
@@ -55,17 +56,17 @@ public class PrimaryMenuController implements Initializable {
         gridPane.setBackground(Background.EMPTY);
         stackPane.getChildren().add(gridPane);
 
-        int size = hashMap.size();
+        int size = hashApps.size();
         double nrOfColumns = Math.ceil((double) (size + 2) / 2);
         System.out.println("Size -> " + size + " Columns -> " + nrOfColumns);
         int i = 0;
-        for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
+        for (Map.Entry<String, String> entry : hashApps.entrySet()) {
             i++;
-            String appId = entry.getKey().toString();
+            String appName = entry.getKey();
             String appURL = entry.getValue();
-            Button button = new Button(i + "\n" + appURL);
+            Button button = new Button(i + "\n" + appName);
             button.setMaxWidth(Double.MAX_VALUE);
-            button.setId(Integer.toString(i));
+            button.setId("App" + Integer.toString(i));
             button.setOnAction(e -> {
                 System.out.println("Id " + button.getId());
                 ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
@@ -80,15 +81,15 @@ public class PrimaryMenuController implements Initializable {
 
         }
         i++;
-        Button addBtn = new Button(i++ + "\n" + "Adicionar Aplicação");
+        Button addBtn = new Button(i + "\n" + "Adicionar Aplicação");
         addBtn.setMaxWidth(Double.MAX_VALUE);
         addBtn.setOnAction(e -> {
             System.out.println("Id " + addBtn.getId());
             ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
 
         });
-
-        Button exitBtn = new Button(i++ + "\n" + "Sair");
+        i++;
+        Button exitBtn = new Button(i + "\n" + "Sair");
         exitBtn.setMaxWidth(Double.MAX_VALUE);
         exitBtn.setOnAction(e -> {
             System.out.println("Id " + exitBtn.getId());
@@ -97,6 +98,29 @@ public class PrimaryMenuController implements Initializable {
 
         gridPane.addRow(1, addBtn);
         gridPane.addRow(1, exitBtn);
+        
+        
+
+        for (Map.Entry<String, String> entry : hashProfile.entrySet()) {
+            i++;
+            String appId = entry.getKey();
+            String appName = entry.getValue();
+            Button button = new Button(i + "\n" + appName);
+            button.setMaxWidth(Double.MAX_VALUE);
+            button.setId("Prf" + Integer.toString(i));
+            button.setOnAction(e -> {
+                System.out.println("Id " + button.getId());
+                ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
+                emulator.fetchFromDatabase(Integer.parseInt(appId));
+            });
+
+            if (i <= nrOfColumns * 2) {
+                gridPane.addRow(3, button);
+            } else {
+                gridPane.addRow(4, button);
+            }
+
+        }
 
     }
 

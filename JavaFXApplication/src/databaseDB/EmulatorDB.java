@@ -12,6 +12,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,7 +50,7 @@ public class EmulatorDB {
     }
     
     
-    public static HashMap<String, String> getHashMapActionGesture() throws ClassNotFoundException {
+    public static HashMap<String, String> getHashMapActionGesture() {
         Connection con = null;
         //Gesture, Action
         HashMap<String, String> hashmapActionGesture = new HashMap<>();
@@ -66,6 +68,8 @@ public class EmulatorDB {
         } catch (SQLException ex) {
             System.out.println("Search error -->" + ex.getMessage());
             
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EmulatorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             DatabaseConnection.close(con);
         }
@@ -73,7 +77,7 @@ public class EmulatorDB {
     }
     
     
-    public static HashMap<String, String> getHashMapActionVoice() throws ClassNotFoundException {
+    public static HashMap<String, String> getHashMapActionVoice() {
         Connection con = null;
         //Gesture, Action
         HashMap<String, String> hashmapActionVoice = new HashMap<>();
@@ -91,9 +95,16 @@ public class EmulatorDB {
         } catch (SQLException ex) {
             System.out.println("Search error -->" + ex.getMessage());
             
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EmulatorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             DatabaseConnection.close(con);
         }
         return hashmapActionVoice;
+    }
+    
+    
+    public void setProfile(Integer profileID){
+        perfil = profileID;
     }
 }

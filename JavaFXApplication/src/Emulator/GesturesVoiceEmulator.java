@@ -20,6 +20,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.stage.Stage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,62 +34,69 @@ public class GesturesVoiceEmulator {
 
     private static Robot robot;
     private static WebDriver driver;
-    private  HashMap<String, String> HashMapGestureMLGestureBD = new HashMap<>();
-    private JavaFXApplication fxApp;
+    private HashMap<String, String> HashMapGestureMLGestureBD = new HashMap<>();
+    private Stage primaryStage;
+    private HashMap<String, String> voiceCommands;
+    private HashMap<String, String> gesturesCommands;
 
-    public GesturesVoiceEmulator(ChromeController chromeController, JavaFXApplication fxApp) {
+    public GesturesVoiceEmulator(ChromeController chromeController, Stage primaryStage) {
         driver = chromeController.getDriver();
-        this.fxApp = fxApp;
+        this.primaryStage = primaryStage;
         try {
             robot = new Robot();
         } catch (AWTException e) {
             System.out.println("Erro");
-        } 
+        }
+        fetchFromDatabase(1);
+
     }
 
-    public void receiveGesture(String gesture) throws ClassNotFoundException {
-        addToHashMapGestureMLGestureBD();
-        if(gesture.equals("closedUp") || gesture.equals("up") || gesture.equals("stoped")){
+    public void receiveGesture(String gesture) {
+        if (gesture.equals("closedUp") || gesture.equals("up") || gesture.equals("stoped")) {
             System.out.println("Gestos de controlo");
-        }
-        else{
-            for (String key: HashMapGestureMLGestureBD.keySet()){
-                if (key.equals(gesture)){
+        } else {
+            for (String key : HashMapGestureMLGestureBD.keySet()) {
+                if (key.equals(gesture)) {
                     String value = HashMapGestureMLGestureBD.get(key);
-                    //System.out.println(EmulatorDB.getHashMapActionGesture());
-                    for(String key2: EmulatorDB.getHashMapActionGesture().keySet()){
-                        if (key2.equals(value)){
-                            String action = EmulatorDB.getHashMapActionGesture().get(key2);
+                    for (String key2 : gesturesCommands.keySet()) {
+                        if (key2.equals(value)) {
+                            String action = gesturesCommands.get(key2);
                             System.out.println("ACTION " + action);
-                            if(action!=null){
+                            if (action != null) {
                                 executeAction(action);
+                            } else {
+                                System.out.println("Não está nenhuma ação associada " + action);
                             }
-                            else{
-                                System.out.println("Não está nenhuma ação associada " +  action);
-                            }
-                            
+
                         }
                     }
                 }
             }
         }
     }
-    
-    public void receiveVoiceCommand(String voice) throws ClassNotFoundException{
+
+    public void receiveVoiceCommand(String voice) {
         System.out.println("--------------------------VOICE " + voice);
-        for (String key:EmulatorDB.getHashMapActionVoice().keySet()){
-           
-            if ((key.toLowerCase()).equals(voice)){
-                String action = EmulatorDB.getHashMapActionVoice().get(key);
+        for (String key : voiceCommands.keySet()) {
+            if ((key.toLowerCase()).equals(voice)) {
+                String action = voiceCommands.get(key);
                 System.out.println("ACTION" + action);
                 executeAction(action);
             }
         }
-    
+
     }
-    
- 
-    public void addToHashMapGestureMLGestureBD(){
+
+    public void fetchFromDatabase(int profileNr) {
+        EmulatorDB emulatorDB = new EmulatorDB();
+        emulatorDB.setProfile(profileNr);
+        addToHashMapGestureMLGestureBD();
+        gesturesCommands = emulatorDB.getHashMapActionGesture();
+        voiceCommands = emulatorDB.getHashMapActionVoice();
+        System.out.println("----------------------------------------------------Changed Profile to profile nr" + profileNr);
+    }
+
+    public void addToHashMapGestureMLGestureBD() {
         HashMapGestureMLGestureBD.put("click", "Click");
         HashMapGestureMLGestureBD.put("twoFingerClick", "Double Click");
         HashMapGestureMLGestureBD.put("panLeft", "Open Hand Left-Right");
@@ -98,161 +106,144 @@ public class GesturesVoiceEmulator {
         HashMapGestureMLGestureBD.put("closedStoped", "Close Hand");
     }
 
-    public void executeAction(String action) throws ClassNotFoundException {
-            switch (action){
-                case "SWIPE_LEFT":
-                    left();
-                    break;
-                case "SWIPE_RIGHT":
-                    right();
-                    break;
-                case "SWIPE_DOWN":
-                    down();
-                    break;
-                case "SWIPE_UP":
-                    up();
-                    break;
-                case "SCROLL_DOWN":
-                    scrollDown();
-                    break;
-                case "SCROLL_UP":
-                    scrollUp();
-                    break;
-                case "ZOOM_IN":
-                    ctrMais();
-                    break;
-                case "ZOOM_OUT":
-                    ctrMenos();
-                    break;
-                case "DOUBLE CLICK":
-                    doubleClick();
-                    break;
-                case "RIGHT_CLICK":
-                    rightClick();
-                    break;
-                case "LEFT_CLICK":
-                    leftClick();
-                    break;
-                case "DRAG_DOWN":
-                    dragDown();
-                    break;
-                case "DRAG_UP":
-                    dragUp();
-                    break;
-                case "DRAG_LEFT":
-                    dragLeft();
-                    break;
-                case "DRAG_RIGHT":
-                    dragRight();
-                    break;
-                case "SHOW_MENU":
-                    fxApp.showSecondaryMenu();
-                    break;
-                case "NEW_TAB":
-                    break;
-                case "CHANGE_APP":
-                    fxApp.showMainMenu();
-                            break;
-                case "REFRESH":
-                    keyPress(KeyEvent.VK_F5);
-                    break;
-                case "UNDO":
-                    
-                    break;
-                
-                case "FULL_SCREEN":
-                    keyPress(KeyEvent.VK_F11);
-                    break;
-                case "RELOAD":
-                    keyPress(KeyEvent.VK_F11);
-                    break;
-                case "UP":
-                    keyPress(KeyEvent.VK_KP_UP);
-                    break;
-                case "DOWN":
-                    keyPress(KeyEvent.VK_KP_DOWN);
-                    break;
-                case "LEFT":
-                    keyPress(KeyEvent.VK_KP_LEFT);
-                    break;
-                case "RIGHT":
-                    keyPress(KeyEvent.VK_KP_RIGHT);
-                    break;
-                case "SPACE":
-                    keyPress(KeyEvent.VK_SPACE);
-                    break;
-                case "ONE":
-                    keyPress(KeyEvent.VK_F1);
-                    break;
-                case "TWO":
-                    keyPress(KeyEvent.VK_F2);
-                    break;
-                case "THREE":
-                    keyPress(KeyEvent.VK_F3);
-                    break;
-                case "FOUR":
-                    keyPress(KeyEvent.VK_F4);
-                    break;
-                case "FIVE":
-                    keyPress(KeyEvent.VK_F5);
-                    break;
-                case "SIX":
-                    keyPress(KeyEvent.VK_F6);
-                    break;
-                case "SEVEN":
-                    keyPress(KeyEvent.VK_F7);
-                    break;
-                case "EIGHT":
-                    keyPress(KeyEvent.VK_F8);
-                    break;
-                case "NINE":
-                    keyPress(KeyEvent.VK_F9);
-                    break;
-                case "TEN":
-                    keyPress(KeyEvent.VK_F10);
-                    break;
-                case "ELEVEN":
-                    keyPress(KeyEvent.VK_F11);
-                    break;
-                case "TWELVE":
-                    keyPress(KeyEvent.VK_F12);
-                    break;
-                
-                    
-                //Dicoogle    
-                case "IMAGE_INFO":
-                    dicoogleImageInfo();
-                    break;
-                case "FLIP":
-                    dicoogleFlip();
-                    break;
-                case "FLIP_RIGHT":
-                    dicoogleFlipRight();
-                    break;
-                case "FLIP_LEFT":
-                    dicoogleFlipLeft();
-                    break;
-                case "ROTATE":
-                    dicoogleFlip();
-                    break;
-                case "ROTATE_RIGHT":
-                    dicoogleFlipRight();
-                    break;
-                case "ROTATE_LEFT":
-                    dicoogleFlipLeft();
-                    break;
-                case "RESET":
-                    dicoogleReset();
-                    break;
-                case "RESIZE":
-                    dicoogleReset();
-                    break;
-                case "HIDE":
-                    dicoogleHideShow();
-                    break;
-            }
+    public void executeAction(String action) {
+        switch (action) {
+            case "SWIPE_LEFT":
+                left();
+                break;
+            case "SWIPE_RIGHT":
+                right();
+                break;
+            case "SWIPE_DOWN":
+                down();
+                break;
+            case "SWIPE_UP":
+                up();
+                break;
+            case "SCROLL_DOWN":
+                scrollDown();
+                break;
+            case "SCROLL_UP":
+                scrollUp();
+                break;
+            case "ZOOM_IN":
+                ctrMais();
+                break;
+            case "ZOOM_OUT":
+                ctrMenos();
+                break;
+            case "DOUBLE CLICK":
+                doubleClick();
+                break;
+            case "RIGHT_CLICK":
+                rightClick();
+                break;
+            case "LEFT_CLICK":
+                leftClick();
+                break;
+            case "DRAG_DOWN":
+                dragDown();
+                break;
+            case "DRAG_UP":
+                dragUp();
+                break;
+            case "DRAG_LEFT":
+                dragLeft();
+                break;
+            case "DRAG_RIGHT":
+                dragRight();
+                break;
+            case "SHOW_MENU":
+                primaryStage.setIconified(false);
+                break;
+            case "NEW_TAB":
+                break;
+            case "CHANGE_APP":
+                primaryStage.setIconified(false);
+                break;
+            case "REFRESH":
+                keyPress(KeyEvent.VK_F5);
+                break;
+            case "UNDO":
+
+                break;
+
+            case "FULL_SCREEN":
+                keyPress(KeyEvent.VK_F11);
+                break;
+            case "RELOAD":
+                keyPress(KeyEvent.VK_F11);
+                break;
+            case "UP":
+                keyPress(KeyEvent.VK_UP);
+                break;
+            case "DOWN":
+                keyPress(KeyEvent.VK_DOWN);
+                break;
+            case "LEFT":
+                keyPress(KeyEvent.VK_LEFT);
+                break;
+            case "RIGHT":
+                keyPress(KeyEvent.VK_RIGHT);
+                break;
+            case "SPACE":
+                keyPress(KeyEvent.VK_SPACE);
+                break;
+            case "ONE":
+                keyPress(KeyEvent.VK_F1);
+                break;
+            case "TWO":
+                keyPress(KeyEvent.VK_F2);
+                break;
+            case "THREE":
+                keyPress(KeyEvent.VK_F3);
+                break;
+            case "FOUR":
+                keyPress(KeyEvent.VK_F4);
+                break;
+            case "FIVE":
+                keyPress(KeyEvent.VK_F5);
+                break;
+            case "SIX":
+                keyPress(KeyEvent.VK_F6);
+                break;
+
+            //Dicoogle    
+            case "IMAGE_INFO":
+                dicoogleImageInfo();
+                break;
+            case "FLIP":
+                dicoogleFlip();
+                break;
+            case "FLIP_RIGHT":
+                dicoogleFlipRight();
+                break;
+            case "FLIP_LEFT":
+                dicoogleFlipLeft();
+                break;
+            case "ROTATE":
+                dicoogleFlip();
+                break;
+            case "ROTATE_RIGHT":
+                dicoogleFlipRight();
+                break;
+            case "ROTATE_LEFT":
+                dicoogleFlipLeft();
+                break;
+            case "RESET":
+                dicoogleAnnotate();
+                //dicoogleReset();
+                break;
+            case "RESIZE":
+                dicoogleAnnotate();
+                //dicoogleReset();
+                break;
+            case "HIDE":
+                dicoogleHideShow();
+                break;
+        }
     }
-    
+
     public void keyPress(int key) {
 //        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
 //        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK); 
@@ -391,72 +382,72 @@ public class GesturesVoiceEmulator {
         robot.keyRelease(KeyEvent.VK_LESS);
         robot.keyRelease(KeyEvent.VK_CONTROL);
     }
-    
-    public void dicoogleMisc(){
+
+    public void dicoogleMisc() {
         WebElement misc = driver.findElement(By.id("btn-Miscellaneous"));
         misc.click();
     }
-    
-    public void dicoogleMiscToogleFullscreen(){
+
+    public void dicoogleMiscToogleFullscreen() {
         WebElement misc = driver.findElement(By.id("btn-FullscreenTool"));
         misc.click();
     }
-    
-    public void dicoogleReset(){
+
+    public void dicoogleReset() {
         WebElement reset = driver.findElement(By.cssSelector("i[class='fa fa-power-off']"));
         reset.click();
     }
-    
-    public static void dicoogleAnnotate(){
+
+    public static void dicoogleAnnotate() {
         WebElement annotate = driver.findElement(By.cssSelector("i[class='icon-annotate']"));
         annotate.click();
     }
-    
-    public void dicoogleAnnotateRuler(){
+
+    public void dicoogleAnnotateRuler() {
         WebElement annotate = driver.findElement(By.cssSelector("i[class='icon-line']"));
         annotate.click();
     }
-    
-    public static void dicoogleAnnotateRectangular(){
+
+    public static void dicoogleAnnotateRectangular() {
         WebElement annotate = driver.findElement(By.cssSelector("i[class='icon-square']"));
         annotate.click();
     }
-    
-    public void dicoogleImageInfo(){
+
+    public void dicoogleImageInfo() {
         WebElement imageInfo = driver.findElement(By.cssSelector("i[class='fa fa-info-circle']"));
         imageInfo.click();
-        
+
     }
-    
-    public void dicoogleImageAdjustments(){
+
+    public void dicoogleImageAdjustments() {
         WebElement imageadjust = driver.findElement(By.cssSelector("i[class='fa fa-adjust']"));
         imageadjust.click();
     }
-    
-    
-    public void dicoogleFit(){
+
+    public void dicoogleFit() {
         WebElement fit = driver.findElement(By.cssSelector("i[class='fa fa-arrows']"));
         fit.click();
     }
-    
-     public void dicoogleFlip(){
+
+    public void dicoogleFlip() {
         WebElement flip = driver.findElement(By.cssSelector("i[class='icon-rotate']"));
         flip.click();
     }
-     
-    public void dicoogleFlipRight(){
+
+    public void dicoogleFlipRight() {
         WebElement flip = driver.findElement(By.cssSelector("i[class='fa fa-rotate-right']"));
         flip.click();
     }
-     
-    public void dicoogleFlipLeft(){
+
+    public void dicoogleFlipLeft() {
         WebElement flip = driver.findElement(By.cssSelector("i[class='fa fa-rotate-left']"));
         flip.click();
     }
-    
-    public void dicoogleHideShow(){
+
+    public void dicoogleHideShow() {
         WebElement hide = driver.findElement(By.cssSelector("i[class='fa fa-undo']"));
-        hide.click();   
-        
+        hide.click();
+
     }
+
 }

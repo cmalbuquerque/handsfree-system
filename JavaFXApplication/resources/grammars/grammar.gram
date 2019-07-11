@@ -6,5 +6,5 @@
 
 grammar grammar;
 
-public <feelings>  = (help) (  change app | down | eight | eleven | flip | flip left | flip right | five | four | full screen | image info | hide | left | new tab | nine | ten | one | refresh | reset | resize | right | rotate | rotate left | rotate right | seven | six | show menu | space | ten | three | two | twelve | undo | up | zoom in | zoom out | reload);
+public <feelings>  = (help | try | done) (  change app | down  | flip | flip left | flip right | five | four | full screen | image info | hide | left | new tab | one | refresh | reset | resize | right | rotate | rotate left | rotate right | six | show menu | space | three | two | up | zoom in | zoom out | reload);
 
