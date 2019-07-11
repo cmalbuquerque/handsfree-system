@@ -89,7 +89,7 @@ class DatabaseQueries {
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 String profileId = entry.getKey();
                 String profileName = entry.getValue();
-                ResultSet rs = statement.executeQuery("select * from perfil where id_perfil=" + 1 + ";");
+                ResultSet rs = statement.executeQuery("select * from perfil where id_perfil=" + profileId + ";");
                 while (rs.next()) {
                     map.put(profileId, rs.getString(2));
                 }

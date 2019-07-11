@@ -38,6 +38,7 @@ public class GesturesVoiceEmulator {
     private Stage primaryStage;
     private HashMap<String, String> voiceCommands;
     private HashMap<String, String> gesturesCommands;
+    private EmulatorDB emulatorDB;
 
     public GesturesVoiceEmulator(ChromeController chromeController, Stage primaryStage) {
         driver = chromeController.getDriver();
@@ -47,20 +48,60 @@ public class GesturesVoiceEmulator {
         } catch (AWTException e) {
             System.out.println("Erro");
         }
-        fetchFromDatabase(1);
+
+        emulatorDB = new EmulatorDB();
+        emulatorDB.setProfile(1);
+        //fetchFromDatabase(1);
 
     }
 
-    public void receiveGesture(String gesture) {
+//    public void receiveGesture(String gesture) {
+//        if (gesture.equals("closedUp") || gesture.equals("up") || gesture.equals("stoped")) {
+//            System.out.println("Gestos de controlo");
+//        } else {
+//            for (String key : HashMapGestureMLGestureBD.keySet()) {
+//                if (key.equals(gesture)) {
+//                    String value = HashMapGestureMLGestureBD.get(key);
+//                    for (String key2 : gesturesCommands.keySet()) {
+//                        if (key2.equals(value)) {
+//                            String action = gesturesCommands.get(key2);
+//                            System.out.println("ACTION " + action);
+//                            if (action != null) {
+//                                executeAction(action);
+//                            } else {
+//                                System.out.println("Não está nenhuma ação associada " + action);
+//                            }
+//
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    public void receiveVoiceCommand(String voice) {
+//        System.out.println("--------------------------VOICE " + voice);
+//        for (String key : voiceCommands.keySet()) {
+//            if ((key.toLowerCase()).equals(voice)) {
+//                String action = voiceCommands.get(key);
+//                System.out.println("ACTION" + action);
+//                executeAction(action);
+//            }
+//        }
+//
+//    }
+    public void receiveGesture(String gesture) throws ClassNotFoundException {
+        addToHashMapGestureMLGestureBD();
         if (gesture.equals("closedUp") || gesture.equals("up") || gesture.equals("stoped")) {
             System.out.println("Gestos de controlo");
         } else {
             for (String key : HashMapGestureMLGestureBD.keySet()) {
                 if (key.equals(gesture)) {
                     String value = HashMapGestureMLGestureBD.get(key);
-                    for (String key2 : gesturesCommands.keySet()) {
+                    //System.out.println(EmulatorDB.getHashMapActionGesture());
+                    for (String key2 : EmulatorDB.getHashMapActionGesture().keySet()) {
                         if (key2.equals(value)) {
-                            String action = gesturesCommands.get(key2);
+                            String action = EmulatorDB.getHashMapActionGesture().get(key2);
                             System.out.println("ACTION " + action);
                             if (action != null) {
                                 executeAction(action);
@@ -75,11 +116,12 @@ public class GesturesVoiceEmulator {
         }
     }
 
-    public void receiveVoiceCommand(String voice) {
+    public void receiveVoiceCommand(String voice) throws ClassNotFoundException {
         System.out.println("--------------------------VOICE " + voice);
-        for (String key : voiceCommands.keySet()) {
+        for (String key : EmulatorDB.getHashMapActionVoice().keySet()) {
+
             if ((key.toLowerCase()).equals(voice)) {
-                String action = voiceCommands.get(key);
+                String action = EmulatorDB.getHashMapActionVoice().get(key);
                 System.out.println("ACTION" + action);
                 executeAction(action);
             }
@@ -88,11 +130,11 @@ public class GesturesVoiceEmulator {
     }
 
     public void fetchFromDatabase(int profileNr) {
-        EmulatorDB emulatorDB = new EmulatorDB();
+        //EmulatorDB emulatorDB = new EmulatorDB();
         emulatorDB.setProfile(profileNr);
-        addToHashMapGestureMLGestureBD();
-        gesturesCommands = emulatorDB.getHashMapActionGesture();
-        voiceCommands = emulatorDB.getHashMapActionVoice();
+//        addToHashMapGestureMLGestureBD();
+//        gesturesCommands = emulatorDB.getHashMapActionGesture();
+//        voiceCommands = emulatorDB.getHashMapActionVoice();
         System.out.println("----------------------------------------------------Changed Profile to profile nr" + profileNr);
     }
 
@@ -154,12 +196,12 @@ public class GesturesVoiceEmulator {
                 dragRight();
                 break;
             case "SHOW_MENU":
-                primaryStage.setIconified(false);
+                //primaryStage.setIconified(false);
                 break;
             case "NEW_TAB":
                 break;
             case "CHANGE_APP":
-                primaryStage.setIconified(false);
+                //primaryStage.setIconified(false);
                 break;
             case "REFRESH":
                 keyPress(KeyEvent.VK_F5);

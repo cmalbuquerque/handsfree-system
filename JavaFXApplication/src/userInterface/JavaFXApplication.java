@@ -120,6 +120,7 @@ public class JavaFXApplication extends Application {
         primaryStage.setScene(scene);
         primaryMenuController.setApps(userApps, chromeController, appProfiles, emulator);
         primaryStage.show();
+        chromeController.openChrome();
     }
 
     public void showSecondaryMenu() {
