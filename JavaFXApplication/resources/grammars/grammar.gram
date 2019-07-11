@@ -1,0 +1,10 @@
+ #JSGF V1.0;
+
+/**
+ * JSGF Grammar 
+ */
+
+grammar grammar;
+
+public <feelings>  = (help | try | done) (  change app | down  | flip | flip left | flip right | five | four | full screen | image info | hide | left | new tab | one | refresh | reset | resize | right | rotate | rotate left | rotate right | six | show menu | space | three | two | up | zoom in | zoom out | reload);
+
