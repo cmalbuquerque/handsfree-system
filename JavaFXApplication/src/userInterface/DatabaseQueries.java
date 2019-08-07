@@ -62,42 +62,52 @@ class DatabaseQueries {
         return hash;
     }
 
-    public HashMap dbGetUserProfile() {
-        HashMap<String, String> hash = new HashMap<>();
+    public ArrayList dbGetUserProfile() {
+        ArrayList<String[]> list = new ArrayList<>();
+        HashMap<String, HashMap> hash = new HashMap<>();
+        HashMap<String, String> sub_hash = new HashMap<>();
         try {
             con = DatabaseConnection.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("select * from usa_app where id_pessoa=" + 1 + " and id_app=" + 1 + ";");
+            ResultSet rs = statement.executeQuery("select * from usa_app where id_pessoa=" + 1 + ";");
             while (rs.next()) {
-                hash.put(rs.getString(2), "");
+                String[] array = new String[3];
 
+                //id app
+                array[0] = rs.getString(3);
+                //id perfil
+                array[1] = rs.getString(2);
+                //name perfil
+                array[2] = dbGetProfileName(array[1]);
+                
+                
+                list.add(array);
             }
 
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-        return dbGetProfileName(hash);
+        return list;
 
     }
 
-    private HashMap dbGetProfileName(HashMap<String, String> map) {
+    private String dbGetProfileName(String profileId) {
+        String profileName = "";
         try {
             con = DatabaseConnection.getConnection();
             con.setAutoCommit(false);
             Statement statement = con.createStatement();
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                String profileId = entry.getKey();
-                String profileName = entry.getValue();
-                ResultSet rs = statement.executeQuery("select * from perfil where id_perfil=" + profileId + ";");
-                while (rs.next()) {
-                    map.put(profileId, rs.getString(2));
-                }
+
+            ResultSet rs = statement.executeQuery("select * from perfil where id_perfil=" + profileId + ";");
+            while (rs.next()) {
+                profileName = rs.getString(2);
             }
+
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-        return map;
+        return profileName;
     }
 
 }
