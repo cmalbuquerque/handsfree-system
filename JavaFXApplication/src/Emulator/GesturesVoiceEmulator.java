@@ -39,6 +39,8 @@ public class GesturesVoiceEmulator {
     private HashMap<String, String> voiceCommands;
     private HashMap<String, String> gesturesCommands;
     private EmulatorDB emulatorDB;
+    private boolean canClick;
+    private int cli;
 
     public GesturesVoiceEmulator(ChromeController chromeController, Stage primaryStage) {
         driver = chromeController.getDriver();
@@ -51,57 +53,22 @@ public class GesturesVoiceEmulator {
 
         emulatorDB = new EmulatorDB();
         emulatorDB.setProfile(1);
-        //fetchFromDatabase(1);
-
+        fetchFromDatabase(1);
+        this.canClick = true;
+        this.cli = 0;
     }
 
-//    public void receiveGesture(String gesture) {
-//        if (gesture.equals("closedUp") || gesture.equals("up") || gesture.equals("stoped")) {
-//            System.out.println("Gestos de controlo");
-//        } else {
-//            for (String key : HashMapGestureMLGestureBD.keySet()) {
-//                if (key.equals(gesture)) {
-//                    String value = HashMapGestureMLGestureBD.get(key);
-//                    for (String key2 : gesturesCommands.keySet()) {
-//                        if (key2.equals(value)) {
-//                            String action = gesturesCommands.get(key2);
-//                            System.out.println("ACTION " + action);
-//                            if (action != null) {
-//                                executeAction(action);
-//                            } else {
-//                                System.out.println("Não está nenhuma ação associada " + action);
-//                            }
-//
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    public void receiveVoiceCommand(String voice) {
-//        System.out.println("--------------------------VOICE " + voice);
-//        for (String key : voiceCommands.keySet()) {
-//            if ((key.toLowerCase()).equals(voice)) {
-//                String action = voiceCommands.get(key);
-//                System.out.println("ACTION" + action);
-//                executeAction(action);
-//            }
-//        }
-//
-//    }
-    public void receiveGesture(String gesture) throws ClassNotFoundException {
-        addToHashMapGestureMLGestureBD();
+    public void receiveGesture(String gesture) {
+        cli++;
         if (gesture.equals("closedUp") || gesture.equals("up") || gesture.equals("stoped")) {
             System.out.println("Gestos de controlo");
         } else {
             for (String key : HashMapGestureMLGestureBD.keySet()) {
                 if (key.equals(gesture)) {
                     String value = HashMapGestureMLGestureBD.get(key);
-                    //System.out.println(EmulatorDB.getHashMapActionGesture());
-                    for (String key2 : EmulatorDB.getHashMapActionGesture().keySet()) {
+                    for (String key2 : gesturesCommands.keySet()) {
                         if (key2.equals(value)) {
-                            String action = EmulatorDB.getHashMapActionGesture().get(key2);
+                            String action = gesturesCommands.get(key2);
                             System.out.println("ACTION " + action);
                             if (action != null) {
                                 executeAction(action);
@@ -114,14 +81,17 @@ public class GesturesVoiceEmulator {
                 }
             }
         }
+        if (cli > 30) {
+            canClick = true;
+            cli = 0;
+        }
     }
 
-    public void receiveVoiceCommand(String voice) throws ClassNotFoundException {
+    public void receiveVoiceCommand(String voice) {
         System.out.println("--------------------------VOICE " + voice);
-        for (String key : EmulatorDB.getHashMapActionVoice().keySet()) {
-
+        for (String key : voiceCommands.keySet()) {
             if ((key.toLowerCase()).equals(voice)) {
-                String action = EmulatorDB.getHashMapActionVoice().get(key);
+                String action = voiceCommands.get(key);
                 System.out.println("ACTION" + action);
                 executeAction(action);
             }
@@ -130,11 +100,10 @@ public class GesturesVoiceEmulator {
     }
 
     public void fetchFromDatabase(int profileNr) {
-        //EmulatorDB emulatorDB = new EmulatorDB();
         emulatorDB.setProfile(profileNr);
-//        addToHashMapGestureMLGestureBD();
-//        gesturesCommands = emulatorDB.getHashMapActionGesture();
-//        voiceCommands = emulatorDB.getHashMapActionVoice();
+        addToHashMapGestureMLGestureBD();
+        gesturesCommands = emulatorDB.getHashMapActionGesture();
+        voiceCommands = emulatorDB.getHashMapActionVoice();
         System.out.println("----------------------------------------------------Changed Profile to profile nr" + profileNr);
     }
 
@@ -172,13 +141,17 @@ public class GesturesVoiceEmulator {
                 ctrMais();
                 break;
             case "ZOOM_OUT":
-                ctrMenos();
+                scrollDown();
+                //ctrMenos();
                 break;
             case "DOUBLE CLICK":
                 doubleClick();
                 break;
             case "RIGHT_CLICK":
-                rightClick();
+                if (canClick) {
+                    rightClick();
+                    canClick = false;
+                }
                 break;
             case "LEFT_CLICK":
                 leftClick();
@@ -197,6 +170,7 @@ public class GesturesVoiceEmulator {
                 break;
             case "SHOW_MENU":
                 //primaryStage.setIconified(false);
+                altTab();
                 break;
             case "NEW_TAB":
                 break;
@@ -255,22 +229,22 @@ public class GesturesVoiceEmulator {
                 dicoogleImageInfo();
                 break;
             case "FLIP":
-                dicoogleFlip();
+                //dicoogleFlip();
                 break;
             case "FLIP_RIGHT":
-                dicoogleFlipRight();
+               // dicoogleFlipRight();
                 break;
             case "FLIP_LEFT":
-                dicoogleFlipLeft();
+                //dicoogleFlipLeft();
                 break;
             case "ROTATE":
-                dicoogleFlip();
+                //dicoogleFlip();
                 break;
             case "ROTATE_RIGHT":
-                dicoogleFlipRight();
+              //  dicoogleFlipRight();
                 break;
             case "ROTATE_LEFT":
-                dicoogleFlipLeft();
+                //dicoogleFlipLeft();
                 break;
             case "RESET":
                 dicoogleAnnotate();
@@ -362,7 +336,7 @@ public class GesturesVoiceEmulator {
     }
 
     public void scrollDown() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             robot.mouseWheel(1);
         }
     }
@@ -423,6 +397,15 @@ public class GesturesVoiceEmulator {
         robot.delay(100);
         robot.keyRelease(KeyEvent.VK_LESS);
         robot.keyRelease(KeyEvent.VK_CONTROL);
+    }
+
+    public void altTab() {
+        robot.keyPress(KeyEvent.VK_ALT);
+        robot.delay(50);
+        robot.keyPress(KeyEvent.VK_TAB);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_TAB);
+        robot.keyRelease(KeyEvent.VK_ALT);
     }
 
     public void dicoogleMisc() {

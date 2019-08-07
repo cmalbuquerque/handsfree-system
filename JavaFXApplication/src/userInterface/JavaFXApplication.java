@@ -68,24 +68,37 @@ public class JavaFXApplication extends Application {
         controller.addListener(listener);
 
         HashMap<String, String> userApps = queries.dbGetUserApps();
-        
-        
-        HashMap<String, String> appProfies = queries.dbGetUserProfile();
 
-        //start speech recognition
-        MainSpeech mainSpeech = new MainSpeech(emulator);
-        mainSpeech.start();
+        ArrayList<String[]> appProfies = queries.dbGetUserProfile();
 
-        //-------------------------------------------------------------User Interface---------------------------------------------------------
+        System.out.println("----------------------------------------------------");
+        for (String[] profileInfo : appProfies) {
+            String appId = profileInfo[0];
+            String profileId = profileInfo[1];
+            String profileName = profileInfo[2];
+            System.out.println("AppId: " + appId + ", profileId: " + profileId + "profileName: " + profileName);
+        }
         
-        
-        if (!checklogedIn()) {
-            logInWindow();
+            System.out.println("----------------------------------------------------");
+
+            //start speech recognition
+            MainSpeech mainSpeech = new MainSpeech(emulator);
+            mainSpeech.start();
+
+            //-------------------------------------------------------------User Interface---------------------------------------------------------
+            if (!checklogedIn()) {
+                logInWindow();
+            }
+
+            mainMenuWindow(primaryStage, userApps, appProfies);
+
         }
 
-        mainMenuWindow(primaryStage, userApps, appProfies);
+    
 
-    }
+    
+
+    
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -103,7 +116,6 @@ public class JavaFXApplication extends Application {
         return chromeController;
     }
 
-   
     private void logInWindow() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("logIn.fxml"));
         Stage logInStage = new Stage();
@@ -112,7 +124,7 @@ public class JavaFXApplication extends Application {
         logInStage.showAndWait();
     }
 
-    private void mainMenuWindow(Stage primaryStage, HashMap<String, String> userApps, HashMap<String, String> appProfiles) throws IOException {
+    private void mainMenuWindow(Stage primaryStage, HashMap<String, String> userApps, ArrayList<String[]> appProfiles) throws IOException {
         FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("PrimaryMenu.fxml"));
         Parent root = fXMLLoader.load();
         PrimaryMenuController primaryMenuController = fXMLLoader.<PrimaryMenuController>getController();

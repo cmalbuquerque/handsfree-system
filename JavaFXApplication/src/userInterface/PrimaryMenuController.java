@@ -9,6 +9,7 @@ import Emulator.GesturesVoiceEmulator;
 import appBackend.ChromeController;
 import java.awt.TextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -16,8 +17,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -43,53 +46,56 @@ public class PrimaryMenuController implements Initializable {
         stage.close();
     }
 
+    int counter = 0;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
     }
 
-    public void setApps(HashMap<String, String> hashApps, ChromeController chromeController, HashMap<String, String> hashProfile, GesturesVoiceEmulator emulator) {
+    public void setApps(HashMap<String, String> hashApps, ChromeController chromeController, ArrayList<String[]> profileList, GesturesVoiceEmulator emulator) {
         GridPane gridPane = new GridPane();
         gridPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         gridPane.setPrefSize(Double.MAX_VALUE, Double.MIN_VALUE);
 //        gridPane.setMinSize(Double.MAX_VALUE,Double.MAX_VALUE);
         gridPane.setBackground(Background.EMPTY);
         stackPane.getChildren().add(gridPane);
+        Separator separator = new Separator();
 
         int size = hashApps.size();
         double nrOfColumns = Math.ceil((double) (size + 2) / 2);
         System.out.println("Size -> " + size + " Columns -> " + nrOfColumns);
-        int i = 0;
         for (Map.Entry<String, String> entry : hashApps.entrySet()) {
-            i++;
+            counter++;
             String appName = entry.getKey();
             String appURL = entry.getValue();
-            Button button = new Button(i + "\n" + appName);
+            Button button = new Button(counter + "\n" + appName);
             button.setMaxWidth(Double.MAX_VALUE);
-            button.setId("App" + Integer.toString(i));
+            button.setId("App" + Integer.toString(counter));
             button.setOnAction(e -> {
                 System.out.println("Id " + button.getId());
                 ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
                 chromeController.changeURL(appURL);
             });
 
-            if (i <= nrOfColumns) {
+            if (counter <= nrOfColumns) {
                 gridPane.addRow(0, button);
             } else {
                 gridPane.addRow(1, button);
             }
 
         }
-        i++;
-        Button addBtn = new Button(i + "\n" + "Adicionar Aplicação");
+        counter++;
+        Button addBtn = new Button(counter + "\n" + "Adicionar Aplicação");
         addBtn.setMaxWidth(Double.MAX_VALUE);
         addBtn.setOnAction(e -> {
             System.out.println("Id " + addBtn.getId());
             ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
+            setProf(profileList, emulator, gridPane, nrOfColumns);
 
         });
-        i++;
-        Button exitBtn = new Button(i + "\n" + "Sair");
+        counter++;
+        Button exitBtn = new Button(counter + "\n" + "Sair");
         exitBtn.setMaxWidth(Double.MAX_VALUE);
         exitBtn.setOnAction(e -> {
             System.out.println("Id " + exitBtn.getId());
@@ -98,20 +104,26 @@ public class PrimaryMenuController implements Initializable {
 
         gridPane.addRow(1, addBtn);
         gridPane.addRow(1, exitBtn);
-        
-        
 
-        for (Map.Entry<String, String> entry : hashProfile.entrySet()) {
-            i++;
-            String appId = entry.getKey();
-            String appName = entry.getValue();
-            Button button = new Button(i + "\n" + appName);
+//        separator.setMaxWidth(40);
+//        //separator.setAlignment(Pos.CENTER_LEFT);
+//        gridPane.getChildren().add(2, separator);
+    }
+
+    public void setProf(ArrayList<String[]> profileList, GesturesVoiceEmulator emulator, GridPane gridPane, double nrOfColumns) {
+        for (String[] profileInfo : profileList) {
+            int i = counter;
+            String appId = profileInfo[0];
+            String profileId = profileInfo[1];
+            String profileName = profileInfo[2];
+
+            Button button = new Button(i + "\n" + profileName);
             button.setMaxWidth(Double.MAX_VALUE);
             button.setId("Prf" + Integer.toString(i));
             button.setOnAction(e -> {
                 System.out.println("Id " + button.getId());
                 ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
-                emulator.fetchFromDatabase(Integer.parseInt(appId));
+                //emulator.fetchFromDatabase(Integer.parseInt(appId));
             });
 
             if (i <= nrOfColumns * 2) {
@@ -121,7 +133,5 @@ public class PrimaryMenuController implements Initializable {
             }
 
         }
-
     }
-
 }
